@@ -21,6 +21,8 @@
     "@types/node": "^9.4.6",
     "@types/react": "^16.0.38",
     "@types/react-dom": "^16.0.4",
+    "prettier": "^1.10.2",
+    "tslint-plugin-prettier": "^1.3.0",
     "typescript": "^2.7.2"
   }
 }
