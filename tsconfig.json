@@ -9,6 +9,7 @@
     "jsx": "react",
     "moduleResolution": "node",
     "rootDir": "src",
+    "baseUrl": "src",
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -27,7 +28,9 @@
     "jest",
     "src/setupTests.ts"
   ],
-  "files": [
-    "typings/**/*.d.ts"
+  "include": [
+    "typings/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.ts"
   ]
 }

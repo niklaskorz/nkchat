@@ -15,16 +15,21 @@ interface Video {
 }
 
 interface Response {
-  videos?: Video[];
+  videos: Video[];
 }
 
 class IndexPage extends React.Component<ChildProps<{}, Response>> {
   render() {
-    const { videos } = this.props.data;
+    if (!this.props.data) {
+      return null;
+    }
+    const { loading, error, videos } = this.props.data;
     return (
       <div>
         <ButtonDemo />
         <div>
+          {loading && 'Loading...'}
+          {error && error.message}
           {videos && videos.map(v => <div key={v.id}>{v.track.title}</div>)}
         </div>
       </div>
