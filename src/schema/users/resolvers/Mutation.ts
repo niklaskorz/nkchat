@@ -13,23 +13,9 @@ interface RegisterInput {
   password: string;
 }
 
-interface RegisterPayload {
-  session: InstanceType<Session>;
-  user: InstanceType<User>;
-}
-
 interface LoginInput {
   name: string;
   password: string;
-}
-
-interface LoginPayload {
-  session: InstanceType<Session>;
-  user: InstanceType<User>;
-}
-
-interface LogoutPayload {
-  session: InstanceType<Session>;
 }
 
 export default {
@@ -37,7 +23,7 @@ export default {
     root: any,
     { input }: { input: RegisterInput },
     ctx: IRouterContext,
-  ): Promise<RegisterPayload> {
+  ): Promise<InstanceType<Session>> {
     const user = await UserModel.create({
       name: input.name,
       password: await bcrypt.hash(input.password, 10),
@@ -52,16 +38,13 @@ export default {
     });
     ctx.state.session = user;
 
-    return {
-      session,
-      user,
-    };
+    return session;
   },
   async login(
     root: any,
     { input }: { input: LoginInput },
     ctx: IRouterContext,
-  ): Promise<LoginPayload> {
+  ): Promise<InstanceType<Session>> {
     const user = await UserModel.findOne({ name: input.name }).exec();
     if (!user) {
       throw new Error('User not found');
@@ -84,13 +67,9 @@ export default {
     });
     ctx.state.session = user;
 
-    return { session, user };
+    return session;
   },
-  async logout(
-    root: any,
-    data: any,
-    ctx: IRouterContext,
-  ): Promise<LogoutPayload> {
+  async logout(root: any, data: any, ctx: IRouterContext) {
     const session = ctx.state.session as InstanceType<Session> | undefined;
     if (!session) {
       throw new Error('Authentication required');
@@ -100,6 +79,6 @@ export default {
     ctx.cookies.set('session', undefined);
     ctx.state.session = undefined;
 
-    return { session };
+    return session.id;
   },
 };

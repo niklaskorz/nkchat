@@ -21,27 +21,13 @@ input RegisterInput {
   password: String!
 }
 
-type RegisterPayload {
-  session: Session!
-  user: User!
-}
-
 input LoginInput {
   name: String!
   password: String!
 }
 
-type LoginPayload {
-  session: Session!
-  user: User!
-}
-
-type LogoutPayload {
-  user: User!
-}
-
 extend type Mutation {
-  register(input: RegisterInput!): RegisterPayload!
-  login(input: LoginInput!): LoginPayload!
-  logout: LogoutPayload!
+  register(input: RegisterInput!): Session!
+  login(input: LoginInput!): Session!
+  logout: ID!
 }
