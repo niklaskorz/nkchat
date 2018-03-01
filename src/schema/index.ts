@@ -1,3 +1,4 @@
+import winston from 'winston';
 import { makeExecutableSchema } from 'graphql-tools';
 import {
   InstanceType,
@@ -40,17 +41,10 @@ const resolvers = {
       return await RoomModel.find().exec();
     },
   },
-  Room: {
-    async owner(room: InstanceType<Room>) {
-      const userInRoom = await UserInRoomModel.findOne({
-        room: room.id,
-      });
-      if (!userInRoom) {
-        throw new Error('Nope');
-      }
-      return userInRoom.user as InstanceType<User>;
-    },
+  User: {
+    id: (user: InstanceType<User>) => user._id,
   },
+  Room: {},
   Mutation: {
     async createUser(root: any, { name }: { name: string }) {
       const user = new UserModel({
@@ -62,18 +56,22 @@ const resolvers = {
       root: any,
       { name, ownerId }: { name: string; ownerId: string },
     ) {
-      const user = UserModel.findById(ownerId).exec();
+      const user = await UserModel.findById(ownerId).exec();
       if (!user) {
         throw new Error('User not found');
       }
+
       const room = await RoomModel.create({
         name,
         owner: ownerId,
       });
+      room.owner = user;
+
       await UserInRoomModel.create({
-        user: user.id,
+        user: ownerId,
         room: room.id,
       });
+
       return room;
     },
   },
