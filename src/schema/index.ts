@@ -5,7 +5,7 @@ import {
   Room,
   UserModel,
   RoomModel,
-  UserInRoomModel
+  UserInRoomModel,
 } from '../models';
 
 const typeDefs = `
@@ -38,29 +38,29 @@ const resolvers = {
     },
     async rooms() {
       return await RoomModel.find().exec();
-    }
+    },
   },
   Room: {
     async owner(room: InstanceType<Room>) {
       const userInRoom = await UserInRoomModel.findOne({
-        room: room.id
+        room: room.id,
       });
       if (!userInRoom) {
         throw new Error('Nope');
       }
       return userInRoom.user as InstanceType<User>;
-    }
+    },
   },
   Mutation: {
     async createUser(root: any, { name }: { name: string }) {
       const user = new UserModel({
-        name
+        name,
       });
       return await user.save();
     },
     async createRoom(
       root: any,
-      { name, ownerId }: { name: string; ownerId: string }
+      { name, ownerId }: { name: string; ownerId: string },
     ) {
       const user = UserModel.findById(ownerId).exec();
       if (!user) {
@@ -68,18 +68,18 @@ const resolvers = {
       }
       const room = await RoomModel.create({
         name,
-        owner: ownerId
+        owner: ownerId,
       });
       await UserInRoomModel.create({
         user: user.id,
-        room: room.id
+        room: room.id,
       });
       return room;
-    }
-  }
+    },
+  },
 };
 
 export default makeExecutableSchema({
   typeDefs,
-  resolvers
+  resolvers,
 });
