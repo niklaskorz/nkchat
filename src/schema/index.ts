@@ -38,13 +38,11 @@ const resolvers = {
       return await UserModel.find().exec();
     },
     async rooms() {
-      return await RoomModel.find().exec();
+      return await RoomModel.find()
+        .populate('owner')
+        .exec();
     },
   },
-  User: {
-    id: (user: InstanceType<User>) => user._id,
-  },
-  Room: {},
   Mutation: {
     async createUser(root: any, { name }: { name: string }) {
       const user = new UserModel({
