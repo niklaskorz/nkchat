@@ -15,14 +15,14 @@ const typeDefs = `
 
   type User {
     id: String!
-    createdAt: String!
+    createdAt: DateTime!
     name: String!
     rooms: [Room!]!
   }
 
   type Room {
     id: String!
-    createdAt: String!
+    createdAt: DateTime!
     name: String!
     owner: User!
     viewerIsOwner: Boolean!
@@ -32,7 +32,7 @@ const typeDefs = `
 
   type Message {
     id: String!
-    createdAt: String!
+    createdAt: DateTime!
     content: String!
     author: User!
     viewerIsAuthor: Boolean!
