@@ -1,0 +1,30 @@
+type Room {
+  id: String!
+  createdAt: DateTime!
+  name: String!
+  owner: User!
+  viewerIsOwner: Boolean!
+  members: [User!]!
+  messages: [Message!]!
+}
+
+type CreateRoomInput {
+  name: String!
+}
+
+type CreateRoomPayload {
+  room: Room!
+}
+
+type UpdateRoomInput {
+  name: String
+}
+
+type UpdateRoomPayload {
+  room: Room!
+}
+
+extend type Mutation {
+  createRoom(input: CreateRoomInput!): CreateRoomPayload
+  updateRoom(input: UpdateRoomInput!): UpdateRoomPayload
+}

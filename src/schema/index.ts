@@ -1,141 +1,34 @@
-import winston from 'winston';
+import { merge } from 'lodash';
 import { makeExecutableSchema } from 'graphql-tools';
-import { schema as scalarSchema, resolvers as scalarRevolers } from './scalars';
 import {
-  InstanceType,
-  User,
-  Room,
-  UserModel,
-  RoomModel,
-  UserInRoomModel,
-} from '../models';
+  schema as scalarSchema,
+  resolvers as scalarResolvers,
+} from './scalars';
+import {
+  schema as messagesSchema,
+  resolvers as messagesResolvers,
+} from './messages';
+import { schema as roomsSchema, resolvers as roomsResolvers } from './rooms';
+import { schema as usersSchema, resolvers as usersResolvers } from './users';
 
 const typeDefs = `
+  type Query
+  type Mutation
+  type Subscription
+
   ${scalarSchema}
-
-  type User {
-    id: String!
-    createdAt: DateTime!
-    name: String!
-    rooms: [Room!]!
-  }
-
-  type Room {
-    id: String!
-    createdAt: DateTime!
-    name: String!
-    owner: User!
-    viewerIsOwner: Boolean!
-    members: [User!]!
-    messages: [Message!]!
-  }
-
-  type Message {
-    id: String!
-    createdAt: DateTime!
-    content: String!
-    author: User!
-    viewerIsAuthor: Boolean!
-    room: Room!
-  }
-
-  type Query {
-    viewer: User!
-  }
-
-  type RegisterInput {
-    name: String!
-    password: String!
-  }
-
-  type RegisterPayload {
-    user: User!
-  }
-
-  type LoginInput {
-    name: String!
-    password: String!
-  }
-
-  type LoginPayload {
-    user: User!
-  }
-
-  type CreateRoomInput {
-    name: String!
-  }
-
-  type CreateRoomPayload {
-    room: Room!
-  }
-
-  type UpdateRoomInput {
-    name: String
-  }
-
-  type UpdateRoomPayload {
-    room: Room!
-  }
-
-  type SendMessageInput {
-    roomId: String!
-    content: String!
-  }
-
-  type SendMessagePayload {
-    message: Message!
-  }
-
-  type Mutation {
-    register(input: RegisterInput!): RegisterPayload
-    login(input: LoginInput!): LoginPayload
-    createRoom(input: CreateRoomInput!): CreateRoomPayload
-    updateRoom(input: UpdateRoomInput!): UpdateRoomPayload
-    sendMessage(input: SendMessageInput!): SendMessagePayload
-  }
+  ${messagesSchema}
+  ${roomsSchema}
+  ${usersSchema}
 `;
 
-const resolvers = {
-  ...scalarRevolers,
-  Query: {
-    async viewer() {
-      return await UserModel.findOne().exec();
-    },
-  },
-  Mutation: {
-    async register(
-      root: any,
-      { payload }: { payload: { name: string; password: string } },
-    ) {
-      const user = new UserModel({
-        name: payload.name,
-      });
-      return { user: await user.save() };
-    },
-    async createRoom(
-      root: any,
-      { name, ownerId }: { name: string; ownerId: string },
-    ) {
-      const user = await UserModel.findById(ownerId).exec();
-      if (!user) {
-        throw new Error('User not found');
-      }
-
-      const room = await RoomModel.create({
-        name,
-        owner: ownerId,
-      });
-      room.owner = user;
-
-      await UserInRoomModel.create({
-        user: ownerId,
-        room: room.id,
-      });
-
-      return { room };
-    },
-  },
-};
+const resolvers = merge(
+  {},
+  scalarResolvers,
+  messagesResolvers,
+  roomsResolvers,
+  usersResolvers,
+);
 
 export default makeExecutableSchema({
   typeDefs,

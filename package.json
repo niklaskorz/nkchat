@@ -13,6 +13,7 @@
     "@types/koa": "^2.0.44",
     "@types/koa-bodyparser": "^4.2.0",
     "@types/koa-router": "^7.0.27",
+    "@types/lodash": "^4.14.104",
     "@types/mongodb": "^3.0.5",
     "@types/mongoose": "^5.0.4",
     "@types/node": "^9.4.6",
@@ -32,6 +33,7 @@
     "koa": "^2.5.0",
     "koa-bodyparser": "^4.2.0",
     "koa-router": "^7.4.0",
+    "lodash": "^4.17.5",
     "mongoose": "^5.0.7",
     "typegoose": "^4.0.0",
     "winston": "^2.4.0"
