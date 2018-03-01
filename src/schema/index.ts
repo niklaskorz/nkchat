@@ -1,5 +1,6 @@
 import winston from 'winston';
 import { makeExecutableSchema } from 'graphql-tools';
+import { schema as scalarSchema, resolvers as scalarRevolers } from './scalars';
 import {
   InstanceType,
   User,
@@ -10,45 +11,106 @@ import {
 } from '../models';
 
 const typeDefs = `
+  ${scalarSchema}
+
   type User {
     id: String!
+    createdAt: String!
     name: String!
+    rooms: [Room!]!
   }
 
   type Room {
     id: String!
+    createdAt: String!
     name: String!
     owner: User!
+    viewerIsOwner: Boolean!
+    members: [User!]!
+    messages: [Message!]!
+  }
+
+  type Message {
+    id: String!
+    createdAt: String!
+    content: String!
+    author: User!
+    viewerIsAuthor: Boolean!
+    room: Room!
   }
 
   type Query {
-    users: [User!]!
-    rooms: [Room!]!
+    viewer: User!
+  }
+
+  type RegisterInput {
+    name: String!
+    password: String!
+  }
+
+  type RegisterPayload {
+    user: User!
+  }
+
+  type LoginInput {
+    name: String!
+    password: String!
+  }
+
+  type LoginPayload {
+    user: User!
+  }
+
+  type CreateRoomInput {
+    name: String!
+  }
+
+  type CreateRoomPayload {
+    room: Room!
+  }
+
+  type UpdateRoomInput {
+    name: String
+  }
+
+  type UpdateRoomPayload {
+    room: Room!
+  }
+
+  type SendMessageInput {
+    roomId: String!
+    content: String!
+  }
+
+  type SendMessagePayload {
+    message: Message!
   }
 
   type Mutation {
-    createUser(name: String!): User!
-    createRoom(name: String!, ownerId: String!): Room!
+    register(input: RegisterInput!): RegisterPayload
+    login(input: LoginInput!): LoginPayload
+    createRoom(input: CreateRoomInput!): CreateRoomPayload
+    updateRoom(input: UpdateRoomInput!): UpdateRoomPayload
+    sendMessage(input: SendMessageInput!): SendMessagePayload
   }
 `;
 
 const resolvers = {
+  ...scalarRevolers,
   Query: {
-    async users() {
-      return await UserModel.find().exec();
-    },
-    async rooms() {
-      return await RoomModel.find()
-        .populate('owner')
-        .exec();
+    async viewer() {
+      return await UserModel.findOne().exec();
     },
   },
   Mutation: {
-    async createUser(root: any, { name }: { name: string }) {
+    async register(
+      root: any,
+      { payload }: { payload: { name: string; password: string } },
+    ) {
       const user = new UserModel({
-        name,
+        name: payload.name,
       });
-      return await user.save();
+      return { user: await user.save() };
     },
     async createRoom(
       root: any,
@@ -70,7 +132,7 @@ const resolvers = {
         room: room.id,
       });
 
-      return room;
+      return { room };
     },
   },
 };
