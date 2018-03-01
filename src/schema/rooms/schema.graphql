@@ -1,5 +1,5 @@
 type Room {
-  id: String!
+  id: ID!
   createdAt: DateTime!
   name: String!
   owner: User!
@@ -8,7 +8,7 @@ type Room {
   messages: [Message!]!
 }
 
-type CreateRoomInput {
+input CreateRoomInput {
   name: String!
 }
 
@@ -16,7 +16,7 @@ type CreateRoomPayload {
   room: Room!
 }
 
-type UpdateRoomInput {
+input UpdateRoomInput {
   name: String
 }
 

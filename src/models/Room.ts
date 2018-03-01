@@ -1,15 +1,7 @@
-import { ObjectID } from 'mongodb';
 import { Typegoose, Ref, prop, arrayProp } from 'typegoose';
 import { User } from './User';
 
 export class Room extends Typegoose {
-  @prop() _id: ObjectID;
-
-  @prop()
-  get createdAt(): Date {
-    return this._id.getTimestamp();
-  }
-
   @prop({ required: true })
   name: string;
 

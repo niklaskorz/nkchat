@@ -1,33 +1,47 @@
 type User {
-  id: String!
+  id: ID!
   createdAt: DateTime!
   name: String!
   rooms: [Room!]!
 }
 
-extend type Query {
-  viewer: User!
+type Session {
+  id: ID!
+  createdAt: DateTime!
+  user: User!
 }
 
-type RegisterInput {
+extend type Query {
+  viewer: User
+  session: Session
+}
+
+input RegisterInput {
   name: String!
   password: String!
 }
 
 type RegisterPayload {
+  session: Session!
   user: User!
 }
 
-type LoginInput {
+input LoginInput {
   name: String!
   password: String!
 }
 
 type LoginPayload {
+  session: Session!
+  user: User!
+}
+
+type LogoutPayload {
   user: User!
 }
 
 extend type Mutation {
-  register(input: RegisterInput!): RegisterPayload
-  login(input: LoginInput!): LoginPayload
+  register(input: RegisterInput!): RegisterPayload!
+  login(input: LoginInput!): LoginPayload!
+  logout: LogoutPayload!
 }

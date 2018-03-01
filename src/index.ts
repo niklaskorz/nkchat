@@ -4,6 +4,7 @@ import Koa from 'koa';
 import Router from 'koa-router';
 import bodyParser from 'koa-bodyparser';
 import { graphqlKoa, graphiqlKoa } from 'apollo-server-koa';
+import { SessionModel } from './models';
 import schema from './schema';
 
 mongoose.connect('mongodb://localhost/webengineering2');
@@ -11,16 +12,33 @@ mongoose.connect('mongodb://localhost/webengineering2');
 const app = new Koa();
 const router = new Router();
 
-router.get('/', async ctx => {
-  ctx.body = 'Hello world!';
-});
+const withSession: Router.IMiddleware = async (ctx, next) => {
+  const sessionId = ctx.cookies.get('session');
+  if (sessionId) {
+    ctx.state.session = await SessionModel.findById(sessionId)
+      .populate('user')
+      .exec();
+  }
+  await next();
+};
 
-router.get(encodeURI('/🤔😂🦄'), async ctx => {
-  ctx.body = `It's the magic emoji combination from ${ctx.ip}`;
-});
-
-router.post('/graphql', bodyParser(), graphqlKoa({ schema }));
-router.get('/graphql', graphqlKoa({ schema }));
+router.post(
+  '/graphql',
+  withSession,
+  bodyParser(),
+  graphqlKoa(context => ({
+    schema,
+    context,
+  })),
+);
+router.get(
+  '/graphql',
+  withSession,
+  graphqlKoa(context => ({
+    schema,
+    context,
+  })),
+);
 router.get('/graphiql', graphiqlKoa({ endpointURL: '/graphql' }));
 
 router.get('/*', async ctx => {
