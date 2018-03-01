@@ -1,10 +1,11 @@
 import { Typegoose, Ref, prop } from 'typegoose';
-import User from './User';
+import { User } from './User';
 
-export default class Room extends Typegoose {
-  @prop() name: string;
+export class Room extends Typegoose {
+  @prop({ required: true })
+  name: string;
 
-  @prop({ ref: User })
+  @prop({ ref: User, required: true })
   owner: Ref<User>;
 }
 

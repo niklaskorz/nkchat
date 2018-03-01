@@ -1,3 +1,4 @@
-export { RoomModel } from './Room';
-export { UserModel } from './User';
-export { UserInRoomModel } from './UserInRoom';
+export { InstanceType } from 'typegoose';
+export * from './Room';
+export * from './User';
+export * from './UserInRoom';
