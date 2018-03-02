@@ -12,10 +12,6 @@ input SendMessageInput {
   content: String!
 }
 
-type SendMessagePayload {
-  message: Message!
-}
-
 extend type Mutation {
-  sendMessage(input: SendMessageInput!): SendMessagePayload
+  sendMessage(input: SendMessageInput!): Message!
 }
