@@ -17,7 +17,12 @@ input UpdateRoomInput {
   name: String!
 }
 
+input JoinRoomInput {
+  roomId: ID!
+}
+
 extend type Mutation {
   createRoom(input: CreateRoomInput!): Room!
   updateRoom(input: UpdateRoomInput!): Room!
+  joinRoom(input: JoinRoomInput!): Room!
 }

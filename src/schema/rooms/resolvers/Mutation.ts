@@ -10,6 +10,10 @@ interface UpdateRoomInput {
   name: string;
 }
 
+interface JoinRoomInput {
+  roomId: string;
+}
+
 export default {
   async createRoom(
     root: any,
@@ -47,5 +51,26 @@ export default {
 
     room.name = input.name;
     return await room.save();
+  },
+  async joinRoom(
+    root: any,
+    { input }: { input: JoinRoomInput },
+    ctx: Context,
+  ): Promise<InstanceType<Room>> {
+    const viewer = ctx.state.viewer;
+    if (!viewer) {
+      throw new Error('Authentication required');
+    }
+
+    const room = await RoomModel.findByIdAndUpdate(input.roomId, {
+      $addToSet: {
+        members: viewer.id,
+      },
+    }).exec();
+    if (!room) {
+      throw new Error('Room could not be found');
+    }
+
+    return room;
   },
 };
