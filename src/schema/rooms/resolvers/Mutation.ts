@@ -1,4 +1,4 @@
-import { InstanceType, Room, RoomModel, UserModel } from '../../../models';
+import { InstanceType, Room, RoomModel, UserModel } from 'models';
 
 interface CreateRoomInput {
   name: string;

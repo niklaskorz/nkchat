@@ -1,13 +1,13 @@
-import { IRouterContext } from 'koa-router';
 import { InstanceType, Session, User } from 'models';
+import Context from 'Context';
 
 export default {
   async viewer(
     root: any,
     data: any,
-    ctx: IRouterContext,
+    ctx: Context,
   ): Promise<InstanceType<User> | null> {
-    let session = ctx.state.session as InstanceType<Session> | undefined;
+    let session = ctx.state.session;
     if (!session) {
       return null;
     }
@@ -16,11 +16,7 @@ export default {
     }
     return session.user as InstanceType<User>;
   },
-  session(
-    root: any,
-    data: any,
-    ctx: IRouterContext,
-  ): InstanceType<Session> | null {
+  session(root: any, data: any, ctx: Context): InstanceType<Session> | null {
     return ctx.state.session || null;
   },
 };

@@ -1,12 +1,6 @@
-import { IRouterContext } from 'koa-router';
 import * as bcrypt from 'bcrypt';
-import {
-  InstanceType,
-  User,
-  UserModel,
-  Session,
-  SessionModel,
-} from '../../../models';
+import Context from 'Context';
+import { InstanceType, UserModel, Session, SessionModel } from 'models';
 
 interface RegisterInput {
   name: string;
@@ -22,7 +16,7 @@ export default {
   async register(
     root: any,
     { input }: { input: RegisterInput },
-    ctx: IRouterContext,
+    ctx: Context,
   ): Promise<InstanceType<Session>> {
     const user = await UserModel.create({
       name: input.name,
@@ -36,14 +30,14 @@ export default {
       path: '/graphql',
       httpOnly: true,
     });
-    ctx.state.session = user;
+    ctx.state.session = session;
 
     return session;
   },
   async login(
     root: any,
     { input }: { input: LoginInput },
-    ctx: IRouterContext,
+    ctx: Context,
   ): Promise<InstanceType<Session>> {
     const user = await UserModel.findOne({ name: input.name }).exec();
     if (!user) {
@@ -65,12 +59,12 @@ export default {
       path: '/graphql',
       httpOnly: true,
     });
-    ctx.state.session = user;
+    ctx.state.session = session;
 
     return session;
   },
-  async logout(root: any, data: any, ctx: IRouterContext) {
-    const session = ctx.state.session as InstanceType<Session> | undefined;
+  async logout(root: any, data: any, ctx: Context) {
+    const session = ctx.state.session;
     if (!session) {
       throw new Error('Authentication required');
     }

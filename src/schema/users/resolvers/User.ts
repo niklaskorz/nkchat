@@ -1,5 +1,5 @@
 import { ObjectID } from 'mongodb';
-import { InstanceType, User, Room, RoomModel } from '../../../models';
+import { InstanceType, User, Room, RoomModel } from 'models';
 
 export default {
   createdAt(user: InstanceType<User>): Date {
