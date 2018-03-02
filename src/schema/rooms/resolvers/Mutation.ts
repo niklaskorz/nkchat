@@ -1,10 +1,4 @@
-import {
-  InstanceType,
-  Room,
-  RoomModel,
-  UserModel,
-  UserInRoomModel,
-} from '../../../models';
+import { InstanceType, Room, RoomModel, UserModel } from '../../../models';
 
 interface CreateRoomInput {
   name: string;
@@ -28,13 +22,10 @@ export default {
     const room = await RoomModel.create({
       name: input.name,
       owner: input.ownerId,
+      members: [input.ownerId],
     });
     room.owner = user;
-
-    await UserInRoomModel.create({
-      user: input.ownerId,
-      room: room.id,
-    });
+    room.members = [user];
 
     return { room };
   },
