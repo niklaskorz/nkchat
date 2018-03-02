@@ -26,7 +26,7 @@ export default {
       ? (message.author as InstanceType<User>).id
       : (message.author as string);
 
-    return viewer.id === authorId;
+    return viewer.id === authorId.toString();
   },
   async room(message: InstanceType<Message>): Promise<Room> {
     if (!message.populated('room')) {

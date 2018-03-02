@@ -22,7 +22,7 @@ export default {
       ? (room.owner as InstanceType<User>).id
       : (room.owner as string);
 
-    return viewer.id === ownerId;
+    return viewer.id === ownerId.toString();
   },
   async members(room: InstanceType<Room>): Promise<User[]> {
     if (!room.populated('members')) {
