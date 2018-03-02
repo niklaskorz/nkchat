@@ -1,8 +1,8 @@
-import { InstanceType, Room, RoomModel, UserModel } from 'models';
+import { InstanceType, Room, RoomModel } from 'models';
+import Context from 'Context';
 
 interface CreateRoomInput {
   name: string;
-  ownerId: string;
 }
 
 interface CreateRoomPayload {
@@ -13,19 +13,18 @@ export default {
   async createRoom(
     root: any,
     { input }: { input: CreateRoomInput },
+    ctx: Context,
   ): Promise<CreateRoomPayload> {
-    const user = await UserModel.findById(input.ownerId).exec();
-    if (!user) {
-      throw new Error('User not found');
+    const viewer = ctx.state.viewer;
+    if (!viewer) {
+      throw new Error('Authentication required');
     }
 
     const room = await RoomModel.create({
       name: input.name,
-      owner: input.ownerId,
-      members: [input.ownerId],
+      owner: viewer.id,
+      members: viewer.id,
     });
-    room.owner = user;
-    room.members = [user];
 
     return { room };
   },
