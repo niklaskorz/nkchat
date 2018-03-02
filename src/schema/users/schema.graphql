@@ -2,6 +2,7 @@ type User {
   id: ID!
   createdAt: DateTime!
   name: String!
+  isViewer: Boolean!
   rooms: [Room!]!
 }
 
