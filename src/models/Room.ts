@@ -8,7 +8,7 @@ export class Room extends Typegoose {
   @prop({ ref: User, required: true })
   owner: Ref<User>;
 
-  @arrayProp({ itemsRef: User, index: true })
+  @arrayProp({ itemsRef: User, required: true, index: true })
   members: Ref<User>[];
 }
 
