@@ -13,7 +13,8 @@ input CreateRoomInput {
 }
 
 input UpdateRoomInput {
-  name: String
+  roomId: ID!
+  name: String!
 }
 
 extend type Mutation {
