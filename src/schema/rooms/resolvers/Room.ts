@@ -1,5 +1,5 @@
 import { ObjectID } from 'mongodb';
-import { InstanceType, User, Room } from 'models';
+import { InstanceType, User, Room, Message, MessageModel } from 'models';
 import Context from 'Context';
 
 export default {
@@ -29,5 +29,8 @@ export default {
       room = await room.populate('members').execPopulate();
     }
     return room.members as User[];
+  },
+  async messages(room: InstanceType<Room>): Promise<Message[]> {
+    return await MessageModel.find({ room: room.id }).exec();
   },
 };
