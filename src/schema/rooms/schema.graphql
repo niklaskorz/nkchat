@@ -12,19 +12,11 @@ input CreateRoomInput {
   name: String!
 }
 
-type CreateRoomPayload {
-  room: Room!
-}
-
 input UpdateRoomInput {
   name: String
 }
 
-type UpdateRoomPayload {
-  room: Room!
-}
-
 extend type Mutation {
-  createRoom(input: CreateRoomInput!): CreateRoomPayload
-  updateRoom(input: UpdateRoomInput!): UpdateRoomPayload
+  createRoom(input: CreateRoomInput!): Room!
+  updateRoom(input: UpdateRoomInput!): Room!
 }
