@@ -36,11 +36,6 @@ router.post('/graphql', withSession, bodyParser(), graphqlHandler);
 router.get('/graphql', withSession, graphqlHandler);
 router.get('/graphiql', graphiqlKoa({ endpointURL: '/graphql' }));
 
-router.get('/*', async ctx => {
-  winston.info(ctx.url);
-  ctx.body = decodeURI(ctx.url);
-});
-
 app.use(router.routes());
 
 const PORT = 3000;
