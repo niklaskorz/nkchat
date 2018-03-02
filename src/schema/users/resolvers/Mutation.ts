@@ -31,6 +31,7 @@ export default {
       httpOnly: true,
     });
     ctx.state.session = session;
+    ctx.state.viewer = user;
 
     return session;
   },
@@ -60,6 +61,7 @@ export default {
       httpOnly: true,
     });
     ctx.state.session = session;
+    ctx.state.viewer = user;
 
     return session;
   },

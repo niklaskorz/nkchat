@@ -4,7 +4,7 @@ import Koa from 'koa';
 import Router from 'koa-router';
 import bodyParser from 'koa-bodyparser';
 import { graphqlKoa, graphiqlKoa } from 'apollo-server-koa';
-import { SessionModel } from './models';
+import { SessionModel, InstanceType, User } from './models';
 import schema from './schema';
 import Context from './Context';
 
@@ -16,10 +16,13 @@ const router = new Router();
 const withSession: Router.IMiddleware = async (ctx: Context, next) => {
   const sessionId = ctx.cookies.get('session');
   if (sessionId) {
-    ctx.state.session =
-      (await SessionModel.findById(sessionId)
-        .populate('user')
-        .exec()) || undefined;
+    const session = await SessionModel.findById(sessionId)
+      .populate('user')
+      .exec();
+    if (session) {
+      ctx.state.session = session;
+      ctx.state.viewer = session.user as InstanceType<User>;
+    }
   }
   await next();
 };
