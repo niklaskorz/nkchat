@@ -1,5 +1,6 @@
 import { ObjectID } from 'mongodb';
 import { InstanceType, User, Room } from 'models';
+import Context from 'Context';
 
 export default {
   createdAt(room: InstanceType<Room>): Date {
@@ -10,6 +11,18 @@ export default {
       room = await room.populate('owner').execPopulate();
     }
     return room.owner as User;
+  },
+  viewerIsOwner(room: InstanceType<Room>, data: any, ctx: Context): boolean {
+    const viewer = ctx.state.viewer;
+    if (!viewer) {
+      return false;
+    }
+
+    const ownerId = room.populated('owner')
+      ? (room.owner as InstanceType<User>).id
+      : (room.owner as string);
+
+    return viewer.id === ownerId;
   },
   async members(room: InstanceType<Room>): Promise<User[]> {
     if (!room.populated('members')) {
