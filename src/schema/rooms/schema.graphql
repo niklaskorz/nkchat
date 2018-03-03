@@ -26,3 +26,8 @@ extend type Mutation {
   updateRoom(input: UpdateRoomInput!): Room!
   joinRoom(input: JoinRoomInput!): Room!
 }
+
+extend type Subscription {
+  roomWasUpdated(roomId: ID!): Room!
+  userJoinedRoom(roomId: ID!): User!
+}

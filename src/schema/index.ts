@@ -14,6 +14,7 @@ import { schema as usersSchema, resolvers as usersResolvers } from './users';
 const typeDefs = `
   type Query
   type Mutation
+  type Subscription
 
   ${scalarSchema}
   ${messagesSchema}

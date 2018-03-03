@@ -1,5 +1,6 @@
 import { InstanceType, Room, RoomModel } from 'models';
 import Context from 'Context';
+import { pubsub, SubscriptionType } from 'subscriptions';
 
 interface CreateRoomInput {
   name: string;
@@ -50,7 +51,13 @@ export default {
     }
 
     room.name = input.name;
-    return await room.save();
+    await room.save();
+
+    pubsub.publish(SubscriptionType.RoomWasUpdated, {
+      roomWasUpdated: { room },
+    });
+
+    return room;
   },
   async joinRoom(
     root: any,
@@ -70,6 +77,13 @@ export default {
     if (!room) {
       throw new Error('Room could not be found');
     }
+
+    pubsub.publish(SubscriptionType.UserJoinedRoom, {
+      userJoinedRoom: {
+        roomId: room.id,
+        user: viewer,
+      },
+    });
 
     return room;
   },

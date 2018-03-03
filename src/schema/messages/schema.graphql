@@ -15,3 +15,7 @@ input SendMessageInput {
 extend type Mutation {
   sendMessage(input: SendMessageInput!): Message!
 }
+
+extend type Subscription {
+  messageWasSent(roomId: ID!): Message!
+}
