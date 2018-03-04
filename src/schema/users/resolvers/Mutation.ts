@@ -57,7 +57,6 @@ export default {
       user: user.id,
     });
     ctx.cookies.set('session', session.id, {
-      path: '/graphql',
       httpOnly: true,
     });
     ctx.state.session = session;

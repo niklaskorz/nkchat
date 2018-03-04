@@ -10,9 +10,10 @@ interface MessageWasSentPayload {
 export default {
   messageWasSent: {
     subscribe: withFilter(
-      () => pubsub.asyncIterator(SubscriptionType.RoomWasUpdated),
+      () => pubsub.asyncIterator(SubscriptionType.MessageWasSent),
       (payload: MessageWasSentPayload, variables: { roomId: string }) =>
         payload.roomId === variables.roomId,
     ),
+    resolve: (payload: MessageWasSentPayload) => payload.message,
   },
 };

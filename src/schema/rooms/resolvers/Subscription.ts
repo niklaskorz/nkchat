@@ -6,7 +6,7 @@ interface RoomWasUpdatedPayload {
   room: InstanceType<Room>;
 }
 
-interface UserJoinedPayload {
+interface UserJoinedRoomPayload {
   roomId: string;
   user: InstanceType<User>;
 }
@@ -18,12 +18,14 @@ export default {
       (payload: RoomWasUpdatedPayload, variables: { roomId: string }) =>
         payload.room.id === variables.roomId,
     ),
+    resolve: (payload: RoomWasUpdatedPayload) => payload.room,
   },
-  userJoined: {
+  userJoinedRoom: {
     subscribe: withFilter(
-      () => pubsub.asyncIterator(SubscriptionType.RoomWasUpdated),
-      (payload: UserJoinedPayload, variables: { roomId: string }) =>
+      () => pubsub.asyncIterator(SubscriptionType.UserJoinedRoom),
+      (payload: UserJoinedRoomPayload, variables: { roomId: string }) =>
         payload.roomId === variables.roomId,
     ),
+    resolve: (payload: UserJoinedRoomPayload) => payload.user,
   },
 };

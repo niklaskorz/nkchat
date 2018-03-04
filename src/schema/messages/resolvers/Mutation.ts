@@ -25,10 +25,8 @@ export default {
     });
 
     pubsub.publish(SubscriptionType.MessageWasSent, {
-      messageWasSent: {
-        roomId: input.roomId,
-        message,
-      },
+      roomId: input.roomId,
+      message,
     });
 
     return message;

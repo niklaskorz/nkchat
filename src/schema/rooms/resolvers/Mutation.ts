@@ -54,7 +54,7 @@ export default {
     await room.save();
 
     pubsub.publish(SubscriptionType.RoomWasUpdated, {
-      roomWasUpdated: { room },
+      room,
     });
 
     return room;
@@ -79,10 +79,8 @@ export default {
     }
 
     pubsub.publish(SubscriptionType.UserJoinedRoom, {
-      userJoinedRoom: {
-        roomId: room.id,
-        user: viewer,
-      },
+      roomId: room.id,
+      user: viewer,
     });
 
     return room;
