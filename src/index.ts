@@ -39,7 +39,6 @@ const graphqlHandler = graphqlKoa(ctx => ({
 
 router.post('/graphql', withSession, bodyParser(), graphqlHandler);
 router.get('/graphql', withSession, graphqlHandler);
-router.options('/graphql', async ctx => {});
 router.get(
   '/graphiql',
   graphiqlKoa(ctx => ({
