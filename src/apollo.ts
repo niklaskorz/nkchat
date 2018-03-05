@@ -5,14 +5,20 @@ import { getMainDefinition } from 'apollo-utilities';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
 
+const session = localStorage.session;
+
 const httpLink = new HttpLink({
-  uri: 'http://localhost:9000/graphql'
+  uri: 'http://localhost:3000/graphql',
+  headers: session && {
+    'X-Session-ID': session
+  }
 });
 
 const wsLink = new WebSocketLink({
-  uri: 'ws://localhost:9000/subscriptions',
+  uri: 'ws://localhost:3000/subscriptions',
   options: {
-    reconnect: true
+    reconnect: true,
+    session
   }
 });
 

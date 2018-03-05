@@ -1,21 +1,18 @@
 import * as React from 'react';
 import gql from 'graphql-tag';
 import { graphql, ChildProps } from 'react-apollo';
-import ButtonDemo from '../organisms/ButtonDemo';
+import styled from 'react-emotion';
+import RoomList from '../molecules/RoomList';
 
-interface Track {
-  id: string;
-  title: string;
-  name: string;
-}
-
-interface Video {
-  id: string;
-  track: Track;
-}
+const Container = styled('div')`
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+`;
 
 interface Response {
-  videos: Video[];
+  viewer: object;
 }
 
 class IndexPage extends React.Component<ChildProps<{}, Response>> {
@@ -23,27 +20,28 @@ class IndexPage extends React.Component<ChildProps<{}, Response>> {
     if (!this.props.data) {
       return null;
     }
-    const { loading, error, videos } = this.props.data;
+    const { loading, error, viewer } = this.props.data;
     return (
-      <div>
-        <ButtonDemo />
+      <Container>
+        <RoomList />
         <div>
           {loading && 'Loading...'}
           {error && error.message}
-          {videos && videos.map(v => <div key={v.id}>{v.track.title}</div>)}
+          {viewer && JSON.stringify(viewer)}
         </div>
-      </div>
+      </Container>
     );
   }
 }
 
 const withData = graphql<Response>(gql`
   query IndexPageQuery {
-    videos(limit: 10) {
+    viewer {
       id
-      track(preferredLanguages: ["deu", "eng"]) {
+      name
+
+      rooms {
         id
-        title
         name
       }
     }
