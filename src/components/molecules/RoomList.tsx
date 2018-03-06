@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'react-emotion';
+import swal from 'sweetalert2';
 
 const Section = styled('section')`
   background: #fff;
@@ -16,7 +17,7 @@ const Header = styled('header')`
   color: #fff;
   font-size: 1.2em;
   padding: 10px;
-
+  text-align: center;
   flex-shrink: 0;
 `;
 
@@ -67,22 +68,66 @@ const Item = styled('li')`
   }
 `;
 
-class RoomList extends React.Component {
+export interface Room {
+  id: string;
+  name: string;
+}
+
+interface Props {
+  rooms: Room[];
+  onCreate(name: string): void;
+  onJoin(id: string): void;
+  onSelect(room: Room): void;
+}
+
+class RoomList extends React.Component<Props> {
+  showCreateDialog = async () => {
+    const result = await swal({
+      title: 'Create room',
+      input: 'text',
+      text: 'Room name',
+      showCancelButton: true,
+      confirmButtonText: 'Create'
+    });
+    if (!result.dismiss && result.value) {
+      this.props.onCreate(result.value);
+    }
+  };
+
+  showJoinDialog = async () => {
+    const result = await swal({
+      title: 'Join room',
+      input: 'text',
+      text: 'Room id',
+      showCancelButton: true,
+      confirmButtonText: 'Join'
+    });
+    if (!result.dismiss && result.value) {
+      this.props.onJoin(result.value);
+    }
+  };
+
   render() {
+    const { rooms, onSelect } = this.props;
+
     return (
       <Section>
         <Header>Rooms</Header>
-        <List>
-          <Item>The Real Chat</Item>
-          <Item>
-            Politics and Stuff with a really long name that will not fit
-          </Item>
-          <Item>Once upon a time</Item>
-        </List>
         <ActionBar>
-          <Action>Create</Action>
-          <Action>Join</Action>
+          <Action onClick={this.showCreateDialog}>Create</Action>
+          <Action onClick={this.showJoinDialog}>Join</Action>
         </ActionBar>
+        <List>
+          {rooms.map(room => (
+            <Item
+              key={room.id}
+              onClick={onSelect.bind(null, room)}
+              title={room.name}
+            >
+              {room.name}
+            </Item>
+          ))}
+        </List>
       </Section>
     );
   }
