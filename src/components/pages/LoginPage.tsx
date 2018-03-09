@@ -6,6 +6,7 @@ import styled from 'react-emotion';
 const Form = styled('form')`
   display: flex;
   flex-direction: column;
+  padding: 20px;
 `;
 
 interface Session {
@@ -68,6 +69,8 @@ class LoginPage extends React.Component<ChildProps<Props, Response>, State> {
       session = result.data.login;
     }
     localStorage.session = session.id;
+
+    location.reload();
   };
 
   render() {
@@ -75,12 +78,16 @@ class LoginPage extends React.Component<ChildProps<Props, Response>, State> {
 
     return (
       <Form onSubmit={this.onSubmit}>
-        <input
-          type="checkbox"
-          placeholder="I want to create a new account"
-          checked={isNew}
-          onChange={this.onNewChange}
-        />
+        <h1>Login or register</h1>
+        <label>
+          <input
+            type="checkbox"
+            placeholder="I want to create a new account"
+            checked={isNew}
+            onChange={this.onNewChange}
+          />
+          Create new account
+        </label>
         <input
           type="text"
           placeholder="Name"

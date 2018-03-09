@@ -3,6 +3,8 @@ import gql from 'graphql-tag';
 import { ApolloQueryResult } from 'apollo-client';
 import { graphql, ChildProps, compose, MutationFunc } from 'react-apollo';
 import styled from 'react-emotion';
+import Chat from '../organisms/Chat';
+import LoginPage from './LoginPage';
 import RoomList, { Room } from '../molecules/RoomList';
 
 const Container = styled('div')`
@@ -45,7 +47,7 @@ interface State {
 }
 
 class IndexPage extends React.Component<ChildProps<Props, Response>, State> {
-  state = {
+  state: State = {
     activeRoom: null
   };
 
@@ -91,8 +93,10 @@ class IndexPage extends React.Component<ChildProps<Props, Response>, State> {
       return error.message;
     }
     if (!viewer) {
-      return null;
+      return <LoginPage />;
     }
+
+    const { activeRoom } = this.state;
 
     return (
       <Container>
@@ -102,7 +106,7 @@ class IndexPage extends React.Component<ChildProps<Props, Response>, State> {
           onJoin={this.onJoinRoom}
           onSelect={this.onSelectRoom}
         />
-        <div>Logged in as {viewer.name}</div>
+        {activeRoom && <Chat roomId={activeRoom.id} />}
       </Container>
     );
   }
@@ -124,7 +128,7 @@ const withCreateRoomMutation = graphql(
 
 const withJoinRoomMutation = graphql(
   gql`
-    mutation JoinRoom($roomId: String!) {
+    mutation JoinRoom($roomId: ID!) {
       joinRoom(input: { roomId: $roomId }) {
         id
         name

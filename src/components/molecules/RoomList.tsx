@@ -1,20 +1,20 @@
 import * as React from 'react';
 import styled from 'react-emotion';
 import swal from 'sweetalert2';
+import * as colors from 'colors';
 
 const Section = styled('section')`
-  background: #fff;
   flex-shrink: 0;
   width: 250px;
-  border-right: 1px solid #485460;
+  border-right: 2px solid #000;
 
   display: flex;
   flex-direction: column;
 `;
 
 const Header = styled('header')`
-  background: #3c40c6;
-  color: #fff;
+  background: ${colors.primary};
+  color: ${colors.primaryText};
   font-size: 1.2em;
   padding: 10px;
   text-align: center;
@@ -27,9 +27,9 @@ const ActionBar = styled('div')`
 `;
 
 const Action = styled('button')`
-  border: 1px solid #1e272e;
-  background: #485460;
-  color: #fff;
+  border: none;
+  background: ${colors.secondary};
+  color: ${colors.secondaryText};
   flex: 1;
   appearance: none;
   cursor: pointer;
@@ -38,7 +38,8 @@ const Action = styled('button')`
   font-size: 0.75em;
 
   :hover {
-    background: #1e272e;
+    background: ${colors.secondaryDark};
+    color: ${colors.secondaryDarkText};
   }
 `;
 Action.defaultProps = {
@@ -56,7 +57,7 @@ const List = styled('ul')`
 const Item = styled('li')`
   display: block;
   padding: 10px;
-  border-bottom: 1px solid #d2dae2;
+  border-bottom: 1px solid #eee;
   cursor: pointer;
 
   overflow: hidden;
@@ -64,7 +65,7 @@ const Item = styled('li')`
   text-overflow: ellipsis;
 
   :hover {
-    background: #d2dae2;
+    background: #eee;
   }
 `;
 

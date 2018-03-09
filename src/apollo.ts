@@ -7,18 +7,23 @@ import { ApolloClient } from 'apollo-client';
 
 const session = localStorage.session;
 
+// const host = '141.72.129.119';
+const host = location.hostname;
+
 const httpLink = new HttpLink({
-  uri: 'http://localhost:3000/graphql',
+  uri: `http://${host}:3000/graphql`,
   headers: session && {
     'X-Session-ID': session
   }
 });
 
 const wsLink = new WebSocketLink({
-  uri: 'ws://localhost:3000/subscriptions',
+  uri: `ws://${host}:3000/subscriptions`,
   options: {
     reconnect: true,
-    session
+    connectionParams: {
+      session
+    }
   }
 });
 
