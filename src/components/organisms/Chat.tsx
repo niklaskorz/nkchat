@@ -19,8 +19,6 @@ const Header = styled('header')`
   padding: 10px;
   text-align: center;
   flex-shrink: 0;
-
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   z-index: 2;
 `;
 
@@ -29,6 +27,8 @@ const Messages = styled('div')`
   display: flex;
   flex-direction: column-reverse;
   overflow: auto;
+  background: #eee url(hypnotize.png);
+  background-repeat: repeat;
 `;
 
 const MessagesInner = styled('div')`
@@ -37,23 +37,39 @@ const MessagesInner = styled('div')`
 `;
 
 const MessageHeader = styled('header')`
+  display: flex;
   font-size: 0.8em;
   font-weight: bold;
   margin-bottom: 10px;
 `;
 
+const MessageAuthor = styled('div')`
+  flex: 1;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+`;
+
+const MessageDate = styled('div')`
+  flex-shrink: 0;
+`;
+
 const Message = styled('div')`
-  background: ${colors.secondary};
-  color: ${colors.secondaryText};
+  background: #fff;
+  color: #000;
   padding: 15px;
-  margin: 5px 10px;
+  margin: 10px 20px;
   width: 300px;
+  min-width: 45%;
   max-width: 100%;
   border-radius: 5px;
+  border: 5px solid;
   line-height: 1.5;
 
   &.viewerIsAuthor {
     margin-left: auto;
+    background: ${colors.secondary};
+    color: ${colors.secondaryText};
   }
 `;
 
@@ -61,7 +77,6 @@ const InputForm = styled('form')`
   display: flex;
   background: ${colors.primary};
   padding: 10px;
-  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.12), 0 -1px 2px rgba(0, 0, 0, 0.24);
   z-index: 2;
 `;
 
@@ -273,12 +288,16 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
               <Message
                 key={message.id}
                 className={message.viewerIsAuthor ? 'viewerIsAuthor' : ''}
-                style={toMaterialStyle(message.author.id, 500)}
+                style={{
+                  borderColor: toMaterialStyle(message.author.name, 800)
+                    .backgroundColor
+                }}
               >
                 <MessageHeader>
-                  {message.author.name} ({new Date(
-                    message.createdAt
-                  ).toLocaleTimeString()})
+                  <MessageAuthor>{message.author.name}</MessageAuthor>
+                  <MessageDate>
+                    ({new Date(message.createdAt).toLocaleString()})
+                  </MessageDate>
                 </MessageHeader>
                 {message.content}
               </Message>
