@@ -5,5 +5,5 @@ export const darkSecondaryText = '#dcdde1';
 
 export const primary = '#f5f6fa';
 export const secondary = '#dcdde1';
-export const primaryText = '#111';
+export const primaryText = '#000';
 export const secondaryText = '#2f3640';

@@ -26,20 +26,21 @@ const Header = styled('header')`
 const Messages = styled('div')`
   flex: 1;
   display: flex;
-  flex-direction: column-reverse;
-  padding: 5px 20px;
+  flex-direction: column;
+  padding: 10px 40px;
   overflow: auto;
   background: ${colors.primary};
 `;
 
 const MessageHeader = styled('header')`
   display: flex;
-  font-size: 0.8em;
   font-weight: bold;
   margin-bottom: 10px;
+  align-items: baseline;
 `;
 
 const MessageAuthor = styled('div')`
+  font-size: 0.9em;
   flex: 1;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -47,8 +48,10 @@ const MessageAuthor = styled('div')`
 `;
 
 const MessageDate = styled('div')`
+  font-size: 0.7em;
   flex-shrink: 0;
-  margin-left: 5px;
+  margin-left: 10px;
+  color: ${colors.secondaryText};
 `;
 
 const Message = styled('div')`
@@ -123,6 +126,7 @@ interface Props {
 
 interface State {
   inputText: string;
+  stickToBottom: boolean;
 }
 
 const compareMessages = (a: Message, b: Message): number => {
@@ -174,8 +178,11 @@ const ChatSubscription = gql`
 `;
 
 class Chat extends React.Component<ChildProps<Props, Response>, State> {
+  messageContainer: HTMLDivElement;
+
   state: State = {
-    inputText: ''
+    inputText: '',
+    stickToBottom: true
   };
 
   componentDidMount() {
@@ -183,15 +190,18 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
   }
 
   componentDidUpdate(prevProps: ChildProps<Props, Response>) {
-    if (this.props.data !== prevProps.data) {
-      // tslint:disable-next-line
-      console.info('Data changed');
+    if (this.props.data !== prevProps.data && this.state.stickToBottom) {
+      this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
     }
 
     if (this.props.roomId !== prevProps.roomId) {
       this.subscribeToMessages();
     }
   }
+
+  refMessageContainer = (el: HTMLDivElement) => {
+    this.messageContainer = el;
+  };
 
   subscribeToMessages() {
     const { roomId, data } = this.props;
@@ -251,6 +261,15 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
     this.setState({ inputText: '' });
   }
 
+  onMessagesScroll: React.UIEventHandler<HTMLDivElement> = e => {
+    const target = e.currentTarget;
+    const height = target.getBoundingClientRect().height;
+    const scrollBottom = target.scrollTop + height;
+
+    const stickToBottom = target.scrollHeight - scrollBottom <= 100;
+    this.setState({ stickToBottom });
+  };
+
   onSubmit: React.FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
     this.sendMessage();
@@ -278,7 +297,10 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
     return (
       <Section>
         <Header title={room.name}>{room.name}</Header>
-        <Messages>
+        <Messages
+          innerRef={this.refMessageContainer}
+          onScroll={this.onMessagesScroll}
+        >
           {room.messages.map(message => (
             <Message
               key={message.id}
@@ -287,7 +309,7 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
               <MessageHeader>
                 <MessageAuthor>{message.author.name}</MessageAuthor>
                 <MessageDate>
-                  ({new Date(message.createdAt).toLocaleString()})
+                  {new Date(message.createdAt).toLocaleString()}
                 </MessageDate>
               </MessageHeader>
               {message.content}
