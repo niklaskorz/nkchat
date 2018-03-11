@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import { graphql, compose, ChildProps, MutationFunc } from 'react-apollo';
 import ContentEditable from 'react-sane-contenteditable';
 import * as colors from 'colors';
+import Loading from '../molecules/Loading';
 
 const Section = styled('section')`
   display: flex;
@@ -178,7 +179,7 @@ const ChatSubscription = gql`
 `;
 
 class Chat extends React.Component<ChildProps<Props, Response>, State> {
-  messageContainer: HTMLDivElement;
+  messageContainer?: HTMLDivElement;
 
   state: State = {
     inputText: '',
@@ -190,7 +191,11 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
   }
 
   componentDidUpdate(prevProps: ChildProps<Props, Response>) {
-    if (this.props.data !== prevProps.data && this.state.stickToBottom) {
+    if (
+      this.messageContainer &&
+      this.props.data !== prevProps.data &&
+      this.state.stickToBottom
+    ) {
       this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
     }
 
@@ -285,7 +290,7 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
     }
     const { loading, error, room } = this.props.data;
     if (loading) {
-      return 'Loading...';
+      return <Loading />;
     }
     if (error) {
       return error.message;
