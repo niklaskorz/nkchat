@@ -43,13 +43,11 @@ const IndexPageQuery = gql`
 `;
 
 interface State {
-  activeRoom: Room | null;
+  activeRoom?: Room;
 }
 
 class IndexPage extends React.Component<ChildProps<Props, Response>, State> {
-  state: State = {
-    activeRoom: null
-  };
+  state: State = {};
 
   onCreateRoom = async (name: string) => {
     await this.props.createRoom({
@@ -96,7 +94,7 @@ class IndexPage extends React.Component<ChildProps<Props, Response>, State> {
       return <LoginPage />;
     }
 
-    const { activeRoom } = this.state;
+    const { activeRoom = viewer.rooms[0] } = this.state;
 
     return (
       <Container>
@@ -108,6 +106,13 @@ class IndexPage extends React.Component<ChildProps<Props, Response>, State> {
           onSelect={this.onSelectRoom}
         />
         {activeRoom && <Chat roomId={activeRoom.id} />}
+        <RoomList
+          rooms={viewer.rooms}
+          activeRoomId={activeRoom && activeRoom.id}
+          onCreate={this.onCreateRoom}
+          onJoin={this.onJoinRoom}
+          onSelect={this.onSelectRoom}
+        />
       </Container>
     );
   }

@@ -96,7 +96,7 @@ export interface Room {
 
 interface Props {
   rooms: Room[];
-  activeRoomId: string | null;
+  activeRoomId?: string;
   onCreate(name: string): void;
   onJoin(id: string): void;
   onSelect(room: Room): void;

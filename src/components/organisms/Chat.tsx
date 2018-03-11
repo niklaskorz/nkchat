@@ -2,7 +2,6 @@ import * as React from 'react';
 import styled from 'react-emotion';
 import gql from 'graphql-tag';
 import { graphql, compose, ChildProps, MutationFunc } from 'react-apollo';
-import toMaterialStyle from 'material-color-hash';
 import ContentEditable from 'react-sane-contenteditable';
 import * as colors from 'colors';
 
@@ -15,25 +14,22 @@ const Section = styled('section')`
 const Header = styled('header')`
   background: ${colors.primary};
   color: ${colors.primaryText};
-  font-size: 1.2em;
-  padding: 10px;
+  padding: 15px;
   text-align: center;
   flex-shrink: 0;
   z-index: 2;
+
+  border-top: 2px solid transparent;
+  border-bottom: 2px solid ${colors.secondary};
 `;
 
 const Messages = styled('div')`
   flex: 1;
   display: flex;
   flex-direction: column-reverse;
+  padding: 5px 20px;
   overflow: auto;
-  background: #eee url(hypnotize.png);
-  background-repeat: repeat;
-`;
-
-const MessagesInner = styled('div')`
-  width: 100%;
-  padding: 5px 0;
+  background: ${colors.primary};
 `;
 
 const MessageHeader = styled('header')`
@@ -52,21 +48,23 @@ const MessageAuthor = styled('div')`
 
 const MessageDate = styled('div')`
   flex-shrink: 0;
+  margin-left: 5px;
 `;
 
 const Message = styled('div')`
   background: #fff;
   color: #000;
   padding: 15px;
-  margin: 10px 20px;
-  width: 300px;
-  min-width: 45%;
+  margin: 10px 0;
+  margin-right: auto;
   max-width: 100%;
   border-radius: 10px;
   line-height: 1.5;
 
   &.viewerIsAuthor {
     margin-left: auto;
+    margin-right: 0;
+    background: ${colors.secondary};
   }
 `;
 
@@ -75,6 +73,7 @@ const InputForm = styled('form')`
   background: ${colors.primary};
   padding: 10px;
   z-index: 2;
+  border-top: 2px solid ${colors.secondary};
 `;
 
 const MessageInputContainer = styled('div')`
@@ -280,23 +279,20 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
       <Section>
         <Header title={room.name}>{room.name}</Header>
         <Messages>
-          <MessagesInner>
-            {room.messages.map(message => (
-              <Message
-                key={message.id}
-                className={message.viewerIsAuthor ? 'viewerIsAuthor' : ''}
-                style={toMaterialStyle(message.author.name, 700)}
-              >
-                <MessageHeader>
-                  <MessageAuthor>{message.author.name}</MessageAuthor>
-                  <MessageDate>
-                    ({new Date(message.createdAt).toLocaleString()})
-                  </MessageDate>
-                </MessageHeader>
-                {message.content}
-              </Message>
-            ))}
-          </MessagesInner>
+          {room.messages.map(message => (
+            <Message
+              key={message.id}
+              className={message.viewerIsAuthor ? 'viewerIsAuthor' : ''}
+            >
+              <MessageHeader>
+                <MessageAuthor>{message.author.name}</MessageAuthor>
+                <MessageDate>
+                  ({new Date(message.createdAt).toLocaleString()})
+                </MessageDate>
+              </MessageHeader>
+              {message.content}
+            </Message>
+          ))}
         </Messages>
         <InputForm onSubmit={this.onSubmit}>
           <MessageInputContainer>
