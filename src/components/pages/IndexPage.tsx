@@ -102,6 +102,7 @@ class IndexPage extends React.Component<ChildProps<Props, Response>, State> {
       <Container>
         <RoomList
           rooms={viewer.rooms}
+          activeRoomId={activeRoom && activeRoom.id}
           onCreate={this.onCreateRoom}
           onJoin={this.onJoinRoom}
           onSelect={this.onSelectRoom}

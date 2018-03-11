@@ -1,6 +1,11 @@
 export const white = '#fff';
 export const black = '#000';
 
+export const darkPrimary = '#353b48';
+export const darkPrimaryText = '#f5f6fa';
+export const darkSecondary = '#2f3640';
+export const darkSecondaryText = '#dcdde1';
+
 export const primary = '#1976d2';
 export const primaryText = white;
 export const primaryLight = '#63a4ff';

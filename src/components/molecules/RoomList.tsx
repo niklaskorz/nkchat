@@ -4,42 +4,56 @@ import swal from 'sweetalert2';
 import * as colors from 'colors';
 
 const Section = styled('section')`
+  background: ${colors.darkPrimary};
+  color: #fff;
+
   flex-shrink: 0;
   width: 250px;
-  border-right: 2px solid #000;
 
   display: flex;
   flex-direction: column;
 `;
 
 const Header = styled('header')`
-  background: ${colors.primary};
-  color: ${colors.primaryText};
-  font-size: 1.2em;
-  padding: 10px;
-  text-align: center;
+  padding: 15px;
   flex-shrink: 0;
+  border-top: 2px solid transparent;
+  border-bottom: 2px solid ${colors.darkSecondary};
+`;
+
+const HeaderTitle = styled('h2')`
+  font-size: 1em;
+  margin: 0;
+  font-weight: normal;
 `;
 
 const ActionBar = styled('div')`
   flex-shrink: 0;
   display: flex;
+  margin: 10px;
+  margin-bottom: 0;
+  font-size: 0.8em;
 `;
 
 const Action = styled('button')`
   border: none;
-  background: ${colors.secondary};
-  color: ${colors.secondaryText};
+  background: transparent;
+  border: 1px solid ${colors.darkSecondaryText};
+  color: ${colors.darkSecondaryText};
   flex: 1;
   appearance: none;
   cursor: pointer;
   padding: 5px;
+  margin: 0 5px;
+  border-radius: 2px;
   text-transform: uppercase;
   font-size: 0.75em;
 
+  transition: 0.1s ease color, 0.1s ease background;
+
   :hover {
-    background: ${colors.secondaryDark};
-    color: ${colors.secondaryDarkText};
+    background: ${colors.darkSecondaryText};
+    color: ${colors.darkSecondary};
   }
 `;
 Action.defaultProps = {
@@ -49,23 +63,29 @@ Action.defaultProps = {
 const List = styled('ul')`
   display: block;
   margin: 0;
-  padding: 0;
+  padding: 10px 0;
   overflow: auto;
   flex: 1;
+  font-size: 0.8em;
 `;
 
 const Item = styled('li')`
   display: block;
-  padding: 10px;
-  border-bottom: 1px solid #eee;
+  padding: 10px 15px;
   cursor: pointer;
 
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 
-  :hover {
-    background: #eee;
+  color: ${colors.darkSecondaryText};
+
+  transition: 0.1s ease color, 0.1s ease background;
+
+  :hover,
+  &.active {
+    background: ${colors.darkSecondary};
+    color: ${colors.darkPrimaryText};
   }
 `;
 
@@ -76,6 +96,7 @@ export interface Room {
 
 interface Props {
   rooms: Room[];
+  activeRoomId: string | null;
   onCreate(name: string): void;
   onJoin(id: string): void;
   onSelect(room: Room): void;
@@ -109,14 +130,16 @@ class RoomList extends React.Component<Props> {
   };
 
   render() {
-    const { rooms, onSelect } = this.props;
+    const { rooms, activeRoomId, onSelect } = this.props;
 
     return (
       <Section>
-        <Header>Rooms</Header>
+        <Header>
+          <HeaderTitle>Rooms</HeaderTitle>
+        </Header>
         <ActionBar>
-          <Action onClick={this.showCreateDialog}>Create</Action>
           <Action onClick={this.showJoinDialog}>Join</Action>
+          <Action onClick={this.showCreateDialog}>Create</Action>
         </ActionBar>
         <List>
           {rooms.map(room => (
@@ -124,6 +147,7 @@ class RoomList extends React.Component<Props> {
               key={room.id}
               onClick={onSelect.bind(null, room)}
               title={room.name}
+              className={room.id === activeRoomId ? 'active' : ''}
             >
               {room.name}
             </Item>

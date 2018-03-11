@@ -62,14 +62,11 @@ const Message = styled('div')`
   width: 300px;
   min-width: 45%;
   max-width: 100%;
-  border-radius: 5px;
-  border: 5px solid;
+  border-radius: 10px;
   line-height: 1.5;
 
   &.viewerIsAuthor {
     margin-left: auto;
-    background: ${colors.secondary};
-    color: ${colors.secondaryText};
   }
 `;
 
@@ -288,10 +285,7 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
               <Message
                 key={message.id}
                 className={message.viewerIsAuthor ? 'viewerIsAuthor' : ''}
-                style={{
-                  borderColor: toMaterialStyle(message.author.name, 800)
-                    .backgroundColor
-                }}
+                style={toMaterialStyle(message.author.name, 700)}
               >
                 <MessageHeader>
                   <MessageAuthor>{message.author.name}</MessageAuthor>
