@@ -95,6 +95,7 @@ const Footer = styled('footer')`
   font-size: 0.8em;
   display: flex;
   align-items: center;
+  height: 56px;
 `;
 
 const Viewer = styled('div')`
