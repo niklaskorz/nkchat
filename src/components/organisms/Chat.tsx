@@ -94,6 +94,19 @@ const MessageInput = styled(ContentEditable)`
   outline: none;
 `;
 
+const MessageSendButton = styled('button')`
+  flex-shrink: 0;
+  appearance: none;
+  border: none;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  cursor: pointer;
+
+  :disabled {
+    cursor: not-allowed;
+  }
+`;
+
 interface User {
   id: string;
   name: string;
@@ -295,6 +308,8 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
       return 'Room not found';
     }
 
+    const { inputText } = this.state;
+
     return (
       <Section>
         <Header title={room.name}>{room.name}</Header>
@@ -320,13 +335,15 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
         <InputForm onSubmit={this.onSubmit}>
           <MessageInputContainer>
             <MessageInput
-              content={this.state.inputText}
+              content={inputText}
               onChange={this.onInputTextChange}
               maxLength={500}
               multiLine
             />
           </MessageInputContainer>
-          <button type="submit">Send</button>
+          <MessageSendButton type="submit" disabled={!inputText.trim().length}>
+            Send
+          </MessageSendButton>
         </InputForm>
       </Section>
     );
