@@ -6,6 +6,7 @@ import styled from 'react-emotion';
 import Chat from '../organisms/Chat';
 import LoginPage from './LoginPage';
 import RoomList, { Room } from '../molecules/RoomList';
+import Loading from '../molecules/Loading';
 
 const Container = styled('div')`
   display: flex;
@@ -49,7 +50,7 @@ interface State {
 class IndexPage extends React.Component<ChildProps<Props, Response>, State> {
   state: State = {};
 
-  onCreateRoom = async (name: string) => {
+  createRoom = async (name: string) => {
     await this.props.createRoom({
       variables: { name },
       update: (store, result: ApolloQueryResult<{ createRoom: Room }>) => {
@@ -62,7 +63,7 @@ class IndexPage extends React.Component<ChildProps<Props, Response>, State> {
     });
   };
 
-  onJoinRoom = async (roomId: string) => {
+  joinRoom = async (roomId: string) => {
     await this.props.joinRoom({
       variables: { roomId },
       update: (store, result: ApolloQueryResult<{ joinRoom: Room }>) => {
@@ -75,8 +76,13 @@ class IndexPage extends React.Component<ChildProps<Props, Response>, State> {
     });
   };
 
-  onSelectRoom = (room: Room) => {
+  selectRoom = (room: Room) => {
     this.setState({ activeRoom: room });
+  };
+
+  logout = () => {
+    delete localStorage.session;
+    location.reload();
   };
 
   render() {
@@ -85,7 +91,7 @@ class IndexPage extends React.Component<ChildProps<Props, Response>, State> {
     }
     const { loading, error, viewer } = this.props.data;
     if (loading) {
-      return 'Loading...';
+      return <Loading />;
     }
     if (error) {
       return error.message;
@@ -100,18 +106,22 @@ class IndexPage extends React.Component<ChildProps<Props, Response>, State> {
       <Container>
         <RoomList
           rooms={viewer.rooms}
+          viewerName={viewer.name}
           activeRoomId={activeRoom && activeRoom.id}
-          onCreate={this.onCreateRoom}
-          onJoin={this.onJoinRoom}
-          onSelect={this.onSelectRoom}
+          onCreate={this.createRoom}
+          onJoin={this.joinRoom}
+          onSelect={this.selectRoom}
+          onLogout={this.logout}
         />
         {activeRoom && <Chat roomId={activeRoom.id} />}
         <RoomList
           rooms={viewer.rooms}
+          viewerName={viewer.name}
           activeRoomId={activeRoom && activeRoom.id}
-          onCreate={this.onCreateRoom}
-          onJoin={this.onJoinRoom}
-          onSelect={this.onSelectRoom}
+          onCreate={this.createRoom}
+          onJoin={this.joinRoom}
+          onSelect={this.selectRoom}
+          onLogout={this.logout}
         />
       </Container>
     );

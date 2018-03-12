@@ -43,7 +43,7 @@ const Action = styled('button')`
   flex: 1;
   appearance: none;
   cursor: pointer;
-  padding: 5px;
+  padding: 5px 10px;
   margin: 0 5px;
   border-radius: 2px;
   text-transform: uppercase;
@@ -89,17 +89,42 @@ const Item = styled('li')`
   }
 `;
 
+const Footer = styled('footer')`
+  border-top: 2px solid ${colors.darkSecondary};
+  border-bottom: 2px solid transparent;
+  font-size: 0.8em;
+  display: flex;
+  align-items: center;
+`;
+
+const Viewer = styled('div')`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 10px 5px;
+  margin-left: 15px;
+  flex: 1;
+`;
+
+const LogoutButton = styled(Action)`
+  margin: 10px 5px;
+  margin-right: 15px;
+  flex: 0 0 auto;
+`;
+
 export interface Room {
   id: string;
   name: string;
 }
 
 interface Props {
+  viewerName: string;
   rooms: Room[];
   activeRoomId?: string;
   onCreate(name: string): void;
   onJoin(id: string): void;
   onSelect(room: Room): void;
+  onLogout(): void;
 }
 
 class RoomList extends React.Component<Props> {
@@ -130,7 +155,7 @@ class RoomList extends React.Component<Props> {
   };
 
   render() {
-    const { rooms, activeRoomId, onSelect } = this.props;
+    const { rooms, viewerName, activeRoomId, onSelect, onLogout } = this.props;
 
     return (
       <Section>
@@ -153,6 +178,10 @@ class RoomList extends React.Component<Props> {
             </Item>
           ))}
         </List>
+        <Footer>
+          <Viewer>{viewerName}</Viewer>
+          <LogoutButton onClick={onLogout}>Logout</LogoutButton>
+        </Footer>
       </Section>
     );
   }
