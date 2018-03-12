@@ -55,6 +55,12 @@ const MessageDate = styled('div')`
   color: ${colors.secondaryText};
 `;
 
+const MessageText = styled('div')`
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-width: 800px;
+`;
+
 const Message = styled('div')`
   background: #fff;
   color: #000;
@@ -140,7 +146,6 @@ interface Props {
 
 interface State {
   inputText: string;
-  stickToBottom: boolean;
 }
 
 const compareMessages = (a: Message, b: Message): number => {
@@ -193,10 +198,10 @@ const ChatSubscription = gql`
 
 class Chat extends React.Component<ChildProps<Props, Response>, State> {
   messageContainer?: HTMLDivElement;
+  stickToBottom: boolean = true;
 
   state: State = {
-    inputText: '',
-    stickToBottom: true
+    inputText: ''
   };
 
   componentDidMount() {
@@ -207,13 +212,17 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
     if (
       this.messageContainer &&
       this.props.data !== prevProps.data &&
-      this.state.stickToBottom
+      this.stickToBottom
     ) {
       this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
     }
 
     if (this.props.roomId !== prevProps.roomId) {
       this.subscribeToMessages();
+      if (this.messageContainer) {
+        this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
+        this.stickToBottom = true;
+      }
     }
   }
 
@@ -265,7 +274,7 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
     }
 
     const content = inputText.trim();
-    if (!content.length) {
+    if (!content.length || content.length > 500) {
       return;
     }
 
@@ -280,8 +289,7 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
     const height = target.getBoundingClientRect().height;
     const scrollBottom = target.scrollTop + height;
 
-    const stickToBottom = target.scrollHeight - scrollBottom <= 100;
-    this.setState({ stickToBottom });
+    this.stickToBottom = target.scrollHeight - scrollBottom <= 100;
   };
 
   onSubmit: React.FormEventHandler<HTMLFormElement> = e => {
@@ -328,7 +336,7 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
                   {new Date(message.createdAt).toLocaleString()}
                 </MessageDate>
               </MessageHeader>
-              {message.content}
+              <MessageText>{message.content}</MessageText>
             </Message>
           ))}
         </Messages>
