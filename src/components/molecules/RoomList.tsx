@@ -1,31 +1,9 @@
 import * as React from 'react';
 import styled from 'react-emotion';
 import swal from 'sweetalert2';
+import { Link } from 'react-router-dom';
 import * as colors from 'colors';
-
-const Section = styled('section')`
-  background: ${colors.darkPrimary};
-  color: #fff;
-
-  flex-shrink: 0;
-  width: 250px;
-
-  display: flex;
-  flex-direction: column;
-`;
-
-const Header = styled('header')`
-  padding: 15px;
-  flex-shrink: 0;
-  border-top: 2px solid transparent;
-  border-bottom: 2px solid ${colors.darkSecondary};
-`;
-
-const HeaderTitle = styled('h2')`
-  font-size: 1em;
-  margin: 0;
-  font-weight: normal;
-`;
+import SideBar from './SideBar';
 
 const ActionBar = styled('div')`
   flex-shrink: 0;
@@ -69,7 +47,7 @@ const List = styled('ul')`
   font-size: 0.8em;
 `;
 
-const Item = styled('li')`
+const ItemLink = styled(Link)`
   display: block;
   padding: 10px 15px;
   cursor: pointer;
@@ -79,7 +57,7 @@ const Item = styled('li')`
   text-overflow: ellipsis;
 
   color: ${colors.darkSecondaryText};
-
+  text-decoration: none;
   transition: 0.1s ease color, 0.1s ease background;
 
   :hover,
@@ -124,7 +102,6 @@ interface Props {
   activeRoomId?: string;
   onCreate(name: string): void;
   onJoin(id: string): void;
-  onSelect(room: Room): void;
   onLogout(): void;
 }
 
@@ -156,34 +133,32 @@ class RoomList extends React.Component<Props> {
   };
 
   render() {
-    const { rooms, viewerName, activeRoomId, onSelect, onLogout } = this.props;
+    const { rooms, viewerName, activeRoomId, onLogout } = this.props;
 
     return (
-      <Section>
-        <Header>
-          <HeaderTitle>Rooms</HeaderTitle>
-        </Header>
+      <SideBar title="Rooms">
         <ActionBar>
           <Action onClick={this.showJoinDialog}>Join</Action>
           <Action onClick={this.showCreateDialog}>Create</Action>
         </ActionBar>
         <List>
           {rooms.map(room => (
-            <Item
-              key={room.id}
-              onClick={onSelect.bind(null, room)}
-              title={room.name}
-              className={room.id === activeRoomId ? 'active' : ''}
-            >
-              {room.name}
-            </Item>
+            <li key={room.id}>
+              <ItemLink
+                to={`/rooms/${room.id}`}
+                title={room.name}
+                className={room.id === activeRoomId ? 'active' : ''}
+              >
+                {room.name}
+              </ItemLink>
+            </li>
           ))}
         </List>
         <Footer>
           <Viewer>{viewerName}</Viewer>
           <LogoutButton onClick={onLogout}>Logout</LogoutButton>
         </Footer>
-      </Section>
+      </SideBar>
     );
   }
 }

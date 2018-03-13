@@ -3,8 +3,8 @@ import gql from 'graphql-tag';
 import { ApolloQueryResult } from 'apollo-client';
 import { graphql, ChildProps, compose, MutationFunc } from 'react-apollo';
 import styled from 'react-emotion';
+import { Redirect } from 'react-router-dom';
 import Chat from '../organisms/Chat';
-import LoginPage from './LoginPage';
 import RoomList, { Room } from '../molecules/RoomList';
 import Loading from '../molecules/Loading';
 
@@ -26,12 +26,20 @@ interface Response {
 }
 
 interface Props {
+  location: {
+    pathname: string;
+  };
+  match: {
+    params: {
+      roomId?: string;
+    };
+  };
   createRoom: MutationFunc<{ createRoom: Room }, { name: string }>;
   joinRoom: MutationFunc<{ joinRoom: Room }, { roomId: string }>;
 }
 
-const IndexPageQuery = gql`
-  query IndexPageQuery {
+const ChatPageQuery = gql`
+  query ChatPageQuery {
     viewer {
       id
       name
@@ -43,21 +51,15 @@ const IndexPageQuery = gql`
   }
 `;
 
-interface State {
-  activeRoom?: Room;
-}
-
-class IndexPage extends React.Component<ChildProps<Props, Response>, State> {
-  state: State = {};
-
+class ChatPage extends React.Component<ChildProps<Props, Response>> {
   createRoom = async (name: string) => {
     await this.props.createRoom({
       variables: { name },
       update: (store, result: ApolloQueryResult<{ createRoom: Room }>) => {
-        const data = store.readQuery<Response>({ query: IndexPageQuery });
+        const data = store.readQuery<Response>({ query: ChatPageQuery });
         if (data) {
           data.viewer.rooms.push(result.data.createRoom);
-          store.writeQuery({ query: IndexPageQuery, data });
+          store.writeQuery({ query: ChatPageQuery, data });
         }
       }
     });
@@ -67,17 +69,13 @@ class IndexPage extends React.Component<ChildProps<Props, Response>, State> {
     await this.props.joinRoom({
       variables: { roomId },
       update: (store, result: ApolloQueryResult<{ joinRoom: Room }>) => {
-        const data = store.readQuery<Response>({ query: IndexPageQuery });
+        const data = store.readQuery<Response>({ query: ChatPageQuery });
         if (data) {
           data.viewer.rooms.push(result.data.joinRoom);
-          store.writeQuery({ query: IndexPageQuery, data });
+          store.writeQuery({ query: ChatPageQuery, data });
         }
       }
     });
-  };
-
-  selectRoom = (room: Room) => {
-    this.setState({ activeRoom: room });
   };
 
   logout = () => {
@@ -97,38 +95,37 @@ class IndexPage extends React.Component<ChildProps<Props, Response>, State> {
       return error.message;
     }
     if (!viewer) {
-      return <LoginPage />;
+      return (
+        <Redirect
+          to={{
+            pathname: '/login',
+            state: {
+              from: this.props.location
+            }
+          }}
+        />
+      );
     }
 
-    const { activeRoom = viewer.rooms[0] } = this.state;
+    const { roomId } = this.props.match.params;
 
     return (
       <Container>
         <RoomList
           rooms={viewer.rooms}
           viewerName={viewer.name}
-          activeRoomId={activeRoom && activeRoom.id}
+          activeRoomId={roomId}
           onCreate={this.createRoom}
           onJoin={this.joinRoom}
-          onSelect={this.selectRoom}
           onLogout={this.logout}
         />
-        {activeRoom && <Chat roomId={activeRoom.id} />}
-        <RoomList
-          rooms={viewer.rooms}
-          viewerName={viewer.name}
-          activeRoomId={activeRoom && activeRoom.id}
-          onCreate={this.createRoom}
-          onJoin={this.joinRoom}
-          onSelect={this.selectRoom}
-          onLogout={this.logout}
-        />
+        {roomId && <Chat roomId={roomId} />}
       </Container>
     );
   }
 }
 
-const withData = graphql<Response>(IndexPageQuery);
+const withData = graphql<Response>(ChatPageQuery);
 
 const withCreateRoomMutation = graphql(
   gql`
@@ -155,5 +152,5 @@ const withJoinRoomMutation = graphql(
 );
 
 export default compose(withData, withCreateRoomMutation, withJoinRoomMutation)(
-  IndexPage
+  ChatPage
 );

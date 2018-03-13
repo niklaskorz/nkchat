@@ -19,6 +19,14 @@ interface LoginVariables {
 }
 
 interface Props {
+  location: {
+    pathname: string;
+    state?: {
+      from: {
+        pathname: string;
+      };
+    };
+  };
   login: MutationFunc<{ login: Session }, LoginVariables>;
   register: MutationFunc<{ register: Session }, LoginVariables>;
 }
@@ -70,7 +78,11 @@ class LoginPage extends React.Component<ChildProps<Props, Response>, State> {
     }
     localStorage.session = session.id;
 
-    location.reload();
+    if (this.props.location.state) {
+      location.pathname = this.props.location.state.from.pathname;
+    } else {
+      location.pathname = '/';
+    }
   };
 
   render() {

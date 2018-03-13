@@ -5,6 +5,7 @@ import { graphql, compose, ChildProps, MutationFunc } from 'react-apollo';
 import ContentEditable from 'react-sane-contenteditable';
 import * as colors from 'colors';
 import Loading from '../molecules/Loading';
+import RoomInfo from '../molecules/RoomInfo';
 
 const Section = styled('section')`
   display: flex;
@@ -130,6 +131,7 @@ interface Room {
   id: string;
   name: string;
   messages: Message[];
+  members: User[];
 }
 
 interface Response {
@@ -177,6 +179,10 @@ const ChatQuery = gql`
       name
       messages {
         ...ChatMessage
+      }
+      members {
+        id
+        name
       }
     }
   }
@@ -319,41 +325,48 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
     const { inputText } = this.state;
 
     return (
-      <Section>
-        <Header title={room.name}>{room.name}</Header>
-        <Messages
-          innerRef={this.refMessageContainer}
-          onScroll={this.onMessagesScroll}
-        >
-          {room.messages.map(message => (
-            <Message
-              key={message.id}
-              className={message.viewerIsAuthor ? 'viewerIsAuthor' : ''}
+      <React.Fragment>
+        <Section>
+          <Header title={room.name}>{room.name}</Header>
+          <Messages
+            innerRef={this.refMessageContainer}
+            onScroll={this.onMessagesScroll}
+          >
+            {room.messages.map(message => (
+              <Message
+                key={message.id}
+                className={message.viewerIsAuthor ? 'viewerIsAuthor' : ''}
+              >
+                <MessageHeader>
+                  <MessageAuthor>{message.author.name}</MessageAuthor>
+                  <MessageDate>
+                    {new Date(message.createdAt).toLocaleString()}
+                  </MessageDate>
+                </MessageHeader>
+                <MessageText>{message.content}</MessageText>
+              </Message>
+            ))}
+          </Messages>
+          <InputForm onSubmit={this.onSubmit}>
+            <MessageInputContainer>
+              <MessageInput
+                content={inputText}
+                onChange={this.onInputTextChange}
+                maxLength={500}
+                multiLine
+              />
+            </MessageInputContainer>
+            <MessageSendButton
+              type="submit"
+              disabled={!inputText.trim().length}
             >
-              <MessageHeader>
-                <MessageAuthor>{message.author.name}</MessageAuthor>
-                <MessageDate>
-                  {new Date(message.createdAt).toLocaleString()}
-                </MessageDate>
-              </MessageHeader>
-              <MessageText>{message.content}</MessageText>
-            </Message>
-          ))}
-        </Messages>
-        <InputForm onSubmit={this.onSubmit}>
-          <MessageInputContainer>
-            <MessageInput
-              content={inputText}
-              onChange={this.onInputTextChange}
-              maxLength={500}
-              multiLine
-            />
-          </MessageInputContainer>
-          <MessageSendButton type="submit" disabled={!inputText.trim().length}>
-            Send
-          </MessageSendButton>
-        </InputForm>
-      </Section>
+              Send
+            </MessageSendButton>
+          </InputForm>
+        </Section>
+
+        <RoomInfo room={room} />
+      </React.Fragment>
     );
   }
 }
