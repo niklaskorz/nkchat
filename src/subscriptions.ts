@@ -1,4 +1,4 @@
-import { PubSub } from 'graphql-subscriptions';
+import NatsPubSub from './nats-subscriptions/NatsPubSub';
 
 export enum SubscriptionType {
   MessageWasSent = 'MessageWasSent',
@@ -6,4 +6,6 @@ export enum SubscriptionType {
   UserJoinedRoom = 'UserJoinedRoom',
 }
 
-export const pubsub = new PubSub();
+export const pubsub = new NatsPubSub({
+  url: 'nats://localhost:4222',
+});

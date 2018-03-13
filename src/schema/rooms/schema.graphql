@@ -8,6 +8,10 @@ type Room {
   messages: [Message!]!
 }
 
+extend type Query {
+  room(id: ID!): Room
+}
+
 input CreateRoomInput {
   name: String!
 }

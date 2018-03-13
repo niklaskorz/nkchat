@@ -1,6 +1,6 @@
 import { withFilter } from 'graphql-subscriptions';
 import { pubsub, SubscriptionType } from 'subscriptions';
-import { InstanceType, Message } from 'models';
+import { InstanceType, Message, MessageModel } from 'models';
 
 interface MessageWasSentPayload {
   roomId: string;
@@ -14,6 +14,7 @@ export default {
       (payload: MessageWasSentPayload, variables: { roomId: string }) =>
         payload.roomId === variables.roomId,
     ),
-    resolve: (payload: MessageWasSentPayload) => payload.message,
+    resolve: (payload: MessageWasSentPayload) =>
+      new MessageModel(payload.message),
   },
 };

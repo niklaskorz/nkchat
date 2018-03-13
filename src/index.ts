@@ -6,10 +6,10 @@ import bodyParser from 'koa-bodyparser';
 import cors from '@koa/cors';
 import { graphqlKoa, graphiqlKoa } from 'apollo-server-koa';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
+import { execute, subscribe } from 'graphql';
 import { SessionModel, InstanceType, User } from './models';
 import schema from './schema';
 import Context from './Context';
-import { execute, subscribe } from 'graphql';
 
 mongoose.connect('mongodb://localhost/webengineering2');
 
@@ -19,7 +19,7 @@ app.use(cors());
 const router = new Router();
 
 const withSession: Router.IMiddleware = async (ctx: Context, next) => {
-  const sessionId = ctx.cookies.get('session');
+  const sessionId = ctx.get('X-Session-ID');
   if (sessionId) {
     const session = await SessionModel.findById(sessionId)
       .populate('user')

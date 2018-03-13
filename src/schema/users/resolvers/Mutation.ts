@@ -26,10 +26,6 @@ export default {
     const session = await SessionModel.create({
       user: user.id,
     });
-    ctx.cookies.set('session', session.id, {
-      path: '/graphql',
-      httpOnly: true,
-    });
     ctx.state.session = session;
     ctx.state.viewer = user;
 
@@ -56,9 +52,6 @@ export default {
     const session = await SessionModel.create({
       user: user.id,
     });
-    ctx.cookies.set('session', session.id, {
-      httpOnly: true,
-    });
     ctx.state.session = session;
     ctx.state.viewer = user;
 
@@ -71,8 +64,8 @@ export default {
     }
 
     await session.remove();
-    ctx.cookies.set('session', undefined);
     ctx.state.session = undefined;
+    ctx.state.viewer = undefined;
 
     return session.id;
   },

@@ -1798,6 +1798,12 @@ nanomatch@^1.2.9:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
+nats@^0.8.4:
+  version "0.8.4"
+  resolved "https://registry.yarnpkg.com/nats/-/nats-0.8.4.tgz#92d047b7c4414422598b420f89491ad2a2727563"
+  dependencies:
+    nuid ">=0.6.8"
+
 negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
@@ -1880,6 +1886,10 @@ npmlog@^4.0.2:
     console-control-strings "~1.1.0"
     gauge "~2.7.3"
     set-blocking "~2.0.0"
+
+nuid@>=0.6.8:
+  version "0.6.14"
+  resolved "https://registry.yarnpkg.com/nuid/-/nuid-0.6.14.tgz#a225c8b720e46c563ad8d13641368669f6c25b48"
 
 number-is-nan@^1.0.0:
   version "1.0.1"

@@ -3,7 +3,7 @@
     "outDir": "build/dist",
     "module": "commonjs",
     "target": "es6",
-    "lib": ["es6", "esnext.asynciterable"],
+    "lib": ["es6", "esnext"],
     "sourceMap": true,
     "allowJs": true,
     "moduleResolution": "node",
