@@ -5,6 +5,7 @@ type Room {
   owner: User!
   viewerIsOwner: Boolean!
   members: [User!]!
+  viewerIsMember: Boolean!
   messages: [Message!]!
 }
 

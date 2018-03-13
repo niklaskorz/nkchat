@@ -1,4 +1,5 @@
-import { Typegoose, Ref, prop, arrayProp } from 'typegoose';
+import { Typegoose, prop, arrayProp } from 'typegoose';
+import Ref from './Ref';
 import { User } from './User';
 
 export class Room extends Typegoose {

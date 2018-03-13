@@ -22,11 +22,11 @@ export default {
       return false;
     }
 
-    const authorId = message.populated('author')
-      ? (message.author as InstanceType<User>).id
-      : (message.author as string);
+    const authorId: ObjectID = message.populated('author')
+      ? (message.author as InstanceType<User>)._id
+      : (message.author as ObjectID);
 
-    return viewer.id === authorId.toString();
+    return authorId.equals(viewer._id);
   },
   async room(message: InstanceType<Message>): Promise<Room> {
     if (!message.populated('room')) {
