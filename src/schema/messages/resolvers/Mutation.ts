@@ -22,6 +22,7 @@ export default {
       content: input.content,
       author: viewer.id,
       room: input.roomId,
+      embeds: [],
     });
 
     pubsub.publish(SubscriptionType.MessageWasSent, {
