@@ -13,12 +13,12 @@ services:
     deploy:
       labels:
         traefik.backend: server
-        traefik.port: 3000
+        traefik.port: "3000"
         traefik.frontend.rule: "Host:chat.niklaskorz.de;Path:/graphql,/graphiql,/subscriptions"
   client:
     build: "git@gitlab.com:webengineering2/client.git"
     deploy:
       labels:
         traefik.backend: client
-        traefik.port: 3000
+        traefik.port: "3000"
         traefik.frontend.rule: "Host:chat.niklaskorz.de"
