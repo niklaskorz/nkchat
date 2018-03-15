@@ -10,15 +10,13 @@ services:
     links:
       - "mongodb:mongodb"
       - "nats:nats"
-    deploy:
-      labels:
-        traefik.backend: server
-        traefik.port: "3000"
-        traefik.frontend.rule: "Host:chat.niklaskorz.de;Path:/graphql,/graphiql,/subscriptions"
+    labels:
+      traefik.backend: server
+      traefik.port: "3000"
+      traefik.frontend.rule: "Host:chat.niklaskorz.de;Path:/graphql,/graphiql,/subscriptions"
   client:
     build: "git@gitlab.com:webengineering2/client.git"
-    deploy:
-      labels:
-        traefik.backend: client
-        traefik.port: "3000"
-        traefik.frontend.rule: "Host:chat.niklaskorz.de"
+    labels:
+      traefik.backend: client
+      traefik.port: "3000"
+      traefik.frontend.rule: "Host:chat.niklaskorz.de"
