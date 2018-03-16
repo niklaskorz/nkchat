@@ -7,9 +7,6 @@ services:
     image: "nats:1.0.6"
   server:
     build: "https://gitlab.com/webengineering2/server.git"
-    links:
-      - "mongodb:mongodb"
-      - "nats:nats"
     environment:
       - MONGODB_HOST=mongodb
       - NATS_HOST=nats
