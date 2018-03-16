@@ -14,7 +14,7 @@ const SubTitle = styled('h3')`
 const RoomIdText = styled('input')`
   appearance: none;
   border: none;
-  border-radius: 4px;
+  border-radius: 2px;
   padding: 5px;
   margin: 10px 15px;
   color: ${colors.primaryText};

@@ -80,7 +80,7 @@ class ChatPage extends React.Component<ChildProps<Props, Response>> {
 
   logout = () => {
     delete localStorage.session;
-    location.reload();
+    location.pathname = '/login';
   };
 
   render() {

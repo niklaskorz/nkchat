@@ -177,6 +177,7 @@ const ChatQuery = gql`
     room(id: $roomId) {
       id
       name
+      viewerIsMember
       messages {
         ...ChatMessage
       }
