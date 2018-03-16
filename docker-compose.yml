@@ -6,7 +6,7 @@ services:
   nats:
     image: "nats:1.0.6"
   server:
-    build: "git@gitlab.com:webengineering2/server.git"
+    build: "https://gitlab.com/webengineering2/server.git"
     links:
       - "mongodb:mongodb"
       - "nats:nats"
@@ -18,7 +18,7 @@ services:
       traefik.port: "3000"
       traefik.frontend.rule: "Host:chat.niklaskorz.de;Path:/graphql,/graphiql,/subscriptions"
   client:
-    build: "git@gitlab.com:webengineering2/client.git"
+    build: "https://gitlab.com/webengineering2/client.git"
     labels:
       traefik.backend: client
       traefik.port: "3000"
