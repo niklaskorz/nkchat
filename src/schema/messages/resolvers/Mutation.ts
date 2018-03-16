@@ -1,6 +1,6 @@
-import { InstanceType, Message, MessageModel } from 'models';
-import Context from 'Context';
-import { pubsub, SubscriptionType } from 'subscriptions';
+import { InstanceType, Message, MessageModel } from '../../../models';
+import Context from '../../../Context';
+import { pubsub, SubscriptionType } from '../../../subscriptions';
 
 interface SendMessageInput {
   roomId: string;

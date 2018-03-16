@@ -1,6 +1,12 @@
 import { ObjectID } from 'mongodb';
-import { InstanceType, User, Room, Message, MessageModel } from 'models';
-import Context from 'Context';
+import {
+  InstanceType,
+  User,
+  Room,
+  Message,
+  MessageModel,
+} from '../../../models';
+import Context from '../../../Context';
 
 export default {
   createdAt(room: InstanceType<Room>): Date {

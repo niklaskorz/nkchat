@@ -1,5 +1,5 @@
 import { ObjectID } from 'mongodb';
-import { InstanceType, User, Session } from 'models';
+import { InstanceType, User, Session } from '../../../models';
 
 export default {
   createdAt(session: InstanceType<Session>): Date {

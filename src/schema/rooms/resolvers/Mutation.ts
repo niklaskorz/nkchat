@@ -1,6 +1,6 @@
-import { InstanceType, Room, RoomModel } from 'models';
-import Context from 'Context';
-import { pubsub, SubscriptionType } from 'subscriptions';
+import { InstanceType, Room, RoomModel } from '../../../models';
+import Context from '../../../Context';
+import { pubsub, SubscriptionType } from '../../../subscriptions';
 
 interface CreateRoomInput {
   name: string;

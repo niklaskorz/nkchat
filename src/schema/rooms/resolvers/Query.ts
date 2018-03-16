@@ -1,4 +1,4 @@
-import { RoomModel } from 'models';
+import { RoomModel } from '../../../models';
 
 export default {
   room(root: any, { id }: { id: string }) {

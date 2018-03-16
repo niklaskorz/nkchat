@@ -1,6 +1,11 @@
 import * as bcrypt from 'bcrypt';
-import Context from 'Context';
-import { InstanceType, UserModel, Session, SessionModel } from 'models';
+import Context from '../../../Context';
+import {
+  InstanceType,
+  UserModel,
+  Session,
+  SessionModel,
+} from '../../../models';
 
 interface RegisterInput {
   name: string;

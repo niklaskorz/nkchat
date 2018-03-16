@@ -1,6 +1,6 @@
 import { withFilter } from 'graphql-subscriptions';
-import { pubsub, SubscriptionType } from 'subscriptions';
-import { InstanceType, Message, MessageModel } from 'models';
+import { pubsub, SubscriptionType } from '../../../subscriptions';
+import { InstanceType, Message, MessageModel } from '../../../models';
 
 interface MessageWasSentPayload {
   roomId: string;

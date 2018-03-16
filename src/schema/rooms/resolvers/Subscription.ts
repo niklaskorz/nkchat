@@ -1,6 +1,12 @@
 import { withFilter } from 'graphql-subscriptions';
-import { pubsub, SubscriptionType } from 'subscriptions';
-import { InstanceType, Room, User, RoomModel, UserModel } from 'models';
+import { pubsub, SubscriptionType } from '../../../subscriptions';
+import {
+  InstanceType,
+  Room,
+  User,
+  RoomModel,
+  UserModel,
+} from '../../../models';
 
 interface RoomWasUpdatedPayload {
   room: InstanceType<Room>;
