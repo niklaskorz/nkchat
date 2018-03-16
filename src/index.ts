@@ -10,8 +10,9 @@ import { execute, subscribe } from 'graphql';
 import { SessionModel, InstanceType, User } from './models';
 import schema from './schema';
 import Context from './Context';
+import * as config from './config';
 
-mongoose.connect('mongodb://localhost/webengineering2');
+mongoose.connect(`mongodb://${config.mongodbHost}/webengineering2`);
 
 const app = new Koa();
 app.use(cors());
@@ -52,9 +53,8 @@ router.get(
 
 app.use(router.routes());
 
-const PORT = 3000;
-const server = app.listen(PORT, () => {
-  winston.info(`Listening on port ${PORT}`);
+const server = app.listen(config.port, () => {
+  winston.info(`Listening on port ${config.port}`);
 
   SubscriptionServer.create(
     {

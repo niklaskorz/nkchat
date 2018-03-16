@@ -1,5 +1,7 @@
 FROM node:9.8
 
+ENV PORT 3000
+
 COPY . /server
 WORKDIR /server
 RUN yarn --frozen-lockfile
