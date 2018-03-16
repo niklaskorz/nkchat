@@ -19,6 +19,13 @@ app.use(cors());
 
 const router = new Router();
 
+app.use(async (ctx, next) => {
+  if (process.env.HOSTNAME) {
+    ctx.set('X-Docker-Hostname', process.env.HOSTNAME);
+  }
+  await next();
+});
+
 const withSession: Router.IMiddleware = async (ctx: Context, next) => {
   const sessionId = ctx.get('X-Session-ID');
   if (sessionId) {
