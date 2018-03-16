@@ -1,0 +1,6 @@
+{
+  "verbose": true,
+  "execMap": {
+    "ts": "ts-node"
+  }
+}

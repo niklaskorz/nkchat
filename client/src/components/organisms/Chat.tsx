@@ -1,0 +1,392 @@
+import * as React from 'react';
+import styled from 'react-emotion';
+import gql from 'graphql-tag';
+import { graphql, compose, ChildProps, MutationFunc } from 'react-apollo';
+import ContentEditable from 'react-sane-contenteditable';
+import * as colors from 'colors';
+import Loading from '../molecules/Loading';
+import RoomInfo from '../molecules/RoomInfo';
+
+const Section = styled('section')`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`;
+
+const Header = styled('header')`
+  background: ${colors.primary};
+  color: ${colors.primaryText};
+  padding: 15px;
+  text-align: center;
+  flex-shrink: 0;
+  z-index: 2;
+
+  border-top: 2px solid transparent;
+  border-bottom: 2px solid ${colors.secondary};
+`;
+
+const Messages = styled('div')`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 40px;
+  overflow: auto;
+  background: ${colors.primary};
+`;
+
+const MessageHeader = styled('header')`
+  display: flex;
+  font-weight: bold;
+  margin-bottom: 10px;
+  align-items: baseline;
+`;
+
+const MessageAuthor = styled('div')`
+  font-size: 0.9em;
+  flex: 1;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+`;
+
+const MessageDate = styled('div')`
+  font-size: 0.7em;
+  flex-shrink: 0;
+  margin-left: 10px;
+  color: ${colors.secondaryText};
+`;
+
+const MessageText = styled('div')`
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-width: 800px;
+`;
+
+const Message = styled('div')`
+  background: #fff;
+  color: #000;
+  padding: 15px;
+  margin: 10px 0;
+  margin-right: auto;
+  max-width: 100%;
+  border-radius: 10px;
+  line-height: 1.5;
+
+  &.viewerIsAuthor {
+    margin-left: auto;
+    margin-right: 0;
+    background: ${colors.secondary};
+  }
+`;
+
+const InputForm = styled('form')`
+  display: flex;
+  background: ${colors.primary};
+  padding: 10px;
+  z-index: 2;
+  border-top: 2px solid ${colors.secondary};
+`;
+
+const MessageInputContainer = styled('div')`
+  flex: 1;
+  padding: 10px;
+  background: #fff;
+  color: #000;
+  border-radius: 2px;
+`;
+
+const MessageInput = styled(ContentEditable)`
+  max-height: 5em;
+  overflow-y: auto;
+  outline: none;
+`;
+
+const MessageSendButton = styled('button')`
+  flex-shrink: 0;
+  appearance: none;
+  border: none;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  cursor: pointer;
+
+  :disabled {
+    cursor: not-allowed;
+  }
+`;
+
+interface User {
+  id: string;
+  name: string;
+}
+
+interface Message {
+  id: string;
+  createdAt: string;
+  content: string;
+  author: User;
+  viewerIsAuthor: boolean;
+}
+
+interface Room {
+  id: string;
+  name: string;
+  messages: Message[];
+  members: User[];
+}
+
+interface Response {
+  room: Room;
+}
+
+interface Props {
+  roomId: string;
+  sendMessage: MutationFunc<
+    { sendMessage: { id: string } },
+    { roomId: string; content: string }
+  >;
+}
+
+interface State {
+  inputText: string;
+}
+
+const compareMessages = (a: Message, b: Message): number => {
+  const dateA = new Date(a.createdAt);
+  const dateB = new Date(a.createdAt);
+
+  return dateA.getTime() - dateB.getTime();
+};
+
+const ChatMessageFragment = gql`
+  fragment ChatMessage on Message {
+    id
+    createdAt
+    content
+    author {
+      id
+      name
+    }
+    viewerIsAuthor
+  }
+`;
+
+const ChatQuery = gql`
+  ${ChatMessageFragment}
+
+  query ChatQuery($roomId: ID!) {
+    room(id: $roomId) {
+      id
+      name
+      viewerIsMember
+      messages {
+        ...ChatMessage
+      }
+      members {
+        id
+        name
+      }
+    }
+  }
+`;
+
+interface SubscriptionData {
+  data: { messageWasSent: Message };
+}
+
+const ChatSubscription = gql`
+  ${ChatMessageFragment}
+
+  subscription ChatSubscription($roomId: ID!) {
+    messageWasSent(roomId: $roomId) {
+      ...ChatMessage
+    }
+  }
+`;
+
+class Chat extends React.Component<ChildProps<Props, Response>, State> {
+  messageContainer?: HTMLDivElement;
+  stickToBottom: boolean = true;
+
+  state: State = {
+    inputText: ''
+  };
+
+  componentDidMount() {
+    this.subscribeToMessages();
+  }
+
+  componentDidUpdate(prevProps: ChildProps<Props, Response>) {
+    if (
+      this.messageContainer &&
+      this.props.data !== prevProps.data &&
+      this.stickToBottom
+    ) {
+      this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
+    }
+
+    if (this.props.roomId !== prevProps.roomId) {
+      this.subscribeToMessages();
+      if (this.messageContainer) {
+        this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
+        this.stickToBottom = true;
+      }
+    }
+  }
+
+  refMessageContainer = (el: HTMLDivElement) => {
+    this.messageContainer = el;
+  };
+
+  subscribeToMessages() {
+    const { roomId, data } = this.props;
+    if (!data) {
+      return;
+    }
+
+    data.subscribeToMore({
+      document: ChatSubscription,
+      variables: { roomId },
+      updateQuery: (
+        prev: Response,
+        { subscriptionData }: { subscriptionData: SubscriptionData }
+      ) => {
+        if (!subscriptionData.data) {
+          return prev;
+        }
+
+        const newMessage = subscriptionData.data.messageWasSent;
+        const messages = [...prev.room.messages, newMessage];
+        messages.sort(compareMessages);
+
+        return {
+          ...prev,
+          room: {
+            ...prev.room,
+            messages
+          }
+        };
+      }
+    });
+  }
+
+  async sendMessage() {
+    const { sendMessage, data } = this.props;
+    const { inputText } = this.state;
+    if (!data) {
+      return;
+    }
+    const { room } = data;
+    if (!room) {
+      return;
+    }
+
+    const content = inputText.trim();
+    if (!content.length || content.length > 500) {
+      return;
+    }
+
+    await sendMessage({
+      variables: { roomId: room.id, content }
+    });
+    this.setState({ inputText: '' });
+  }
+
+  onMessagesScroll: React.UIEventHandler<HTMLDivElement> = e => {
+    const target = e.currentTarget;
+    const height = target.getBoundingClientRect().height;
+    const scrollBottom = target.scrollTop + height;
+
+    this.stickToBottom = target.scrollHeight - scrollBottom <= 100;
+  };
+
+  onSubmit: React.FormEventHandler<HTMLFormElement> = e => {
+    e.preventDefault();
+    this.sendMessage();
+  };
+
+  onInputTextChange = (e: React.FormEvent<HTMLElement>, value: string) => {
+    this.setState({ inputText: value });
+  };
+
+  render() {
+    if (!this.props.data) {
+      return null;
+    }
+    const { loading, error, room } = this.props.data;
+    if (loading) {
+      return <Loading />;
+    }
+    if (error) {
+      return error.message;
+    }
+    if (!room) {
+      return 'Room not found';
+    }
+
+    const { inputText } = this.state;
+
+    return (
+      <React.Fragment>
+        <Section>
+          <Header title={room.name}>{room.name}</Header>
+          <Messages
+            innerRef={this.refMessageContainer}
+            onScroll={this.onMessagesScroll}
+          >
+            {room.messages.map(message => (
+              <Message
+                key={message.id}
+                className={message.viewerIsAuthor ? 'viewerIsAuthor' : ''}
+              >
+                <MessageHeader>
+                  <MessageAuthor>{message.author.name}</MessageAuthor>
+                  <MessageDate>
+                    {new Date(message.createdAt).toLocaleString()}
+                  </MessageDate>
+                </MessageHeader>
+                <MessageText>{message.content}</MessageText>
+              </Message>
+            ))}
+          </Messages>
+          <InputForm onSubmit={this.onSubmit}>
+            <MessageInputContainer>
+              <MessageInput
+                content={inputText}
+                onChange={this.onInputTextChange}
+                maxLength={500}
+                multiLine
+              />
+            </MessageInputContainer>
+            <MessageSendButton
+              type="submit"
+              disabled={!inputText.trim().length}
+            >
+              Send
+            </MessageSendButton>
+          </InputForm>
+        </Section>
+
+        <RoomInfo room={room} />
+      </React.Fragment>
+    );
+  }
+}
+
+const withData = graphql<Response>(ChatQuery, {
+  options: ({ roomId }) => ({
+    variables: { roomId }
+  })
+});
+
+const withSendMessageMutation = graphql(
+  gql`
+    mutation SendMessage($roomId: ID!, $content: String!) {
+      sendMessage(input: { roomId: $roomId, content: $content }) {
+        id
+      }
+    }
+  `,
+  { name: 'sendMessage' }
+);
+
+export default compose(withData, withSendMessageMutation)(Chat);

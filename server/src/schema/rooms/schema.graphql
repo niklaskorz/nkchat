@@ -1,0 +1,38 @@
+type Room {
+  id: ID!
+  createdAt: DateTime!
+  name: String!
+  owner: User!
+  viewerIsOwner: Boolean!
+  members: [User!]!
+  viewerIsMember: Boolean!
+  messages: [Message!]!
+}
+
+extend type Query {
+  room(id: ID!): Room
+}
+
+input CreateRoomInput {
+  name: String!
+}
+
+input UpdateRoomInput {
+  roomId: ID!
+  name: String!
+}
+
+input JoinRoomInput {
+  roomId: ID!
+}
+
+extend type Mutation {
+  createRoom(input: CreateRoomInput!): Room!
+  updateRoom(input: UpdateRoomInput!): Room!
+  joinRoom(input: JoinRoomInput!): Room!
+}
+
+extend type Subscription {
+  roomWasUpdated(roomId: ID!): Room!
+  userJoinedRoom(roomId: ID!): User!
+}

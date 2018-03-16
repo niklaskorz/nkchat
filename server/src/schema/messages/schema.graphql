@@ -1,0 +1,21 @@
+type Message {
+  id: ID!
+  createdAt: DateTime!
+  content: String!
+  author: User!
+  viewerIsAuthor: Boolean!
+  room: Room!
+}
+
+input SendMessageInput {
+  roomId: ID!
+  content: String!
+}
+
+extend type Mutation {
+  sendMessage(input: SendMessageInput!): Message!
+}
+
+extend type Subscription {
+  messageWasSent(roomId: ID!): Message!
+}
