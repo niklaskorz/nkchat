@@ -21,7 +21,7 @@ services:
       - MONGODB_HOST=mongodb
       - NATS_HOST=nats
     labels:
-      traefik.backend: server
+      traefik.enable: "true"
       traefik.port: "3000"
       traefik.frontend.rule: "Host:chat.niklaskorz.de;Path:/graphql,/graphiql,/subscriptions"
       traefik.docker.network: proxy
@@ -34,7 +34,7 @@ services:
   client:
     build: client
     labels:
-      traefik.backend: client
+      traefik.enable: "true"
       traefik.port: "3000"
       traefik.frontend.rule: "Host:chat.niklaskorz.de"
       traefik.docker.network: proxy
