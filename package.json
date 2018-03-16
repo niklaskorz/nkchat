@@ -2,6 +2,13 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "react-scripts-ts start",
+    "build": "react-scripts-ts build",
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject",
+    "serve": "serve build --single"
+  },
   "dependencies": {
     "apollo-cache": "^1.1.4",
     "apollo-cache-inmemory": "^1.1.9",
@@ -24,14 +31,9 @@
     "react-sane-contenteditable": "^1.1.4",
     "react-scripts-ts": "2.13.0",
     "recompose": "^0.26.0",
+    "serve": "^6.5.3",
     "subscriptions-transport-ws": "^0.9.5",
     "sweetalert2": "^7.13.3"
-  },
-  "scripts": {
-    "start": "react-scripts-ts start",
-    "build": "react-scripts-ts build",
-    "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
   },
   "devDependencies": {
     "@types/graphql": "^0.12.4",
