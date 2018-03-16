@@ -1,0 +1,34 @@
+type User {
+  id: ID!
+  createdAt: DateTime!
+  name: String!
+  isViewer: Boolean!
+  rooms: [Room!]!
+}
+
+type Session {
+  id: ID!
+  createdAt: DateTime!
+  user: User!
+}
+
+extend type Query {
+  viewer: User
+  session: Session
+}
+
+input RegisterInput {
+  name: String!
+  password: String!
+}
+
+input LoginInput {
+  name: String!
+  password: String!
+}
+
+extend type Mutation {
+  register(input: RegisterInput!): Session!
+  login(input: LoginInput!): Session!
+  logout: ID!
+}
