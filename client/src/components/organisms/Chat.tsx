@@ -276,7 +276,7 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
     });
   }
 
-  async sendMessage() {
+  sendMessage = async () => {
     const { sendMessage, data } = this.props;
     const { inputText } = this.state;
     if (!data) {
@@ -296,7 +296,7 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
       variables: { roomId: room.id, content }
     });
     this.setState({ inputText: '' });
-  }
+  };
 
   onMessagesScroll: React.UIEventHandler<HTMLDivElement> = e => {
     const target = e.currentTarget;
