@@ -1,3 +1,14 @@
+enum EmbedType {
+  YOUTUBE
+  ALUGHA
+  IMAGE
+}
+
+type Embed {
+  type: EmbedType!
+  src: String!
+}
+
 type Message {
   id: ID!
   createdAt: DateTime!
@@ -5,6 +16,7 @@ type Message {
   author: User!
   viewerIsAuthor: Boolean!
   room: Room!
+  embeds: [Embed!]!
 }
 
 input SendMessageInput {

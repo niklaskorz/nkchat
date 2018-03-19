@@ -3,13 +3,13 @@ import Ref from './Ref';
 import { User } from './User';
 import { Room } from './Room';
 
-enum EmbedType {
+export enum EmbedType {
   Youtube = 'YOUTUBE',
   Alugha = 'ALUGHA',
   Image = 'IMAGE',
 }
 
-class Embed {
+export class Embed {
   @prop({ required: true })
   type: EmbedType;
 
