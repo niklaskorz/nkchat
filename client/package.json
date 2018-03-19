@@ -28,7 +28,7 @@
     "react-dom": "^16.2.0",
     "react-emotion": "^9.0.1",
     "react-router-dom": "^4.2.2",
-    "react-sane-contenteditable": "^1.1.4",
+    "react-saner-contenteditable": "^1.2.0",
     "react-scripts-ts": "2.13.0",
     "recompose": "^0.26.0",
     "serve": "^6.5.3",

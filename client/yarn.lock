@@ -4941,9 +4941,9 @@ react-router@^4.2.0:
     prop-types "^15.5.4"
     warning "^3.0.0"
 
-react-sane-contenteditable@^1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/react-sane-contenteditable/-/react-sane-contenteditable-1.1.4.tgz#12650aa6da42bf8d0ca4f66050ccd655f4ca72cd"
+react-saner-contenteditable@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-saner-contenteditable/-/react-saner-contenteditable-1.2.0.tgz#ad8654936a7f83cfe3de717255ef3432308ebe61"
   dependencies:
     lodash "^4.17.4"
     prop-types "^15.6.0"

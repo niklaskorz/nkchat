@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'react-emotion';
 import gql from 'graphql-tag';
 import { graphql, compose, ChildProps, MutationFunc } from 'react-apollo';
-import ContentEditable from 'react-sane-contenteditable';
+import ContentEditable from 'react-saner-contenteditable';
 import Linkify from 'linkifyjs/react';
 import * as colors from 'colors';
 import Loading from '../molecules/Loading';
@@ -81,7 +81,7 @@ const Message = styled('div')`
   }
 `;
 
-const InputForm = styled('form')`
+const NewMessageContainer = styled('div')`
   display: flex;
   background: ${colors.primary};
   padding: 10px;
@@ -306,13 +306,15 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
     this.stickToBottom = target.scrollHeight - scrollBottom <= 100;
   };
 
-  onSubmit: React.FormEventHandler<HTMLFormElement> = e => {
-    e.preventDefault();
-    this.sendMessage();
-  };
-
   onInputTextChange = (e: React.FormEvent<HTMLElement>, value: string) => {
     this.setState({ inputText: value });
+  };
+
+  onInputTextKeyDown: React.KeyboardEventHandler<HTMLElement> = e => {
+    if (e.keyCode === 13 && !e.shiftKey) {
+      e.preventDefault();
+      this.sendMessage();
+    }
   };
 
   render() {
@@ -360,22 +362,24 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
               </Message>
             ))}
           </Messages>
-          <InputForm onSubmit={this.onSubmit}>
+          <NewMessageContainer>
             <MessageInputContainer>
               <MessageInput
                 content={inputText}
                 onChange={this.onInputTextChange}
+                onKeyDown={this.onInputTextKeyDown}
                 maxLength={500}
                 multiLine
               />
             </MessageInputContainer>
             <MessageSendButton
-              type="submit"
+              type="button"
               disabled={!inputText.trim().length}
+              onClick={this.sendMessage}
             >
               Send
             </MessageSendButton>
-          </InputForm>
+          </NewMessageContainer>
         </Section>
 
         <RoomInfo room={room} />
