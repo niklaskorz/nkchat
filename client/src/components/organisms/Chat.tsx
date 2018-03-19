@@ -3,6 +3,7 @@ import styled from 'react-emotion';
 import gql from 'graphql-tag';
 import { graphql, compose, ChildProps, MutationFunc } from 'react-apollo';
 import ContentEditable from 'react-sane-contenteditable';
+import Linkify from 'linkifyjs/react';
 import * as colors from 'colors';
 import Loading from '../molecules/Loading';
 import RoomInfo from '../molecules/RoomInfo';
@@ -350,7 +351,9 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
                     {new Date(message.createdAt).toLocaleString()}
                   </MessageDate>
                 </MessageHeader>
-                <MessageText>{message.content}</MessageText>
+                <MessageText>
+                  <Linkify>{message.content}</Linkify>
+                </MessageText>
                 {message.embeds.map((embed, i) => (
                   <Embed key={i} type={embed.type} src={embed.src} />
                 ))}
