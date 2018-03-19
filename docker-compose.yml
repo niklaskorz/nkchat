@@ -6,9 +6,14 @@ networks:
   internal:
     external: false
 
+volumes:
+  mongodb:
+
 services:
   mongodb:
     image: "mongo:3.6"
+    volumes:
+      - 'mongodb:/data/db'
     networks:
       - internal
   nats:
