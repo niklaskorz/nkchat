@@ -403,7 +403,8 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
 
 const withData = graphql<Response>(ChatQuery, {
   options: ({ roomId }) => ({
-    variables: { roomId }
+    variables: { roomId },
+    fetchPolicy: 'cache-and-network'
   })
 });
 
