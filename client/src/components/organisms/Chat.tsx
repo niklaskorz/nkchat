@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'react-emotion';
 import gql from 'graphql-tag';
 import { graphql, compose, ChildProps, MutationFunc } from 'react-apollo';
-import ContentEditable from 'react-saner-contenteditable';
+import TextArea from 'react-textarea-autosize';
 import Linkify from 'linkifyjs/react';
 import * as colors from 'colors';
 import Loading from '../molecules/Loading';
@@ -97,10 +97,15 @@ const MessageInputContainer = styled('div')`
   border-radius: 2px;
 `;
 
-const MessageInput = styled(ContentEditable)`
+const MessageInput = styled(TextArea)`
   max-height: 5em;
+  min-height: 1em;
+  width: 100%;
   overflow-y: auto;
+  padding: 0;
   outline: none;
+  border: none;
+  resize: none;
 `;
 
 const MessageSendButton = styled('button')`
@@ -306,11 +311,11 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
     this.stickToBottom = target.scrollHeight - scrollBottom <= 100;
   };
 
-  onInputTextChange = (e: React.FormEvent<HTMLElement>, value: string) => {
-    this.setState({ inputText: value });
+  onInputTextChange: React.ChangeEventHandler<HTMLTextAreaElement> = e => {
+    this.setState({ inputText: e.currentTarget.value });
   };
 
-  onInputTextKeyDown: React.KeyboardEventHandler<HTMLElement> = e => {
+  onInputTextKeyDown: React.KeyboardEventHandler<HTMLTextAreaElement> = e => {
     if (e.keyCode === 13 && !e.shiftKey) {
       e.preventDefault();
       this.sendMessage();
@@ -365,18 +370,13 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
           <NewMessageContainer>
             <MessageInputContainer>
               <MessageInput
-                content={inputText}
+                useCacheForDOMMeasurements
+                value={inputText}
                 onChange={this.onInputTextChange}
                 onKeyDown={this.onInputTextKeyDown}
-                maxLength={500}
-                multiLine
               />
             </MessageInputContainer>
-            <MessageSendButton
-              type="button"
-              disabled={!inputText.trim().length}
-              onClick={this.sendMessage}
-            >
+            <MessageSendButton type="button" onClick={this.sendMessage}>
               Send
             </MessageSendButton>
           </NewMessageContainer>

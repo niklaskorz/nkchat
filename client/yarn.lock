@@ -67,6 +67,12 @@
     "@types/history" "*"
     "@types/react" "*"
 
+"@types/react-textarea-autosize@^4.3.2":
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/@types/react-textarea-autosize/-/react-textarea-autosize-4.3.2.tgz#0cc9e381d77a9f58984cead1b046200d6907419b"
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*", "@types/react@^16.0.38":
   version "16.0.38"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.0.38.tgz#76617433ea10274505f60bb86eddfdd0476ffdc2"
@@ -4941,14 +4947,6 @@ react-router@^4.2.0:
     prop-types "^15.5.4"
     warning "^3.0.0"
 
-react-saner-contenteditable@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/react-saner-contenteditable/-/react-saner-contenteditable-1.2.0.tgz#ad8654936a7f83cfe3de717255ef3432308ebe61"
-  dependencies:
-    lodash "^4.17.4"
-    prop-types "^15.6.0"
-    react "^16.0.0"
-
 react-scripts-ts@2.13.0:
   version "2.13.0"
   resolved "https://registry.yarnpkg.com/react-scripts-ts/-/react-scripts-ts-2.13.0.tgz#d5493035e6d521030f0d3e5e8e5b5872f7df1a28"
@@ -4986,7 +4984,13 @@ react-scripts-ts@2.13.0:
   optionalDependencies:
     fsevents "1.1.2"
 
-react@^16.0.0, react@^16.2.0:
+react-textarea-autosize@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/react-textarea-autosize/-/react-textarea-autosize-6.0.0.tgz#31e44dc7f40aef4fb140dcc8b8c4e1b9cd15c8e3"
+  dependencies:
+    prop-types "^15.6.0"
+
+react@^16.2.0:
   version "16.2.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.2.0.tgz#a31bd2dab89bff65d42134fa187f24d054c273ba"
   dependencies:
