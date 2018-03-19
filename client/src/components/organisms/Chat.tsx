@@ -223,6 +223,7 @@ const ChatSubscription = gql`
 class Chat extends React.Component<ChildProps<Props, Response>, State> {
   messageContainer?: HTMLDivElement;
   stickToBottom: boolean = true;
+  unsubscribe?: () => void;
 
   state: State = {
     inputText: ''
@@ -241,12 +242,20 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
       this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
     }
 
-    if (this.props.roomId !== prevProps.roomId) {
-      this.subscribeToMessages();
+    // Room changed
+    if (this.props.roomId !== prevProps.roomId && this.unsubscribe) {
+      this.unsubscribe();
+      this.unsubscribe = undefined;
+
       if (this.messageContainer) {
         this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
         this.stickToBottom = true;
       }
+    }
+
+    // Not subscribed currently, try to subscribe
+    if (!this.unsubscribe) {
+      this.subscribeToMessages();
     }
   }
 
@@ -260,7 +269,7 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
       return;
     }
 
-    data.subscribeToMore({
+    this.unsubscribe = data.subscribeToMore({
       document: ChatSubscription,
       variables: { roomId },
       updateQuery: (
@@ -286,7 +295,7 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
     });
   }
 
-  sendMessage = async () => {
+  sendMessage = () => {
     const { sendMessage, data } = this.props;
     const { inputText } = this.state;
     if (!data) {
@@ -302,10 +311,9 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
       return;
     }
 
-    await sendMessage({
-      variables: { roomId: room.id, content }
-    });
     this.setState({ inputText: '' });
+
+    sendMessage({ variables: { roomId: room.id, content } });
   };
 
   onMessagesScroll: React.UIEventHandler<HTMLDivElement> = e => {
