@@ -6,6 +6,7 @@ import ContentEditable from 'react-sane-contenteditable';
 import * as colors from 'colors';
 import Loading from '../molecules/Loading';
 import RoomInfo from '../molecules/RoomInfo';
+import Embed, { Props as EmbedProps } from '../molecules/Embed';
 
 const Section = styled('section')`
   display: flex;
@@ -125,6 +126,7 @@ interface Message {
   content: string;
   author: User;
   viewerIsAuthor: boolean;
+  embeds: EmbedProps[];
 }
 
 interface Room {
@@ -167,6 +169,10 @@ const ChatMessageFragment = gql`
       name
     }
     viewerIsAuthor
+    embeds {
+      type
+      src
+    }
   }
 `;
 
@@ -345,6 +351,9 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
                   </MessageDate>
                 </MessageHeader>
                 <MessageText>{message.content}</MessageText>
+                {message.embeds.map((embed, i) => (
+                  <Embed key={i} type={embed.type} src={embed.src} />
+                ))}
               </Message>
             ))}
           </Messages>
