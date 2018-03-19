@@ -6,6 +6,7 @@ const Section = styled('section')`
   background: ${colors.darkPrimary};
   color: #fff;
 
+  min-width: 0;
   flex: 0 0 250px;
 
   display: flex;
