@@ -1,6 +1,5 @@
 import getUrls from 'get-urls';
 import { URL } from 'url';
-import winston from 'winston';
 import {
   InstanceType,
   Message,
