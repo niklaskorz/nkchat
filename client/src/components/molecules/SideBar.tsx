@@ -6,8 +6,7 @@ const Section = styled('section')`
   background: ${colors.darkPrimary};
   color: #fff;
 
-  flex-shrink: 0;
-  width: 250px;
+  flex: 0 0 250px;
 
   display: flex;
   flex-direction: column;

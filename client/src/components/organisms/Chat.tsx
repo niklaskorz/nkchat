@@ -13,6 +13,7 @@ const Section = styled('section')`
   display: flex;
   flex-direction: column;
   flex: 1;
+  min-width: 0;
 `;
 
 const Header = styled('header')`
@@ -22,6 +23,10 @@ const Header = styled('header')`
   text-align: center;
   flex-shrink: 0;
   z-index: 2;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   border-top: 2px solid transparent;
   border-bottom: 2px solid ${colors.secondary};
