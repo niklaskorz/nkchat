@@ -5,7 +5,7 @@ const IframeContainer = styled('div')`
   position: relative;
   height: 0;
   padding-bottom: 56.25%;
-  width: 800px;
+  width: 500px;
   max-width: 100%;
   margin-top: 20px;
 `;
@@ -21,8 +21,8 @@ const Iframe = styled('iframe')`
 
 const Image = styled('img')`
   display: block;
-  max-width: 800px;
-  max-height: 600px;
+  max-width: 500px;
+  max-height: 500px;
   width: auto;
   height: auto;
   margin-top: 20px;
