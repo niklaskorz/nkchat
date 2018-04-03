@@ -1,6 +1,7 @@
 import * as React from 'react';
 import gql from 'graphql-tag';
 import { ChildProps, compose, graphql, MutationFunc } from 'react-apollo';
+import { Link } from 'react-router-dom';
 import styled from 'react-emotion';
 
 const Form = styled('form')`
@@ -38,20 +39,14 @@ interface Response {
 }
 
 interface State {
-  isNew: boolean;
   name: string;
   password: string;
 }
 
 class LoginPage extends React.Component<ChildProps<Props, Response>, State> {
   state: State = {
-    isNew: false,
     name: '',
     password: ''
-  };
-
-  onNewChange: React.ChangeEventHandler<HTMLInputElement> = e => {
-    this.setState({ isNew: e.currentTarget.checked });
   };
 
   onNameChange: React.ChangeEventHandler<HTMLInputElement> = e => {
@@ -65,9 +60,11 @@ class LoginPage extends React.Component<ChildProps<Props, Response>, State> {
   onSubmit: React.FormEventHandler<HTMLFormElement> = async e => {
     e.preventDefault();
 
-    const { isNew, name, password } = this.state;
+    const { name, password } = this.state;
+    const { location: { pathname } } = this.props;
+
     let session: Session;
-    if (isNew) {
+    if (pathname === '/register') {
       const result = await this.props.register({
         variables: { name, password }
       });
@@ -86,20 +83,14 @@ class LoginPage extends React.Component<ChildProps<Props, Response>, State> {
   };
 
   render() {
-    const { isNew, name, password } = this.state;
+    const { name, password } = this.state;
+    const { location: { pathname } } = this.props;
+    const isRegistration = pathname === '/register';
+    const label = isRegistration ? 'Register' : 'Login';
 
     return (
       <Form onSubmit={this.onSubmit}>
-        <h1>Login or register</h1>
-        <label>
-          <input
-            type="checkbox"
-            placeholder="I want to create a new account"
-            checked={isNew}
-            onChange={this.onNewChange}
-          />
-          Create new account
-        </label>
+        <h1>{label}</h1>
         <input
           type="text"
           placeholder="Name"
@@ -115,7 +106,18 @@ class LoginPage extends React.Component<ChildProps<Props, Response>, State> {
           value={password}
           onChange={this.onPasswordChange}
         />
-        <button type="submit">{isNew ? 'Register' : 'Login'}</button>
+        <button type="submit">{label}</button>
+        {!isRegistration && (
+          <p>
+            Don't have an account yet?{' '}
+            <Link to="/register">Register here.</Link>
+          </p>
+        )}
+        {isRegistration && (
+          <p>
+            Already have an account? <Link to="/login">Login here.</Link>
+          </p>
+        )}
       </Form>
     );
   }

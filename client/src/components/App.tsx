@@ -14,6 +14,7 @@ class App extends React.Component {
             <Route exact path="/" component={ChatPage} />
             <Route exact path="/rooms/:roomId" component={ChatPage} />
             <Route exact path="/login" component={LoginPage} />
+            <Route exact path="/register" component={LoginPage} />
           </Switch>
         </BrowserRouter>
       </ApolloProvider>
