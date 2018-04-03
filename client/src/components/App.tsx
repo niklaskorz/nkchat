@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { ApolloProvider } from 'react-apollo';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import apolloClient from './apollo';
-import ChatPage from './components/pages/ChatPage';
-import LoginPage from './components/pages/LoginPage';
+import apolloClient from '../apollo';
+import ChatPage from './pages/ChatPage';
+import LoginPage from './pages/LoginPage';
 
 class App extends React.Component {
   render() {
