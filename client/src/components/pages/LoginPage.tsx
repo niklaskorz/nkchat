@@ -3,11 +3,46 @@ import gql from 'graphql-tag';
 import { ChildProps, compose, graphql, MutationFunc } from 'react-apollo';
 import { Link } from 'react-router-dom';
 import styled from 'react-emotion';
+import * as colors from 'colors';
+
+const Container = styled('div')`
+  background: ${colors.darkPrimary};
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 const Form = styled('form')`
+  background: ${colors.primary};
   display: flex;
   flex-direction: column;
   padding: 20px;
+  border-radius: 2px;
+`;
+
+const Input = styled('input')`
+  margin-bottom: 20px;
+  border: 1px solid ${colors.secondary};
+  padding: 15px 10px;
+  border-radius: 2px;
+`;
+
+const Button = styled('button')`
+  border: 1px solid ${colors.darkSecondary};
+  background: ${colors.darkSecondary};
+  color: ${colors.darkSecondaryText};
+  padding: 15px 10px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: 0.1s background ease, 0.1s color ease;
+
+  :hover,
+  :active {
+    background: ${colors.secondary};
+    color: ${colors.primaryText};
+  }
 `;
 
 interface Session {
@@ -89,36 +124,38 @@ class LoginPage extends React.Component<ChildProps<Props, Response>, State> {
     const label = isRegistration ? 'Register' : 'Login';
 
     return (
-      <Form onSubmit={this.onSubmit}>
-        <h1>{label}</h1>
-        <input
-          type="text"
-          placeholder="Name"
-          autoFocus
-          required
-          value={name}
-          onChange={this.onNameChange}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          required
-          value={password}
-          onChange={this.onPasswordChange}
-        />
-        <button type="submit">{label}</button>
-        {!isRegistration && (
-          <p>
-            Don't have an account yet?{' '}
-            <Link to="/register">Register here.</Link>
-          </p>
-        )}
-        {isRegistration && (
-          <p>
-            Already have an account? <Link to="/login">Login here.</Link>
-          </p>
-        )}
-      </Form>
+      <Container>
+        <Form onSubmit={this.onSubmit}>
+          <h1>{label}</h1>
+          <Input
+            type="text"
+            placeholder="Name"
+            autoFocus
+            required
+            value={name}
+            onChange={this.onNameChange}
+          />
+          <Input
+            type="password"
+            placeholder="Password"
+            required
+            value={password}
+            onChange={this.onPasswordChange}
+          />
+          <Button type="submit">{label}</Button>
+          {!isRegistration && (
+            <p>
+              Don't have an account yet?{' '}
+              <Link to="/register">Register here</Link>
+            </p>
+          )}
+          {isRegistration && (
+            <p>
+              Already have an account? <Link to="/login">Login here</Link>
+            </p>
+          )}
+        </Form>
+      </Container>
     );
   }
 }
