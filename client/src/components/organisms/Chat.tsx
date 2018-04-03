@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import { graphql, compose, ChildProps, MutationFunc } from 'react-apollo';
 import TextArea from 'react-textarea-autosize';
 import Linkify from 'linkifyjs/react';
+import { Helmet } from 'react-helmet';
 import * as colors from 'colors';
 import Loading from '../molecules/Loading';
 import RoomInfo from '../molecules/RoomInfo';
@@ -354,6 +355,7 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
 
     return (
       <React.Fragment>
+        <Helmet title={room.name} />
         <Section>
           <Header title={room.name}>{room.name}</Header>
           <Messages

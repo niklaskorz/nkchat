@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 import { ChildProps, compose, graphql, MutationFunc } from 'react-apollo';
 import { Link } from 'react-router-dom';
 import styled from 'react-emotion';
+import { Helmet } from 'react-helmet';
 import * as colors from 'colors';
 
 const Container = styled('div')`
@@ -132,6 +133,7 @@ class LoginPage extends React.Component<ChildProps<Props, Response>, State> {
 
     return (
       <Container>
+        <Helmet title={label} />
         <Form onSubmit={this.onSubmit}>
           <h1>{label}</h1>
           <Input
