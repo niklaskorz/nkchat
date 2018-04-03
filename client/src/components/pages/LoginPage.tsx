@@ -19,6 +19,8 @@ const Form = styled('form')`
   flex-direction: column;
   padding: 20px;
   border-radius: 2px;
+  width: 400px;
+  max-width: 100%;
 `;
 
 const Input = styled('input')`
@@ -33,6 +35,7 @@ const Button = styled('button')`
   background: ${colors.darkSecondary};
   color: ${colors.darkSecondaryText};
   padding: 15px 10px;
+  margin-bottom: 15px;
   border-radius: 2px;
   text-transform: uppercase;
   cursor: pointer;
@@ -43,6 +46,10 @@ const Button = styled('button')`
     background: ${colors.secondary};
     color: ${colors.primaryText};
   }
+`;
+
+const InfoText = styled('p')`
+  text-align: center;
 `;
 
 interface Session {
@@ -144,15 +151,15 @@ class LoginPage extends React.Component<ChildProps<Props, Response>, State> {
           />
           <Button type="submit">{label}</Button>
           {!isRegistration && (
-            <p>
+            <InfoText>
               Don't have an account yet?{' '}
               <Link to="/register">Register here</Link>
-            </p>
+            </InfoText>
           )}
           {isRegistration && (
-            <p>
+            <InfoText>
               Already have an account? <Link to="/login">Login here</Link>
-            </p>
+            </InfoText>
           )}
         </Form>
       </Container>
