@@ -21,14 +21,26 @@ const router = new Router();
 
 app.use(async (ctx, next) => {
   if (process.env.HOSTNAME) {
+    // Set for easier debugging
     ctx.set('X-Docker-Hostname', process.env.HOSTNAME);
   }
   await next();
 });
 
 const withSession: Router.IMiddleware = async (ctx: Context, next) => {
-  const sessionId = ctx.get('X-Session-ID');
-  if (sessionId) {
+  // Check if Authentication with Bearer token is passed
+  // Also see https://swagger.io/docs/specification/authentication/bearer-authentication/
+  const auth = ctx.get('Authentication');
+  if (auth) {
+    const [authType, ...parts] = auth.split(' ');
+    if (authType !== 'Bearer') {
+      throw new Error('Unsupported authentication type: ' + authType);
+    }
+    if (parts.length > 1) {
+      throw new Error('Malformed authentication header');
+    }
+
+    const sessionId = parts[0];
     const session = await SessionModel.findById(sessionId)
       .populate('user')
       .exec();
