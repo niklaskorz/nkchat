@@ -231,6 +231,10 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
   };
 
   componentDidMount() {
+    this.stickToBottom = true;
+    if (this.messageContainer) {
+      this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
+    }
     this.subscribeToMessages();
   }
 
@@ -245,9 +249,9 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
 
     // Room changed
     if (this.props.roomId !== prevProps.roomId) {
+      this.stickToBottom = true;
       if (this.messageContainer) {
         this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
-        this.stickToBottom = true;
       }
       if (this.unsubscribe) {
         this.unsubscribe();
