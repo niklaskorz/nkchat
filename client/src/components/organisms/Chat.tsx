@@ -313,6 +313,8 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
     }
 
     this.setState({ inputText: '' });
+    // Reset scroll preference so we see our new message
+    this.stickToBottom = true;
 
     sendMessage({ variables: { roomId: room.id, content } });
   };
