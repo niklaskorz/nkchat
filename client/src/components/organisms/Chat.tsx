@@ -35,9 +35,7 @@ const Header = styled('header')`
 
 const Messages = styled('div')`
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 10px 40px;
+  padding: 0 40px;
   overflow: auto;
   background: ${colors.primary};
 `;
@@ -71,6 +69,7 @@ const MessageText = styled('div')`
 `;
 
 const Message = styled('div')`
+  display: inline-block;
   background: #fff;
   color: #000;
   padding: 15px;
@@ -84,6 +83,16 @@ const Message = styled('div')`
     margin-left: auto;
     margin-right: 0;
     background: ${colors.secondary};
+  }
+`;
+
+const MessageWrapper = styled('div')`
+  :first-child {
+    padding-top: 10px;
+  }
+
+  :last-child {
+    padding-bottom: 10px;
   }
 `;
 
@@ -387,28 +396,29 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
             onScroll={this.onMessagesScroll}
           >
             {room.messages.map(message => (
-              <Message
-                key={message.id}
-                className={message.viewerIsAuthor ? 'viewerIsAuthor' : ''}
-              >
-                <MessageHeader>
-                  <MessageAuthor>{message.author.name}</MessageAuthor>
-                  <MessageDate>
-                    {new Date(message.createdAt).toLocaleString()}
-                  </MessageDate>
-                </MessageHeader>
-                <MessageText>
-                  <Linkify>{message.content}</Linkify>
-                </MessageText>
-                {message.embeds.map((embed, i) => (
-                  <Embed
-                    key={i}
-                    type={embed.type}
-                    src={embed.src}
-                    onLoad={this.onEmbedLoaded}
-                  />
-                ))}
-              </Message>
+              <MessageWrapper key={message.id}>
+                <Message
+                  className={message.viewerIsAuthor ? 'viewerIsAuthor' : ''}
+                >
+                  <MessageHeader>
+                    <MessageAuthor>{message.author.name}</MessageAuthor>
+                    <MessageDate>
+                      {new Date(message.createdAt).toLocaleString()}
+                    </MessageDate>
+                  </MessageHeader>
+                  <MessageText>
+                    <Linkify>{message.content}</Linkify>
+                  </MessageText>
+                  {message.embeds.map((embed, i) => (
+                    <Embed
+                      key={i}
+                      type={embed.type}
+                      src={embed.src}
+                      onLoad={this.onEmbedLoaded}
+                    />
+                  ))}
+                </Message>
+              </MessageWrapper>
             ))}
           </Messages>
           <NewMessageContainer>
