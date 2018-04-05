@@ -24,6 +24,10 @@ const Form = styled('form')`
   max-width: 100%;
 `;
 
+const Title = styled('h1')`
+  text-align: center;
+`;
+
 const ErrorMessage = styled('div')`
   border-radius: 2px;
   padding: 15px;
@@ -164,7 +168,7 @@ class LoginPage extends React.Component<ChildProps<Props, Response>, State> {
       <Container>
         <Helmet title={label} />
         <Form onSubmit={this.onSubmit}>
-          <h1>{label}</h1>
+          <Title>{label}</Title>
           {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
           <Input
             type="text"
