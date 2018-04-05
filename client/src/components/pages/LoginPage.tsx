@@ -24,6 +24,14 @@ const Form = styled('form')`
   max-width: 100%;
 `;
 
+const ErrorMessage = styled('div')`
+  border-radius: 2px;
+  padding: 15px;
+  margin-bottom: 20px;
+  background: ${colors.error};
+  color: #fff;
+`;
+
 const Input = styled('input')`
   margin-bottom: 20px;
   border: 1px solid ${colors.secondary};
@@ -84,6 +92,7 @@ interface Response {
 interface State {
   name: string;
   password: string;
+  errorMessage?: string;
 }
 
 class LoginPage extends React.Component<ChildProps<Props, Response>, State> {
@@ -91,6 +100,12 @@ class LoginPage extends React.Component<ChildProps<Props, Response>, State> {
     name: '',
     password: ''
   };
+
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.location.pathname !== prevProps.location.pathname) {
+      this.setState({ errorMessage: undefined });
+    }
+  }
 
   onNameChange: React.ChangeEventHandler<HTMLInputElement> = e => {
     this.setState({ name: e.currentTarget.value });
@@ -106,31 +121,41 @@ class LoginPage extends React.Component<ChildProps<Props, Response>, State> {
     const { name, password } = this.state;
     const { location: { pathname } } = this.props;
 
-    let session: Session;
-    if (pathname === '/register') {
-      const result = await this.props.register({
-        variables: { name, password }
-      });
-      session = result.data.register;
-    } else {
-      const result = await this.props.login({ variables: { name, password } });
-      session = result.data.login;
-    }
-    localStorage.session = session.id;
+    try {
+      let session: Session;
+      if (pathname === '/register') {
+        const result = await this.props.register({
+          variables: { name, password }
+        });
+        session = result.data.register;
+      } else {
+        const result = await this.props.login({
+          variables: { name, password }
+        });
+        session = result.data.login;
+      }
+      localStorage.session = session.id;
 
-    if (this.props.location.state) {
-      // Reloads and redirects to the chat room visited before
-      // the user was redirected to the login page
-      location.pathname = this.props.location.state.from.pathname;
-    } else {
-      // Redirects the user to the room list if no room was open before
-      // the user was redirected to the login page
-      location.pathname = '/';
+      if (this.props.location.state) {
+        // Reloads and redirects to the chat room visited before
+        // the user was redirected to the login page
+        location.pathname = this.props.location.state.from.pathname;
+      } else {
+        // Redirects the user to the room list if no room was open before
+        // the user was redirected to the login page
+        location.pathname = '/';
+      }
+    } catch (ex) {
+      const trimLeft = 'GraphQL error: ';
+      const errorMessage: string = ex.message.startsWith(trimLeft)
+        ? ex.message.slice(trimLeft.length)
+        : ex.message;
+      this.setState({ errorMessage });
     }
   };
 
   render() {
-    const { name, password } = this.state;
+    const { name, password, errorMessage } = this.state;
     const { location: { pathname } } = this.props;
     const isRegistration = pathname === '/register';
     const label = isRegistration ? 'Register' : 'Login';
@@ -140,6 +165,7 @@ class LoginPage extends React.Component<ChildProps<Props, Response>, State> {
         <Helmet title={label} />
         <Form onSubmit={this.onSubmit}>
           <h1>{label}</h1>
+          {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
           <Input
             type="text"
             placeholder="Name"
