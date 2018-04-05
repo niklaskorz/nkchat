@@ -119,8 +119,12 @@ class LoginPage extends React.Component<ChildProps<Props, Response>, State> {
     localStorage.session = session.id;
 
     if (this.props.location.state) {
+      // Reloads and redirects to the chat room visited before
+      // the user was redirected to the login page
       location.pathname = this.props.location.state.from.pathname;
     } else {
+      // Redirects the user to the room list if no room was open before
+      // the user was redirected to the login page
       location.pathname = '/';
     }
   };

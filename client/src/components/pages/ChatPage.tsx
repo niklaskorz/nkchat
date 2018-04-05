@@ -4,6 +4,7 @@ import { ApolloQueryResult } from 'apollo-client';
 import { graphql, ChildProps, compose, MutationFunc } from 'react-apollo';
 import styled from 'react-emotion';
 import { Redirect } from 'react-router-dom';
+import { History, Location } from 'history';
 import Chat from '../organisms/Chat';
 import RoomList, { Room } from '../molecules/RoomList';
 import Loading from '../molecules/Loading';
@@ -26,9 +27,8 @@ interface Response {
 }
 
 interface Props {
-  location: {
-    pathname: string;
-  };
+  history: History;
+  location: Location;
   match: {
     params: {
       roomId?: string;
@@ -53,7 +53,7 @@ const ChatPageQuery = gql`
 
 class ChatPage extends React.Component<ChildProps<Props, Response>> {
   createRoom = async (name: string) => {
-    await this.props.createRoom({
+    const res = await this.props.createRoom({
       variables: { name },
       update: (store, result: ApolloQueryResult<{ createRoom: Room }>) => {
         const data = store.readQuery<Response>({ query: ChatPageQuery });
@@ -63,6 +63,9 @@ class ChatPage extends React.Component<ChildProps<Props, Response>> {
         }
       }
     });
+    // Open the created room
+    const roomId = res.data.createRoom.id;
+    this.props.history.push(`/rooms/${roomId}`);
   };
 
   joinRoom = async (roomId: string) => {
@@ -76,10 +79,15 @@ class ChatPage extends React.Component<ChildProps<Props, Response>> {
         }
       }
     });
+    // Open the joined room
+    this.props.history.push(`/rooms/${roomId}`);
   };
 
   logout = () => {
+    // Remove session id from localStorage so Apollo doesn't use it after the
+    // reload
     delete localStorage.session;
+    // Reloads and redirects to the login page
     location.pathname = '/login';
   };
 
