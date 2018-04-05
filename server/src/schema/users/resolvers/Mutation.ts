@@ -23,10 +23,19 @@ export default {
     { input }: { input: RegisterInput },
     ctx: Context,
   ): Promise<InstanceType<Session>> {
-    const user = await UserModel.create({
-      name: input.name,
-      password: await bcrypt.hash(input.password, 10),
-    });
+    let user;
+    try {
+      user = await UserModel.create({
+        name: input.name,
+        password: await bcrypt.hash(input.password, 10),
+      });
+    } catch (ex) {
+      if (ex.code === 11000) {
+        // WriteError of type KeyError
+        throw new Error(`User ${input.name} already exists`);
+      }
+      throw new Error('User could not be created');
+    }
 
     const session = await SessionModel.create({
       user: user.id,
