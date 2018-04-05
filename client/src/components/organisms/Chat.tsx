@@ -282,7 +282,13 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
         }
 
         const newMessage = subscriptionData.data.messageWasSent;
-        const messages = [...prev.room.messages, newMessage];
+        const messages = [...prev.room.messages];
+        const messageIndex = messages.findIndex(m => m.id === newMessage.id);
+        if (messageIndex !== -1) {
+          messages[messageIndex] = newMessage;
+        } else {
+          messages.push(newMessage);
+        }
         messages.sort(compareMessages);
 
         return {
