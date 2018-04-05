@@ -68,7 +68,11 @@ const MessageText = styled('div')`
   max-width: 800px;
 `;
 
-const Message = styled('div')`
+interface MessageProps {
+  viewerIsAuthor: boolean;
+}
+
+const Message = styled<MessageProps, 'div'>('div')`
   display: inline-block;
   background: #fff;
   color: #000;
@@ -78,15 +82,14 @@ const Message = styled('div')`
   max-width: 100%;
   border-radius: 10px;
   line-height: 1.5;
+  text-align: start;
 
-  &.viewerIsAuthor {
-    margin-left: auto;
-    margin-right: 0;
-    background: ${colors.secondary};
-  }
+  ${props => props.viewerIsAuthor && 'background: ' + colors.secondary};
 `;
 
-const MessageWrapper = styled('div')`
+const MessageWrapper = styled<MessageProps, 'div'>('div')`
+  ${props => props.viewerIsAuthor && 'text-align: end'};
+
   :first-child {
     padding-top: 10px;
   }
@@ -396,10 +399,11 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
             onScroll={this.onMessagesScroll}
           >
             {room.messages.map(message => (
-              <MessageWrapper key={message.id}>
-                <Message
-                  className={message.viewerIsAuthor ? 'viewerIsAuthor' : ''}
-                >
+              <MessageWrapper
+                key={message.id}
+                viewerIsAuthor={message.viewerIsAuthor}
+              >
+                <Message viewerIsAuthor={message.viewerIsAuthor}>
                   <MessageHeader>
                     <MessageAuthor>{message.author.name}</MessageAuthor>
                     <MessageDate>
