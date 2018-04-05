@@ -244,13 +244,14 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
     }
 
     // Room changed
-    if (this.props.roomId !== prevProps.roomId && this.unsubscribe) {
-      this.unsubscribe();
-      this.unsubscribe = undefined;
-
+    if (this.props.roomId !== prevProps.roomId) {
       if (this.messageContainer) {
         this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
         this.stickToBottom = true;
+      }
+      if (this.unsubscribe) {
+        this.unsubscribe();
+        this.unsubscribe = undefined;
       }
     }
 
