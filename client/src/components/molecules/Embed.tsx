@@ -37,11 +37,12 @@ enum EmbedType {
 export interface Props {
   type: EmbedType;
   src: string;
+  onLoad(): void;
 }
 
 export default class Embed extends React.Component<Props> {
   render() {
-    const { type, src } = this.props;
+    const { type, src, onLoad } = this.props;
     switch (type) {
       case EmbedType.Alugha:
         return (
@@ -49,6 +50,7 @@ export default class Embed extends React.Component<Props> {
             <Iframe
               allowFullScreen
               src={`https://alugha.com/embed/web-player?v=${src}`}
+              onLoad={onLoad}
             />
           </IframeContainer>
         );
@@ -58,11 +60,12 @@ export default class Embed extends React.Component<Props> {
             <Iframe
               allowFullScreen
               src={`https://www.youtube.com/embed/${src}`}
+              onLoad={onLoad}
             />
           </IframeContainer>
         );
       case EmbedType.Image:
-        return <Image src={src} alt="Embedded image" />;
+        return <Image onLoad={onLoad} src={src} alt="Embedded image" />;
       default:
         return null;
     }

@@ -336,6 +336,13 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
     }
   };
 
+  onEmbedLoaded = () => {
+    if (this.messageContainer && this.stickToBottom) {
+      // Make sure we're still at the bottom
+      this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
+    }
+  };
+
   render() {
     if (!this.props.data) {
       return null;
@@ -377,7 +384,12 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
                   <Linkify>{message.content}</Linkify>
                 </MessageText>
                 {message.embeds.map((embed, i) => (
-                  <Embed key={i} type={embed.type} src={embed.src} />
+                  <Embed
+                    key={i}
+                    type={embed.type}
+                    src={embed.src}
+                    onLoad={this.onEmbedLoaded}
+                  />
                 ))}
               </Message>
             ))}
