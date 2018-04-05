@@ -33,13 +33,20 @@ const Header = styled('header')`
   border-bottom: 2px solid ${colors.secondary};
 `;
 
-const Messages = styled('div')`
+const MessagesWrapper = styled('div')`
   flex: 1;
+  display: flex;
+  /* Inverts the scroll direction so we don't have to rely on JavaScript for this */
+  flex-direction: column-reverse;
+  overflow: auto;
+  background: ${colors.primary};
+`;
+
+const Messages = styled('div')`
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   padding: 10px 40px;
-  overflow: auto;
-  background: ${colors.primary};
 `;
 
 const MessageHeader = styled('header')`
@@ -223,7 +230,6 @@ const ChatSubscription = gql`
 
 class Chat extends React.Component<ChildProps<Props, Response>, State> {
   messageContainer?: HTMLDivElement;
-  stickToBottom: boolean = true;
   unsubscribe?: () => void;
 
   state: State = {
@@ -235,14 +241,6 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
   }
 
   componentDidUpdate(prevProps: ChildProps<Props, Response>) {
-    if (
-      this.messageContainer &&
-      this.props.data !== prevProps.data &&
-      this.stickToBottom
-    ) {
-      this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
-    }
-
     // Room changed
     if (this.props.roomId !== prevProps.roomId && this.unsubscribe) {
       this.unsubscribe();
@@ -250,7 +248,6 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
 
       if (this.messageContainer) {
         this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
-        this.stickToBottom = true;
       }
     }
 
@@ -317,14 +314,6 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
     sendMessage({ variables: { roomId: room.id, content } });
   };
 
-  onMessagesScroll: React.UIEventHandler<HTMLDivElement> = e => {
-    const target = e.currentTarget;
-    const height = target.getBoundingClientRect().height;
-    const scrollBottom = target.scrollTop + height;
-
-    this.stickToBottom = target.scrollHeight - scrollBottom <= 100;
-  };
-
   onInputTextChange: React.ChangeEventHandler<HTMLTextAreaElement> = e => {
     this.setState({ inputText: e.currentTarget.value });
   };
@@ -358,30 +347,29 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
         <Helmet title={room.name} />
         <Section>
           <Header title={room.name}>{room.name}</Header>
-          <Messages
-            innerRef={this.refMessageContainer}
-            onScroll={this.onMessagesScroll}
-          >
-            {room.messages.map(message => (
-              <Message
-                key={message.id}
-                className={message.viewerIsAuthor ? 'viewerIsAuthor' : ''}
-              >
-                <MessageHeader>
-                  <MessageAuthor>{message.author.name}</MessageAuthor>
-                  <MessageDate>
-                    {new Date(message.createdAt).toLocaleString()}
-                  </MessageDate>
-                </MessageHeader>
-                <MessageText>
-                  <Linkify>{message.content}</Linkify>
-                </MessageText>
-                {message.embeds.map((embed, i) => (
-                  <Embed key={i} type={embed.type} src={embed.src} />
-                ))}
-              </Message>
-            ))}
-          </Messages>
+          <MessagesWrapper>
+            <Messages innerRef={this.refMessageContainer}>
+              {room.messages.map(message => (
+                <Message
+                  key={message.id}
+                  className={message.viewerIsAuthor ? 'viewerIsAuthor' : ''}
+                >
+                  <MessageHeader>
+                    <MessageAuthor>{message.author.name}</MessageAuthor>
+                    <MessageDate>
+                      {new Date(message.createdAt).toLocaleString()}
+                    </MessageDate>
+                  </MessageHeader>
+                  <MessageText>
+                    <Linkify>{message.content}</Linkify>
+                  </MessageText>
+                  {message.embeds.map((embed, i) => (
+                    <Embed key={i} type={embed.type} src={embed.src} />
+                  ))}
+                </Message>
+              ))}
+            </Messages>
+          </MessagesWrapper>
           <NewMessageContainer>
             <MessageInputContainer>
               <MessageInput
