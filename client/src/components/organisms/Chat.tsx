@@ -116,10 +116,11 @@ const MessageInput = styled(TextArea)`
 
 const MessageSendButton = styled('button')`
   flex-shrink: 0;
-  appearance: none;
   border: none;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
+  background: #555;
+  color: #fff;
   cursor: pointer;
 
   :disabled {
@@ -267,6 +268,9 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
 
   refMessageContainer = (el: HTMLDivElement) => {
     this.messageContainer = el;
+    if (this.stickToBottom) {
+      this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
+    }
   };
 
   subscribeToMessages() {
