@@ -9,7 +9,7 @@ Licensed under the [MIT license](LICENSE).
 ## Setup requirements
 
 - Docker ([Windows](https://docs.docker.com/docker-for-windows/), [macOS](https://docs.docker.com/docker-for-mac/), [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/))
-- docker-compose (usually pre-installed by Docker, if not [see here](https://docs.docker.com/compose/install/))
+- Docker Compose (usually pre-installed by Docker, if not [see here](https://docs.docker.com/compose/install/))
 
 ## Setup
 
