@@ -9,7 +9,7 @@ const session = localStorage.session;
 
 const protocol = location.protocol;
 const hostname = location.hostname;
-const port = (location.port && location.port !== ':8080') ? ':3000' : '';
+const port = location.port && location.port !== ':8080' ? ':3000' : '';
 const host = hostname + port;
 const base = protocol + '//' + host;
 const wsProtocol = protocol === 'https:' ? 'wss:' : 'ws:';
