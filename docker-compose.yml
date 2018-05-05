@@ -11,7 +11,7 @@ volumes:
 
 services:
   mongodb:
-    image: "mongo:3.7"
+    image: "mongo:3.6"
     volumes:
       - 'mongo:/data/db'
     networks:
