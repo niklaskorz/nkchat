@@ -3,6 +3,10 @@ import styled, { keyframes } from 'react-emotion';
 import * as colors from 'colors';
 
 // CSS code taken from http://tobiasahlin.com/spinkit/
+// Copyright (c) 2015 Tobias Ahlin
+// MIT License
+// See https://github.com/tobiasahlin/SpinKit/blob/master/LICENSE
+// for further information.
 
 const stretchDelay = keyframes`
   0%, 40%, 100% {

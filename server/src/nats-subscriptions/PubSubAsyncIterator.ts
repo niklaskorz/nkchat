@@ -1,6 +1,10 @@
 import { PubSubEngine } from 'graphql-subscriptions';
 
 // Taken from https://github.com/davidyaha/graphql-redis-subscriptions/blob/master/src/pubsub-async-iterator.ts
+// Copyright (c) 2016 David Yahalomi
+// MIT License
+// See https://github.com/davidyaha/graphql-redis-subscriptions/blob/master/LICENSE
+// for further information.
 
 /**
  * A class for digesting PubSubEngine events via the new AsyncIterator interface.
