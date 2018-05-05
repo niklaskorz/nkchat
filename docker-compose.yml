@@ -28,7 +28,7 @@ services:
     labels:
       traefik.enable: "true"
       traefik.port: "3000"
-      traefik.frontend.rule: "Path:/graphql,/graphiql,/subscriptions"
+      traefik.frontend.rule: "Path:/graphql,/graphiql,/subscriptions;Method:GET,POST"
       traefik.docker.network: nkchat_proxy
     networks:
       - internal
@@ -41,7 +41,7 @@ services:
     labels:
       traefik.enable: "true"
       traefik.port: "3000"
-      traefik.frontend.rule: "Path:/"
+      traefik.frontend.rule: "PathPrefix:/"
       traefik.docker.network: nkchat_proxy
     networks:
       - internal
