@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  server:
+    ports:
+      - "3000"
+  client:
+    ports:
+      - "8080:3000"
