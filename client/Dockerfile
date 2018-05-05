@@ -1,4 +1,4 @@
-FROM node:10.0
+FROM node:9.11
 
 COPY . /client
 WORKDIR /client
