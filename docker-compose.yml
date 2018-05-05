@@ -3,6 +3,8 @@ version: "3"
 networks:
   internal:
     external: false
+  proxy:
+    external: false
 
 volumes:
   mongo:
@@ -27,7 +29,7 @@ services:
       traefik.enable: "true"
       traefik.port: "3000"
       traefik.frontend.rule: "Path:/graphql,/graphiql,/subscriptions"
-      traefik.docker.network: proxy
+      traefik.docker.network: nkchat_proxy
     networks:
       - internal
       - proxy
@@ -39,7 +41,8 @@ services:
     labels:
       traefik.enable: "true"
       traefik.port: "3000"
-      traefik.docker.network: proxy
+      traefik.frontend.rule: "Path:/"
+      traefik.docker.network: nkchat_proxy
     networks:
       - internal
       - proxy

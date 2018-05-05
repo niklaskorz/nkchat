@@ -8,6 +8,8 @@ services:
   server:
     labels:
       traefik.frontend.rule: "Host:chat.niklaskorz.de;Path:/graphql,/graphiql,/subscriptions"
+      traefik.docker.network: proxy
   client:
     labels:
       traefik.frontend.rule: "Host:chat.niklaskorz.de"
+      traefik.docker.network: proxy

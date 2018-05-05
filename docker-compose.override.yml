@@ -1,14 +1,13 @@
 version: "3"
 
-networks:
-  proxy:
-    external: false
-
 services:
   traefik:
     image: "traefik:1.6"
-    command: -c /dev/null --api --docker --docker.domain=docker.localhost
+    command: "-c /dev/null --api --entrypoints='Name:http Address::9000' --docker --docker.exposedbydefault=false --docker.domain=docker.localhost"
     ports:
       - "8080:8080"
+      - "9000:9000"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - proxy
