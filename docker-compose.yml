@@ -9,13 +9,13 @@ volumes:
 
 services:
   mongodb:
-    image: "mongo:3.6"
+    image: "mongo:3.7"
     volumes:
       - 'mongo:/data/db'
     networks:
       - internal
   nats:
-    image: "nats:1.0.6"
+    image: "nats:1.1.0"
     networks:
       - internal
   server:
@@ -23,13 +23,24 @@ services:
     environment:
       - MONGODB_HOST=mongodb
       - NATS_HOST=nats
+    labels:
+      traefik.enable: "true"
+      traefik.port: "3000"
+      traefik.frontend.rule: "Path:/graphql,/graphiql,/subscriptions"
+      traefik.docker.network: proxy
     networks:
       - internal
+      - proxy
     depends_on:
       - mongodb
       - nats
   client:
     build: client
+    labels:
+      traefik.enable: "true"
+      traefik.port: "3000"
+      traefik.docker.network: proxy
     networks:
       - internal
+      - proxy
 

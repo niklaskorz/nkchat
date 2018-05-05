@@ -1,9 +1,15 @@
 version: "3"
 
+networks:
+  proxy:
+    external: false
+
 services:
-  server:
+  traefik:
+    image: "traefik:1.6"
+    command: -c /dev/null --api --docker --docker.domain=docker.localhost
     ports:
-      - "3000:3000"
-  client:
-    ports:
-      - "8080:3000"
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
