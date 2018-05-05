@@ -5,6 +5,7 @@ import {
   Room,
   Message,
   MessageModel,
+  userIsMemberOfRoom,
 } from '../../../models';
 import Context from '../../../Context';
 
@@ -42,18 +43,23 @@ export default {
       return false;
     }
 
-    const memberIds: ObjectID[] = room.populated('members')
-      ? (room.members as Array<InstanceType<User>>).map(user => user._id)
-      : (room.members as ObjectID[]);
-
-    for (const id of memberIds) {
-      if (id.equals(viewer._id)) {
-        return true;
-      }
-    }
-    return false;
+    return userIsMemberOfRoom(viewer, room);
   },
-  async messages(room: InstanceType<Room>): Promise<Message[]> {
+  async messages(
+    room: InstanceType<Room>,
+    data: any,
+    ctx: Context,
+  ): Promise<Message[]> {
+    const viewer = ctx.state.viewer;
+    if (!viewer) {
+      throw new Error('Authentication required');
+    }
+
+    const viewerIsMember = userIsMemberOfRoom(viewer, room);
+    if (!viewerIsMember) {
+      throw new Error("Only members of a room can read the room's messages");
+    }
+
     return await MessageModel.find({ room: room.id }).exec();
   },
 };

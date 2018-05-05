@@ -42,7 +42,7 @@ export default {
       throw new Error('Authentication required');
     }
 
-    const room = await RoomModel.findById(input.roomId);
+    const room = await RoomModel.findById(input.roomId).exec();
     if (!room) {
       throw new Error('Room could not be found');
     }

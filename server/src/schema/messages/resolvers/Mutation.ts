@@ -6,6 +6,8 @@ import {
   MessageModel,
   Embed,
   EmbedType,
+  userIsMemberOfRoom,
+  RoomModel,
 } from '../../../models';
 import Context from '../../../Context';
 import { pubsub, SubscriptionType } from '../../../subscriptions';
@@ -99,6 +101,16 @@ export default {
     const viewer = ctx.state.viewer;
     if (!viewer) {
       throw new Error('Authentication required');
+    }
+
+    const room = await RoomModel.findById(input.roomId).exec();
+    if (!room) {
+      throw new Error('Room could not be found');
+    }
+
+    const viewerIsMember = userIsMemberOfRoom(viewer, room);
+    if (!viewerIsMember) {
+      throw new Error('Only members of a room can send messages to the room');
     }
 
     const message = await MessageModel.create({
