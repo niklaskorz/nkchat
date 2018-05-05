@@ -280,7 +280,7 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
 
   refMessageContainer = (el: HTMLDivElement) => {
     this.messageContainer = el;
-    if (this.stickToBottom) {
+    if (this.messageContainer && this.stickToBottom) {
       this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
     }
   };
