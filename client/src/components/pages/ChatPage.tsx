@@ -8,6 +8,7 @@ import { History, Location } from 'history';
 import Chat from '../organisms/Chat';
 import RoomList, { Room } from '../molecules/RoomList';
 import Loading from '../molecules/Loading';
+import NothingHere from '../molecules/NothingHere';
 
 const Container = styled('div')`
   display: flex;
@@ -127,7 +128,7 @@ class ChatPage extends React.Component<ChildProps<Props, Response>> {
           onJoin={this.joinRoom}
           onLogout={this.logout}
         />
-        {roomId && <Chat roomId={roomId} />}
+        {roomId ? <Chat roomId={roomId} /> : <NothingHere />}
       </Container>
     );
   }
