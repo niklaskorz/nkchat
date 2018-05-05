@@ -1,5 +1,9 @@
 version: "3"
 
+networks:
+  proxy:
+    external: true
+
 services:
   server:
     labels:
@@ -7,9 +11,15 @@ services:
       traefik.port: "3000"
       traefik.frontend.rule: "Host:chat.niklaskorz.de;Path:/graphql,/graphiql,/subscriptions"
       traefik.docker.network: proxy
+    networks:
+      - internal
+      - proxy
   client:
     labels:
       traefik.enable: "true"
       traefik.port: "3000"
       traefik.frontend.rule: "Host:chat.niklaskorz.de"
       traefik.docker.network: proxy
+    networks:
+      - internal
+      - proxy

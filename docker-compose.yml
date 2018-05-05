@@ -1,8 +1,6 @@
 version: "3"
 
 networks:
-  proxy:
-    external: true
   internal:
     external: false
 
@@ -27,7 +25,6 @@ services:
       - NATS_HOST=nats
     networks:
       - internal
-      - proxy
     depends_on:
       - mongodb
       - nats
@@ -35,5 +32,4 @@ services:
     build: client
     networks:
       - internal
-      - proxy
 
