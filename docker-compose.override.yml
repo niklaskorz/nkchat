@@ -9,7 +9,6 @@ services:
     image: "traefik:1.6"
     command: -c /dev/null --api --docker --docker.domain=docker.localhost
     ports:
-      - "80:80"
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
