@@ -1636,7 +1636,7 @@ mongoose@5.0.7:
     regexp-clone "0.0.1"
     sliced "1.0.1"
 
-mongoose@^5.0.7:
+mongoose@^5.0.17:
   version "5.0.17"
   resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.0.17.tgz#7c70e663b8ac567460902dca636ebb59f36a540a"
   dependencies:

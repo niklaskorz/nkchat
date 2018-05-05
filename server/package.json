@@ -47,7 +47,7 @@
     "koa-bodyparser": "^4.2.0",
     "koa-router": "^7.4.0",
     "lodash": "^4.17.5",
-    "mongoose": "^5.0.7",
+    "mongoose": "^5.0.17",
     "nats": "^0.8.4",
     "subscriptions-transport-ws": "^0.9.6",
     "typegoose": "^4.0.0",
