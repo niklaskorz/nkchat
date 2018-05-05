@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import styled from 'react-emotion';
 import { Helmet } from 'react-helmet';
 import * as colors from 'colors';
+import formatError from 'formatError';
+import ErrorMessage from '../atoms/ErrorMessage';
 
 const Container = styled('div')`
   background: ${colors.darkPrimary};
@@ -26,14 +28,6 @@ const Form = styled('form')`
 
 const Title = styled('h1')`
   text-align: center;
-`;
-
-const ErrorMessage = styled('div')`
-  border-radius: 2px;
-  padding: 15px;
-  margin-bottom: 20px;
-  background: ${colors.error};
-  color: #fff;
 `;
 
 const Input = styled('input')`
@@ -150,11 +144,7 @@ class LoginPage extends React.Component<ChildProps<Props, Response>, State> {
         location.pathname = '/';
       }
     } catch (ex) {
-      const trimLeft = 'GraphQL error: ';
-      const errorMessage: string = ex.message.startsWith(trimLeft)
-        ? ex.message.slice(trimLeft.length)
-        : ex.message;
-      this.setState({ errorMessage });
+      this.setState({ errorMessage: formatError(ex.message) });
     }
   };
 

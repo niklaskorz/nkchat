@@ -4,6 +4,7 @@ import { graphql, compose, ChildProps, MutationFunc } from 'react-apollo';
 import Linkify from 'linkifyjs/react';
 import { Helmet } from 'react-helmet';
 import Loading from '../../molecules/Loading';
+import ChatError from '../../molecules/ChatError';
 import RoomInfo from '../../molecules/RoomInfo';
 import Embed, { Props as EmbedProps } from '../../molecules/Embed';
 import {
@@ -263,7 +264,7 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
       return <Loading />;
     }
     if (error) {
-      return error.message;
+      return <ChatError errorMessage={error.message} />;
     }
     if (!room) {
       return 'Room not found';
