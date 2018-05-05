@@ -13,9 +13,19 @@ Licensed under the [MIT license](LICENSE).
 
 ## Setup
 
-Clone the repository, enter the repository's directoy with a terminal and
-execute the following commands:
+Clone the repository, enter the repository's directoy with a terminal.
 
+If you are on Windows, execute
+```powershell
+$env:COMPOSE_CONVERT_WINDOWS_PATHS=1
+```
+if you are using Powershell or
+```
+set COMPOSE_CONVERT_WINDOWS_PATHS=1
+```
+if you are using cmd.
+
+Then execute the following commands:
 ```sh
 docker-compose build
 docker-compose up -d
