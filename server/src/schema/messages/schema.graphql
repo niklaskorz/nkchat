@@ -25,9 +25,11 @@ input SendMessageInput {
 }
 
 extend type Mutation {
+  # Sends a message to a specific room and returns the sent message
   sendMessage(input: SendMessageInput!): Message!
 }
 
 extend type Subscription {
+  # Notifies when a message has been sent to the specified room and returns the sent message
   messageWasSent(roomId: ID!): Message!
 }

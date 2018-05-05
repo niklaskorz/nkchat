@@ -12,8 +12,11 @@ import { schema as roomsSchema, resolvers as roomsResolvers } from './rooms';
 import { schema as usersSchema, resolvers as usersResolvers } from './users';
 
 const typeDefs = `
+  # The root type for querying data
   type Query
+  # The root type for mutating data
   type Mutation
+  # The root type for subscribing to data changes
   type Subscription
 
   ${scalarSchema}
