@@ -87,7 +87,7 @@ class ChatPage extends React.Component<ChildProps<Props, Response>> {
     // Remove session id from localStorage so Apollo doesn't use it after the
     // reload
     delete localStorage.session;
-    // Reloads and redirects to the login page
+    // Reload and redirect to the login page
     location.pathname = '/login';
   };
 
