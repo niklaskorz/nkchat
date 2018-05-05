@@ -74,13 +74,13 @@ export const Message = styled<MessageProps, 'div'>('div')`
   max-width: 100%;
   border-radius: 10px;
   line-height: 1.5;
-  text-align: start;
+  text-align: left;
 
   ${props => props.viewerIsAuthor && 'background: ' + colors.secondary};
 `;
 
 export const MessageWrapper = styled<MessageProps, 'div'>('div')`
-  ${props => props.viewerIsAuthor && 'text-align: end'};
+  ${props => props.viewerIsAuthor && 'text-align: right'};
 
   :first-child {
     padding-top: 10px;
