@@ -296,14 +296,16 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
                   <MessageText>
                     <Linkify>{message.content}</Linkify>
                   </MessageText>
-                  {message.embeds.map((embed, i) => (
-                    <Embed
-                      key={i}
-                      type={embed.type}
-                      src={embed.src}
-                      onLoad={this.onEmbedLoaded}
-                    />
-                  ))}
+                  {message.embeds
+                    .slice(0, 3) // Limit embeds to 3 per message
+                    .map((embed, i) => (
+                      <Embed
+                        key={i}
+                        type={embed.type}
+                        src={embed.src}
+                        onLoad={this.onEmbedLoaded}
+                      />
+                    ))}
                 </Message>
               </MessageWrapper>
             ))}
