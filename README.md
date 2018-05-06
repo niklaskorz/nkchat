@@ -118,3 +118,4 @@ turn into a real product:
 - Possibility to delete or rename a room
 - Possibility to rename yourself as a user, maybe even with separate names per room
 - Lazy loading of older messages, right now the whole chat history is loaded when the user opens a room
+- Touch-friendly, responsive layout for an optimal mobile experience
