@@ -103,7 +103,7 @@ const ChatQuery = gql`
   }
 `;
 
-interface SubscriptionData {
+interface ChatSubscriptionData {
   data: { messageWasSent: Message };
 }
 
@@ -117,10 +117,24 @@ const ChatSubscription = gql`
   }
 `;
 
+interface UserSubscriptionData {
+  data: { userJoinedRoom: User };
+}
+
+const UserSubscription = gql`
+  subscription UserSubscription($roomId: ID!) {
+    userJoinedRoom(roomId: $roomId) {
+      id
+      name
+    }
+  }
+`;
+
 class Chat extends React.Component<ChildProps<Props, Response>, State> {
   messageContainer?: HTMLDivElement;
   stickToBottom: boolean = true;
-  unsubscribe?: () => void;
+  unsubscribeMessages?: () => void;
+  unsubscribeUsers?: () => void;
 
   state: State = {
     inputText: ''
@@ -132,6 +146,18 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
       this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
     }
     this.subscribeToMessages();
+    this.subscribeToNewUsers();
+  }
+
+  componentWillUnmount() {
+    if (this.unsubscribeMessages) {
+      this.unsubscribeMessages();
+      this.unsubscribeMessages = undefined;
+    }
+    if (this.unsubscribeUsers) {
+      this.unsubscribeUsers();
+      this.unsubscribeUsers = undefined;
+    }
   }
 
   componentDidUpdate(prevProps: ChildProps<Props, Response>) {
@@ -149,15 +175,23 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
       if (this.messageContainer) {
         this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
       }
-      if (this.unsubscribe) {
-        this.unsubscribe();
-        this.unsubscribe = undefined;
+      if (this.unsubscribeMessages) {
+        this.unsubscribeMessages();
+        this.unsubscribeMessages = undefined;
+      }
+      if (this.unsubscribeUsers) {
+        this.unsubscribeUsers();
+        this.unsubscribeUsers = undefined;
       }
     }
 
-    // Not subscribed currently, try to subscribe
-    if (!this.unsubscribe) {
+    if (!this.unsubscribeMessages) {
+      // Not subscribed currently, try to subscribe
       this.subscribeToMessages();
+    }
+    if (!this.unsubscribeUsers) {
+      // Not subscribed currently, try to subscribe
+      this.subscribeToNewUsers();
     }
   }
 
@@ -174,12 +208,12 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
       return;
     }
 
-    this.unsubscribe = data.subscribeToMore({
+    this.unsubscribeMessages = data.subscribeToMore({
       document: ChatSubscription,
       variables: { roomId },
       updateQuery: (
         prev: Response,
-        { subscriptionData }: { subscriptionData: SubscriptionData }
+        { subscriptionData }: { subscriptionData: ChatSubscriptionData }
       ) => {
         if (!subscriptionData.data) {
           return prev;
@@ -200,6 +234,36 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
           room: {
             ...prev.room,
             messages
+          }
+        };
+      }
+    });
+  }
+
+  subscribeToNewUsers() {
+    const { roomId, data } = this.props;
+    if (!data) {
+      return;
+    }
+
+    this.unsubscribeUsers = data.subscribeToMore({
+      document: UserSubscription,
+      variables: { roomId },
+      updateQuery: (
+        prev: Response,
+        { subscriptionData }: { subscriptionData: UserSubscriptionData }
+      ) => {
+        if (!subscriptionData.data) {
+          return prev;
+        }
+
+        const newUser = subscriptionData.data.userJoinedRoom;
+
+        return {
+          ...prev,
+          room: {
+            ...prev.room,
+            members: [...prev.room.members, newUser]
           }
         };
       }
@@ -334,6 +398,9 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
 const withData = graphql<Response>(ChatQuery, {
   options: ({ roomId }) => ({
     variables: { roomId },
+    // Use cache-and-network policy to ensure we get the most recent messages
+    // but also start seeing the already cached messages while the new ones are
+    // loading
     fetchPolicy: 'cache-and-network'
   })
 });
