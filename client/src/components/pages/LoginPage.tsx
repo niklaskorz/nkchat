@@ -35,6 +35,7 @@ const Input = styled('input')`
   border: 1px solid ${colors.secondary};
   padding: 15px 10px;
   border-radius: 2px;
+  box-shadow: none;
 `;
 
 const Button = styled('button')`
