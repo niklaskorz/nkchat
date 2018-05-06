@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import gql from 'graphql-tag';
 import { ApolloQueryResult } from 'apollo-client';
 import { graphql, ChildProps, compose, MutationFunc } from 'react-apollo';

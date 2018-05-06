@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import gql from 'graphql-tag';
 import { graphql, compose, ChildProps, MutationFunc } from 'react-apollo';
 import Linkify from 'linkifyjs/react';
