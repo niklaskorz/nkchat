@@ -115,4 +115,5 @@ turn into a real product:
 - Notifications for new messages, even when a room is not open (push notifications)
 - Possibility to leave a room or to kick users out of a room as the owner
 - Possibility to delete or rename a room
+- Possibility to rename yourself as a user, maybe even with separate names per room
 - Lazy loading of older messages, right now the whole chat history is loaded when the user opens a room
