@@ -35,21 +35,12 @@ const List = styled('ul')`
 const Item = styled('li')`
   display: block;
   padding: 10px 15px;
-  cursor: pointer;
 
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 
   color: ${colors.darkSecondaryText};
-
-  transition: 0.1s ease color, 0.1s ease background;
-
-  :hover,
-  &.active {
-    background: ${colors.darkSecondary};
-    color: ${colors.darkPrimaryText};
-  }
 `;
 
 interface User {
