@@ -28,8 +28,8 @@ if you are using cmd.
 
 Then execute the following commands:
 ```sh
-docker-compose build
-docker-compose up -d
+docker-compose -p nkchat build
+docker-compose -p nkchat up -d
 ```
 
 `nkchat` will then be available at [http://localhost:9000](http://localhost:9000).
@@ -90,7 +90,7 @@ included microservices, i.e. the chat client and the GraphQL server.
 
 You can start the server with e.g. four server instances by executing:
 ```sh
-docker-compose up -d --scale server=4
+docker-compose -p nkchat up -d --scale server=4
 ```
 
 Traefik will balance incoming traffic among the running server instances by
