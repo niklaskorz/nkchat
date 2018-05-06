@@ -70,7 +70,8 @@ const selectOnFocus: React.FocusEventHandler<HTMLInputElement> = e => {
   // Work around a bug in Microsoft Edge that prevents selecting text
   // inside the focus event handler:
   // https://stackoverflow.com/questions/38487059/selecting-all-content-of-text-input-on-focus-in-microsoft-edge
-  setTimeout(() => e.currentTarget.select(), 0);
+  const t = e.currentTarget;
+  setTimeout(() => t.select(), 0);
 };
 
 export default class RoomInfo extends React.Component<Props> {
