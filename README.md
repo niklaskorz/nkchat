@@ -59,6 +59,7 @@ use on mobile devices like smartphones.
 - List of room members is automatically updated on all subscribed clients when a new user joins the room
 - Send messages that include links to YouTube or aluhga videos, or images
 - Links in messages are automatically turned into clickable links thanks to [Linkify](https://github.com/SoapBox/linkifyjs)
+- Multiline messages (line breaks are entered with Shift + Enter while Enter is used for sending a message)
 
 ## Sending links to videos or images
 
