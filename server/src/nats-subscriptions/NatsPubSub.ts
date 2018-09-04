@@ -1,4 +1,4 @@
-import { PubSubEngine } from 'graphql-subscriptions';
+import { PubSubEngine } from 'apollo-server';
 import { connect, Client, ClientOpts } from 'nats';
 import PubSubAsyncIterator from './PubSubAsyncIterator';
 

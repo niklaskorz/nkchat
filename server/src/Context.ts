@@ -1,4 +1,3 @@
-import { IRouterContext } from 'koa-router';
 import { InstanceType, Session, User } from './models';
 
 export interface State {
@@ -6,6 +5,6 @@ export interface State {
   viewer?: InstanceType<User>;
 }
 
-export default interface Context extends IRouterContext {
+export default interface Context {
   state: State;
-};
+}

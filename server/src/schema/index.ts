@@ -1,5 +1,5 @@
+import { gql } from 'apollo-server';
 import { merge } from 'lodash';
-import { makeExecutableSchema } from 'graphql-tools';
 import {
   schema as scalarSchema,
   resolvers as scalarResolvers,
@@ -11,7 +11,7 @@ import {
 import { schema as roomsSchema, resolvers as roomsResolvers } from './rooms';
 import { schema as usersSchema, resolvers as usersResolvers } from './users';
 
-const typeDefs = `
+const typeDefs = gql`
   # The root type for querying data
   type Query
   # The root type for mutating data
@@ -33,7 +33,4 @@ const resolvers = merge(
   usersResolvers,
 );
 
-export default makeExecutableSchema({
-  typeDefs,
-  resolvers,
-});
+export { typeDefs, resolvers };
