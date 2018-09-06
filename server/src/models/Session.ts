@@ -1,10 +1,28 @@
-import { Typegoose, prop } from 'typegoose';
-import Ref from './Ref';
+import { ObjectType, Field } from 'type-graphql';
+import {
+  Entity,
+  ObjectID,
+  ObjectIdColumn,
+  Column,
+  getMongoRepository,
+} from 'typeorm';
 import { User } from './User';
 
-export class Session extends Typegoose {
-  @prop({ ref: User, required: true })
-  user: Ref<User>;
-}
+@ObjectType({
+  description: 'A login session for authenticating user requests',
+})
+@Entity()
+export class Session {
+  @Field()
+  @ObjectIdColumn()
+  id: ObjectID;
 
-export const SessionModel = new Session().getModelForClass(Session);
+  @Field()
+  @Column()
+  userId: ObjectID;
+
+  @Field()
+  createdAt(): Date {
+    return this.id.getTimestamp();
+  }
+}

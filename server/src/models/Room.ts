@@ -1,33 +1,37 @@
-import { ObjectID } from 'mongodb';
-import { InstanceType, Typegoose, prop, arrayProp } from 'typegoose';
-import Ref from './Ref';
+import { ObjectType, Field, Ctx } from 'type-graphql';
+import { Entity, ObjectID, ObjectIdColumn, Column, Index } from 'typeorm';
 import { User } from './User';
 
-export class Room extends Typegoose {
-  @prop({ required: true })
+@ObjectType({
+  description:
+    'A room contains information about the messages sent into the room and ' +
+    "the users participating in the room's conversation",
+})
+@Entity()
+export class Room {
+  @Field()
+  @ObjectIdColumn()
+  id: ObjectID;
+
+  @Field()
+  @Column()
   name: string;
 
-  @prop({ ref: User, required: true })
-  owner: Ref<User>;
+  @Field()
+  @Column()
+  ownerId: ObjectID;
 
-  @arrayProp({ itemsRef: User, required: true, index: true })
-  members: Ref<User>[];
+  @Field(type => [ObjectID])
+  @Index()
+  @Column(type => ObjectID)
+  memberIds: ObjectID[];
+
+  @Field()
+  createdAt(): Date {
+    return this.id.getTimestamp();
+  }
 }
 
-export const RoomModel = new Room().getModelForClass(Room);
-
-export const userIsMemberOfRoom = (
-  user: InstanceType<User>,
-  room: InstanceType<Room>,
-) => {
-  const memberIds: ObjectID[] = room.populated('members')
-    ? (room.members as Array<InstanceType<User>>).map(u => u._id)
-    : (room.members as ObjectID[]);
-
-  for (const id of memberIds) {
-    if (id.equals(user._id)) {
-      return true;
-    }
-  }
-  return false;
+export const userIsMemberOfRoom = (user: User, room: Room): boolean => {
+  return !!room.memberIds.find(memberId => user.id.equals(memberId));
 };

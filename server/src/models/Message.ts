@@ -1,7 +1,5 @@
-import { Typegoose, prop } from 'typegoose';
-import Ref from './Ref';
-import { User } from './User';
-import { Room } from './Room';
+import { ObjectType, Field, registerEnumType } from 'type-graphql';
+import { Entity, ObjectID, ObjectIdColumn, Column, Index } from 'typeorm';
 
 export enum EmbedType {
   Youtube = 'YOUTUBE',
@@ -9,26 +7,47 @@ export enum EmbedType {
   Image = 'IMAGE',
 }
 
+registerEnumType(EmbedType, {
+  name: 'EmbedType',
+});
+
+@ObjectType()
 export class Embed {
-  @prop({ required: true })
+  @Field(type => EmbedType)
+  @Column()
   type: EmbedType;
 
-  @prop({ required: true })
+  @Field()
+  @Column()
   src: string;
 }
 
-export class Message extends Typegoose {
-  @prop({ required: true })
+@ObjectType()
+@Entity()
+export class Message {
+  @Field()
+  @ObjectIdColumn()
+  id: ObjectID;
+
+  @Field()
+  @Column()
   content: string;
 
-  @prop({ ref: User, required: true })
-  author: Ref<User>;
+  @Field()
+  @Column()
+  authorId: ObjectID;
 
-  @prop({ ref: Room, required: true })
-  room: Ref<Room>;
+  @Field()
+  @Index()
+  @Column()
+  roomId: ObjectID;
 
-  @prop({ required: true })
+  @Field(type => [Embed])
+  @Column(type => Embed)
   embeds: Embed[];
-}
 
-export const MessageModel = new Message().getModelForClass(Message);
+  @Field()
+  createdAt(): Date {
+    return this.id.getTimestamp();
+  }
+}

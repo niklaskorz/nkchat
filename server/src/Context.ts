@@ -1,8 +1,8 @@
-import { InstanceType, Session, User } from './models';
+import { Session, User } from './models';
 
 export interface State {
-  session?: InstanceType<Session>;
-  viewer?: InstanceType<User>;
+  session?: Session;
+  viewer?: User;
 }
 
 export default interface Context {

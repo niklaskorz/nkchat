@@ -17,7 +17,6 @@
     "@types/graphql-iso-date": "^3.3.0",
     "@types/lodash": "^4.14.116",
     "@types/mongodb": "^3.1.4",
-    "@types/mongoose": "^5.2.9",
     "@types/node": "^10.9.4",
     "@types/winston": "^2.4.4",
     "@types/ws": "^6.0.0",
@@ -36,12 +35,11 @@
     "cross-env": "^5.2.0",
     "get-urls": "^7.2.0",
     "graphql": "^14.0.0",
-    "graphql-iso-date": "^3.5.0",
     "lodash": "^4.17.10",
-    "mongoose": "^5.2.12",
     "nats": "^1.0.1",
     "reflect-metadata": "^0.1.12",
-    "typegoose": "^5.2.1",
+    "type-graphql": "^0.13.1",
+    "typeorm": "^0.2.7",
     "winston": "^3.0.0"
   }
 }

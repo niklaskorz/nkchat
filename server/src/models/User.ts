@@ -1,11 +1,26 @@
-import { Typegoose, prop } from 'typegoose';
+import { ObjectType, Field } from 'type-graphql';
+import { Entity, ObjectID, ObjectIdColumn, Column, Index } from 'typeorm';
 
-export class User extends Typegoose {
-  @prop({ required: true, unique: true, index: true })
+@ObjectType({
+  description: 'A user is a user, not much left to say here',
+})
+@Entity()
+export class User {
+  @Field()
+  @ObjectIdColumn()
+  id: ObjectID;
+
+  @Field()
+  @Index({ unique: true })
+  @Column()
   name: string;
 
-  @prop({ required: true })
+  // Do not expose this as a field!
+  @Column()
   password: string;
-}
 
-export const UserModel = new User().getModelForClass(User);
+  @Field()
+  createdAt(): Date {
+    return this.id.getTimestamp();
+  }
+}

@@ -7,6 +7,6 @@ export enum SubscriptionType {
   UserJoinedRoom = 'UserJoinedRoom',
 }
 
-export const pubsub = new NatsPubSub({
+export const pubSub = new NatsPubSub({
   url: `nats://${config.natsHost}:4222`,
 });
