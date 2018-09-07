@@ -39,7 +39,9 @@
     "nats": "^1.0.1",
     "reflect-metadata": "^0.1.12",
     "type-graphql": "^0.13.1",
+    "typedi": "^0.8.0",
     "typeorm": "^0.2.7",
+    "typeorm-typedi-extensions": "^0.2.1",
     "winston": "^3.0.0"
   }
 }

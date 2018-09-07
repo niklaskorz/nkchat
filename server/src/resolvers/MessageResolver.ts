@@ -11,6 +11,7 @@ import {
   Publisher,
 } from 'type-graphql';
 import { MongoRepository, ObjectID } from 'typeorm';
+import { InjectRepository } from 'typeorm-typedi-extensions';
 import getUrls from 'get-urls';
 import { URL } from 'url';
 import {
@@ -113,9 +114,10 @@ interface MessageWasSentPayload {
 @Resolver(of => Message)
 export class MessageResolver {
   constructor(
+    @InjectRepository(Message)
     private messageRepository: MongoRepository<Message>,
-    private roomRepository: MongoRepository<Room>,
-    private userRepository: MongoRepository<User>,
+    @InjectRepository(Room) private roomRepository: MongoRepository<Room>,
+    @InjectRepository(User) private userRepository: MongoRepository<User>,
   ) {}
 
   @FieldResolver(type => Room)

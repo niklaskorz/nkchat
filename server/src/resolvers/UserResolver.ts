@@ -12,6 +12,7 @@ import * as bcrypt from 'bcrypt';
 import Context from '../Context';
 import { User, Session, Room, Message } from '../models';
 import { ObjectID, MongoRepository } from 'typeorm';
+import { InjectRepository } from 'typeorm-typedi-extensions';
 
 @InputType()
 class RegisterInput {
@@ -28,10 +29,12 @@ class LoginInput {
 @Resolver(of => User)
 export class UserResolver {
   constructor(
+    @InjectRepository(Message)
     private messageRepository: MongoRepository<Message>,
-    private roomRepository: MongoRepository<Room>,
+    @InjectRepository(Room) private roomRepository: MongoRepository<Room>,
+    @InjectRepository(Session)
     private sessionRepository: MongoRepository<Session>,
-    private userRepository: MongoRepository<User>,
+    @InjectRepository(User) private userRepository: MongoRepository<User>,
   ) {}
 
   @FieldResolver(type => [Room])

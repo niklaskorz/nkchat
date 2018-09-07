@@ -15,6 +15,7 @@ import { Room, User, userIsMemberOfRoom, Message } from '../models';
 import { ObjectID, MongoRepository } from 'typeorm';
 import Context from '../Context';
 import { SubscriptionType } from '../subscriptions';
+import { InjectRepository } from 'typeorm-typedi-extensions';
 
 @InputType()
 class CreateRoomInput {
@@ -44,9 +45,10 @@ interface UserJoinedRoomPayload {
 @Resolver(of => Room)
 export class RoomResolver {
   constructor(
+    @InjectRepository(Message)
     private messageRepository: MongoRepository<Message>,
-    private roomRepository: MongoRepository<Room>,
-    private userRepository: MongoRepository<User>,
+    @InjectRepository(Room) private roomRepository: MongoRepository<Room>,
+    @InjectRepository(User) private userRepository: MongoRepository<User>,
   ) {}
 
   @FieldResolver(type => User)
