@@ -8,7 +8,7 @@ import { Entity, ObjectID, ObjectIdColumn, Column, Index } from 'typeorm';
 export class User {
   @Field()
   @ObjectIdColumn()
-  id: ObjectID;
+  readonly id: ObjectID;
 
   @Field()
   @Index({ unique: true })

@@ -15,7 +15,7 @@ import { User } from './User';
 export class Session {
   @Field()
   @ObjectIdColumn()
-  id: ObjectID;
+  readonly id: ObjectID;
 
   @Field()
   @Column()

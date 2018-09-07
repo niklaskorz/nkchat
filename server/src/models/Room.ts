@@ -11,7 +11,7 @@ import { User } from './User';
 export class Room {
   @Field()
   @ObjectIdColumn()
-  id: ObjectID;
+  readonly id: ObjectID;
 
   @Field()
   @Column()

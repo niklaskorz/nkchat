@@ -27,7 +27,7 @@ export class Embed {
 export class Message {
   @Field()
   @ObjectIdColumn()
-  id: ObjectID;
+  readonly id: ObjectID;
 
   @Field()
   @Column()
