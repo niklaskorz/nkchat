@@ -1,4 +1,4 @@
-import { ObjectType, Field, Ctx } from 'type-graphql';
+import { ObjectType, Field } from 'type-graphql';
 import { Entity, ObjectID, ObjectIdColumn, Column, Index } from 'typeorm';
 import { User } from './User';
 
@@ -9,7 +9,7 @@ import { User } from './User';
 })
 @Entity()
 export class Room {
-  @Field()
+  @Field(type => ObjectID)
   @ObjectIdColumn()
   readonly id: ObjectID;
 
@@ -17,8 +17,8 @@ export class Room {
   @Column()
   name: string;
 
-  @Field()
-  @Column()
+  @Field(type => ObjectID)
+  @Column(type => ObjectID)
   ownerId: ObjectID;
 
   @Field(type => [ObjectID])

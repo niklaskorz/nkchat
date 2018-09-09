@@ -1,33 +1,31 @@
-import { Request } from 'express';
-import { ApolloServer } from 'apollo-server';
+import { GraphQLServer } from 'graphql-yoga';
 import { getMongoRepository } from 'typeorm';
 import { User, Session } from './models';
 import getSchema from './schema';
 import Context from './Context';
+import { ContextParameters } from 'graphql-yoga/dist/types';
 
-const createServer = async () =>
-  new ApolloServer({
+const startServer = async () => {
+  const server = new GraphQLServer({
     schema: await getSchema(),
-    context: async ({ req }: { req?: Request }): Promise<Context> => {
+    async context({
+      request,
+      connection,
+    }: ContextParameters): Promise<Context> {
       const ctx: Context = { state: {} };
 
-      if (!req) {
-        return ctx;
+      let sessionId: string | null = null;
+      if (request && request.cookies && request.cookies.session) {
+        sessionId = request.cookies.session;
+      } else if (
+        connection &&
+        connection.variables &&
+        connection.variables.session
+      ) {
+        sessionId = connection.variables.session;
       }
 
-      // Check if Authentication with Bearer token is passed
-      // Also see https://swagger.io/docs/specification/authentication/bearer-authentication/
-      const auth = req.cookies.Authentication;
-      if (auth) {
-        const [authType, ...parts] = auth.split(' ');
-        if (authType !== 'Bearer') {
-          throw new Error('Unsupported authentication type: ' + authType);
-        }
-        if (parts.length > 1) {
-          throw new Error('Malformed authentication header');
-        }
-
-        const sessionId = parts[0];
+      if (sessionId) {
         const session = await getMongoRepository(Session).findOne(sessionId);
         if (session) {
           ctx.state.session = session;
@@ -39,7 +37,9 @@ const createServer = async () =>
 
       return ctx;
     },
-    subscriptions: {
+  });
+  return await server.start({
+    /*subscriptions: {
       async onConnect(connectionParams: {
         session?: string;
       }): Promise<Context> {
@@ -63,7 +63,8 @@ const createServer = async () =>
           },
         };
       },
-    },
+    },*/
   });
+};
 
-export default createServer;
+export default startServer;

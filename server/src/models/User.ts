@@ -6,7 +6,7 @@ import { Entity, ObjectID, ObjectIdColumn, Column, Index } from 'typeorm';
 })
 @Entity()
 export class User {
-  @Field()
+  @Field(type => ObjectID)
   @ObjectIdColumn()
   readonly id: ObjectID;
 

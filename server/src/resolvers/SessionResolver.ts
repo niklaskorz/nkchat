@@ -16,7 +16,7 @@ export class SessionResolver {
     return await this.userRepository.findOneOrFail(session.userId);
   }
 
-  @Query(type => Session, {
+  @Query(returns => Session, {
     description:
       'Returns the active session if the querying user is authenticated, null otherwise',
     nullable: true,

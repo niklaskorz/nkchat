@@ -14,7 +14,6 @@
   "devDependencies": {
     "@types/bcrypt": "^2.0.0",
     "@types/graphql": "^0.13.4",
-    "@types/graphql-iso-date": "^3.3.0",
     "@types/lodash": "^4.14.116",
     "@types/mongodb": "^3.1.4",
     "@types/node": "^10.9.4",
@@ -30,12 +29,14 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "apollo-server": "^2.0.6",
     "bcrypt": "^3.0.0",
     "cross-env": "^5.2.0",
     "get-urls": "^7.2.0",
-    "graphql": "^14.0.0",
+    "graphql": "^0.13.0",
+    "graphql-subscriptions": "^0.5.8",
+    "graphql-yoga": "^1.16.2",
     "lodash": "^4.17.10",
+    "mongodb": "^3.1.4",
     "nats": "^1.0.1",
     "reflect-metadata": "^0.1.12",
     "type-graphql": "^0.13.1",

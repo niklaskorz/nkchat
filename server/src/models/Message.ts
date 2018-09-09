@@ -25,7 +25,7 @@ export class Embed {
 @ObjectType()
 @Entity()
 export class Message {
-  @Field()
+  @Field(type => ObjectID)
   @ObjectIdColumn()
   readonly id: ObjectID;
 
@@ -33,13 +33,13 @@ export class Message {
   @Column()
   content: string;
 
-  @Field()
-  @Column()
+  @Field(type => ObjectID)
+  @Column(type => ObjectID)
   authorId: ObjectID;
 
-  @Field()
+  @Field(type => ObjectID)
   @Index()
-  @Column()
+  @Column(type => ObjectID)
   roomId: ObjectID;
 
   @Field(type => [Embed])

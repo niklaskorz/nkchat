@@ -7,6 +7,7 @@ import {
   Arg,
   FieldResolver,
   Root,
+  Field,
 } from 'type-graphql';
 import * as bcrypt from 'bcrypt';
 import Context from '../Context';
@@ -16,13 +17,17 @@ import { InjectRepository } from 'typeorm-typedi-extensions';
 
 @InputType()
 class RegisterInput {
+  @Field()
   name: string;
+  @Field()
   password: string;
 }
 
 @InputType()
 class LoginInput {
+  @Field()
   name: string;
+  @Field()
   password: string;
 }
 
@@ -66,7 +71,7 @@ export class UserResolver {
     return user.id.equals(viewer.id);
   }
 
-  @Query(type => User, {
+  @Query(returns => User, {
     description:
       'Returns the authenticated user if the querying user is authenticated, null otherwise',
     nullable: true,
@@ -75,7 +80,7 @@ export class UserResolver {
     return ctx.state.viewer || null;
   }
 
-  @Mutation(t => Session, {
+  @Mutation(returns => Session, {
     description:
       'Creates a new user and returns a login session for the created user',
   })
@@ -83,19 +88,10 @@ export class UserResolver {
     @Arg('input') input: RegisterInput,
     @Ctx() ctx: Context,
   ): Promise<Session> {
-    let user: User;
-    try {
-      user = await this.userRepository.create({
-        name: input.name,
-        password: await bcrypt.hash(input.password, 10),
-      });
-    } catch (ex) {
-      if (ex.code === 11000) {
-        // WriteError of type KeyError
-        throw new Error(`User ${input.name} already exists`);
-      }
-      throw new Error('User could not be created');
-    }
+    const user = await this.userRepository.create({
+      name: input.name,
+      password: await bcrypt.hash(input.password, 10),
+    });
 
     const session = await this.sessionRepository.create({
       userId: user.id,
@@ -106,7 +102,7 @@ export class UserResolver {
     return session;
   }
 
-  @Mutation(t => Session, {
+  @Mutation(returns => Session, {
     description: 'Creates and returns a login session for the specified user',
   })
   async login(
@@ -135,7 +131,7 @@ export class UserResolver {
     return session;
   }
 
-  @Mutation(t => ObjectID, {
+  @Mutation(returns => ObjectID, {
     description:
       'Invalidates the active user session and returns the session id',
   })

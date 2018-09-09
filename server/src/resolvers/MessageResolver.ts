@@ -9,6 +9,7 @@ import {
   Subscription,
   PubSub,
   Publisher,
+  Field,
 } from 'type-graphql';
 import { MongoRepository, ObjectID } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
@@ -102,7 +103,9 @@ const getEmbeds = (text: string): Embed[] => {
 
 @InputType()
 class SendMessageInput {
+  @Field(type => ObjectID)
   roomId: ObjectID;
+  @Field()
   content: string;
 }
 
@@ -182,7 +185,7 @@ export class MessageResolver {
     return message;
   }
 
-  @Subscription({
+  @Subscription(returns => Message, {
     description:
       'Notifies when a message has been sent to the specified room and returns the sent message',
     topics: SubscriptionType.MessageWasSent,
@@ -190,7 +193,7 @@ export class MessageResolver {
   })
   messageWasSent(
     @Root() payload: MessageWasSentPayload,
-    @Arg('roomId') roomId: ObjectID,
+    @Arg('roomId', type => ObjectID) roomId: ObjectID,
   ): Message {
     return payload.message;
   }

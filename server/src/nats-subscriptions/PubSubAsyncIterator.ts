@@ -1,4 +1,4 @@
-import { PubSubEngine } from 'apollo-server';
+import { PubSubEngine } from 'graphql-subscriptions';
 
 // Taken from https://github.com/davidyaha/graphql-redis-subscriptions/blob/master/src/pubsub-async-iterator.ts
 // Copyright (c) 2016 David Yahalomi

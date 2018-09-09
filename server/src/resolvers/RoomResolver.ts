@@ -10,6 +10,7 @@ import {
   Subscription,
   PubSub,
   Publisher,
+  Field,
 } from 'type-graphql';
 import { Room, User, userIsMemberOfRoom, Message } from '../models';
 import { ObjectID, MongoRepository } from 'typeorm';
@@ -19,17 +20,21 @@ import { InjectRepository } from 'typeorm-typedi-extensions';
 
 @InputType()
 class CreateRoomInput {
+  @Field()
   name: string;
 }
 
 @InputType()
 class UpdateRoomInput {
+  @Field(type => ObjectID)
   roomId: ObjectID;
+  @Field()
   name: string;
 }
 
 @InputType()
 class JoinRoomInput {
+  @Field(type => ObjectID)
   roomId: ObjectID;
 }
 
@@ -106,7 +111,7 @@ export class RoomResolver {
       'Queries a room by id, returns the room if found, null otherwise',
     nullable: true,
   })
-  async room(@Arg('id') id: ObjectID): Promise<Room | null> {
+  async room(@Arg('id', type => ObjectID) id: ObjectID): Promise<Room | null> {
     return (await this.roomRepository.findOne(id)) || null;
   }
 
@@ -196,7 +201,7 @@ export class RoomResolver {
     return room;
   }
 
-  @Subscription({
+  @Subscription(returns => Room, {
     description:
       'Notifies when the specified room has been updated and returns the updated room',
     topics: SubscriptionType.RoomWasUpdated,
@@ -204,12 +209,12 @@ export class RoomResolver {
   })
   roomWasUpdated(
     @Root() payload: RoomWasUpdatedPayload,
-    @Arg('roomId') roomId: ObjectID,
+    @Arg('roomId', type => ObjectID) roomId: ObjectID,
   ): Room {
     return payload.room;
   }
 
-  @Subscription({
+  @Subscription(returns => User, {
     description:
       'Notifies when a user has joined the specified room and returns the joined user',
     topics: SubscriptionType.UserJoinedRoom,
@@ -217,7 +222,7 @@ export class RoomResolver {
   })
   userJoinedRoom(
     @Root() payload: UserJoinedRoomPayload,
-    @Arg('roomId') roomId: ObjectID,
+    @Arg('roomId', type => ObjectID) roomId: ObjectID,
   ): User {
     return payload.user;
   }

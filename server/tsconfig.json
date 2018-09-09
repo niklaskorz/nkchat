@@ -5,7 +5,7 @@
     "target": "es2017",
     "lib": ["es2017", "esnext"],
     "sourceMap": true,
-    "allowJs": true,
+    "allowJs": false,
     "moduleResolution": "node",
     "rootDir": "src",
     "forceConsistentCasingInFileNames": true,

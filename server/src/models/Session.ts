@@ -1,24 +1,17 @@
 import { ObjectType, Field } from 'type-graphql';
-import {
-  Entity,
-  ObjectID,
-  ObjectIdColumn,
-  Column,
-  getMongoRepository,
-} from 'typeorm';
-import { User } from './User';
+import { Entity, ObjectID, ObjectIdColumn, Column } from 'typeorm';
 
 @ObjectType({
   description: 'A login session for authenticating user requests',
 })
 @Entity()
 export class Session {
-  @Field()
+  @Field(type => ObjectID)
   @ObjectIdColumn()
   readonly id: ObjectID;
 
-  @Field()
-  @Column()
+  @Field(type => ObjectID)
+  @Column(type => ObjectID)
   userId: ObjectID;
 
   @Field()
