@@ -2,13 +2,13 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { ChildProps, compose, graphql, MutationFunc } from 'react-apollo';
 import { Link } from 'react-router-dom';
-import styled from 'react-emotion';
+import styled from 'styled-components';
 import { Helmet } from 'react-helmet';
 import * as colors from 'colors';
 import formatError from 'formatError';
 import ErrorMessage from '../atoms/ErrorMessage';
 
-const Container = styled('div')`
+const Container = styled.div`
   background: ${colors.darkPrimary};
   min-height: 100vh;
   display: flex;
@@ -16,7 +16,7 @@ const Container = styled('div')`
   justify-content: center;
 `;
 
-const Form = styled('form')`
+const Form = styled.form`
   background: ${colors.primary};
   display: flex;
   flex-direction: column;
@@ -26,11 +26,11 @@ const Form = styled('form')`
   max-width: 100%;
 `;
 
-const Title = styled('h1')`
+const Title = styled.h1`
   text-align: center;
 `;
 
-const Input = styled('input')`
+const Input = styled.input`
   margin-bottom: 20px;
   border: 1px solid ${colors.secondary};
   padding: 15px 10px;
@@ -38,7 +38,7 @@ const Input = styled('input')`
   box-shadow: none;
 `;
 
-const Button = styled('button')`
+const Button = styled.button`
   border: 1px solid ${colors.darkSecondary};
   background: ${colors.darkSecondary};
   color: ${colors.darkSecondaryText};
@@ -56,7 +56,7 @@ const Button = styled('button')`
   }
 `;
 
-const InfoText = styled('p')`
+const InfoText = styled.p`
   text-align: center;
 `;
 

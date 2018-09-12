@@ -2,7 +2,7 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { ApolloQueryResult } from 'apollo-client';
 import { graphql, ChildProps, compose, MutationFunc } from 'react-apollo';
-import styled from 'react-emotion';
+import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
 import { History, Location } from 'history';
 import Chat from '../organisms/Chat';
@@ -10,7 +10,7 @@ import RoomList, { Room } from '../molecules/RoomList';
 import Loading from '../molecules/Loading';
 import NothingHere from '../molecules/NothingHere';
 
-const Container = styled('div')`
+const Container = styled.div`
   display: flex;
   width: 100vw;
   height: 100vh;

@@ -1,7 +1,7 @@
 # nkchat
 
 `nkchat` is a web-based chat application using modern technologies such as
-React, GraphQL and styled components ([react-emotion](https://emotion.sh/)).
+React, GraphQL and [styled-components](https://www.styled-components.com/).
 
 ## License
 

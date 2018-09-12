@@ -1,11 +1,11 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled from 'styled-components';
 import swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
 import * as colors from 'colors';
 import SideBar from './SideBar';
 
-const ActionBar = styled('div')`
+const ActionBar = styled.div`
   flex-shrink: 0;
   display: flex;
   margin: 10px;
@@ -13,7 +13,7 @@ const ActionBar = styled('div')`
   font-size: 0.8em;
 `;
 
-const Action = styled('button')`
+const Action = styled.button`
   border: none;
   background: transparent;
   border: 1px solid ${colors.darkSecondaryText};
@@ -38,7 +38,7 @@ Action.defaultProps = {
   type: 'button',
 };
 
-const List = styled('ul')`
+const List = styled.ul`
   display: block;
   margin: 0;
   padding: 10px 0;
@@ -67,7 +67,7 @@ const ItemLink = styled(Link)`
   }
 `;
 
-const Footer = styled('footer')`
+const Footer = styled.footer`
   border-top: 2px solid ${colors.darkSecondary};
   border-bottom: 2px solid transparent;
   font-size: 0.8em;
@@ -76,7 +76,7 @@ const Footer = styled('footer')`
   height: 56px;
 `;
 
-const Viewer = styled('div')`
+const Viewer = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

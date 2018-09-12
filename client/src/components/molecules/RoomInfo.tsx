@@ -1,9 +1,9 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled from 'styled-components';
 import * as colors from 'colors';
 import SideBar from './SideBar';
 
-const SubTitle = styled('h3')`
+const SubTitle = styled.h3`
   font-size: 0.9em;
   margin: 0;
   font-weight: normal;
@@ -11,7 +11,7 @@ const SubTitle = styled('h3')`
   padding: 0 15px;
 `;
 
-const RoomIdText = styled('input')`
+const RoomIdText = styled.input`
   appearance: none;
   border: none;
   border-radius: 2px;
@@ -23,7 +23,7 @@ const RoomIdText = styled('input')`
   text-align: center;
 `;
 
-const List = styled('ul')`
+const List = styled.ul`
   display: block;
   margin: 0;
   padding: 10px 0;
@@ -32,7 +32,7 @@ const List = styled('ul')`
   font-size: 0.8em;
 `;
 
-const Item = styled('li')`
+const Item = styled.li`
   display: block;
   padding: 10px 15px;
 

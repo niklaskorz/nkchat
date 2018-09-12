@@ -1,15 +1,15 @@
-import styled from 'react-emotion';
+import styled from 'styled-components';
 import TextArea from 'react-textarea-autosize';
 import * as colors from 'colors';
 
-export const Section = styled('section')`
+export const Section = styled.section`
   display: flex;
   flex-direction: column;
   flex: 1;
   min-width: 0;
 `;
 
-export const Header = styled('header')`
+export const Header = styled.header`
   background: ${colors.primary};
   color: ${colors.primaryText};
   padding: 15px;
@@ -25,21 +25,21 @@ export const Header = styled('header')`
   border-bottom: 2px solid ${colors.secondary};
 `;
 
-export const Messages = styled('div')`
+export const Messages = styled.div`
   flex: 1;
   padding: 0 40px;
   overflow: auto;
   background: ${colors.primary};
 `;
 
-export const MessageHeader = styled('header')`
+export const MessageHeader = styled.header`
   display: flex;
   font-weight: bold;
   margin-bottom: 10px;
   align-items: baseline;
 `;
 
-export const MessageAuthor = styled('div')`
+export const MessageAuthor = styled.div`
   font-size: 0.9em;
   flex: 1;
   white-space: nowrap;
@@ -47,14 +47,14 @@ export const MessageAuthor = styled('div')`
   overflow: hidden;
 `;
 
-export const MessageDate = styled('div')`
+export const MessageDate = styled.div`
   font-size: 0.7em;
   flex-shrink: 0;
   margin-left: 10px;
   color: ${colors.secondaryText};
 `;
 
-export const MessageText = styled('div')`
+export const MessageText = styled.div`
   white-space: pre-wrap;
   word-wrap: break-word;
   max-width: 800px;
@@ -64,7 +64,7 @@ export interface MessageProps {
   viewerIsAuthor: boolean;
 }
 
-export const Message = styled<MessageProps, 'div'>('div')`
+export const Message = styled.div<MessageProps>`
   display: inline-block;
   background: #fff;
   color: #000;
@@ -79,7 +79,7 @@ export const Message = styled<MessageProps, 'div'>('div')`
   ${props => props.viewerIsAuthor && 'background: ' + colors.secondary};
 `;
 
-export const MessageWrapper = styled<MessageProps, 'div'>('div')`
+export const MessageWrapper = styled.div<MessageProps>`
   ${props => props.viewerIsAuthor && 'text-align: right'};
 
   :first-child {
@@ -91,7 +91,7 @@ export const MessageWrapper = styled<MessageProps, 'div'>('div')`
   }
 `;
 
-export const NewMessageContainer = styled('div')`
+export const NewMessageContainer = styled.div`
   display: flex;
   background: ${colors.primary};
   padding: 10px;
@@ -99,7 +99,7 @@ export const NewMessageContainer = styled('div')`
   border-top: 2px solid ${colors.secondary};
 `;
 
-export const MessageInputContainer = styled('div')`
+export const MessageInputContainer = styled.div`
   flex: 1;
   padding: 10px;
   background: #fff;
@@ -118,7 +118,7 @@ export const MessageInput = styled(TextArea)`
   resize: none;
 `;
 
-export const MessageSendButton = styled('button')`
+export const MessageSendButton = styled.button`
   flex-shrink: 0;
   border: none;
   border-top-right-radius: 5px;
@@ -127,7 +127,7 @@ export const MessageSendButton = styled('button')`
   color: #fff;
   cursor: pointer;
 
-  :disabled {
+  : disabled {
     cursor: not-allowed;
   }
 `;

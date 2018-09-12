@@ -1,7 +1,7 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled from 'styled-components';
 
-const IframeContainer = styled('div')`
+const IframeContainer = styled.div`
   position: relative;
   height: 0;
   padding-bottom: 56.25%;
@@ -10,7 +10,7 @@ const IframeContainer = styled('div')`
   margin-top: 20px;
 `;
 
-const Iframe = styled('iframe')`
+const Iframe = styled.iframe`
   position: absolute;
   top: 0;
   left: 0;
@@ -19,7 +19,7 @@ const Iframe = styled('iframe')`
   border: none;
 `;
 
-const Image = styled('img')`
+const Image = styled.img`
   display: block;
   max-width: 500px;
   max-height: 500px;

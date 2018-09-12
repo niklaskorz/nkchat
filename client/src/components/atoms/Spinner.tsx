@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { keyframes } from 'react-emotion';
+import styled, { keyframes } from 'styled-components';
 import * as colors from 'colors';
 
 // CSS code taken from http://tobiasahlin.com/spinkit/
@@ -18,7 +18,7 @@ const stretchDelay = keyframes`
   }
 `;
 
-const Container = styled('div')`
+const Container = styled.div`
   margin: 100px auto;
   width: 50px;
   height: 40px;
@@ -30,7 +30,7 @@ interface RectProps {
   delay: number;
 }
 
-const Rect = styled<RectProps, 'div'>('div')`
+const Rect = styled.div<RectProps>`
   background-color: ${colors.darkPrimary};
   height: 100%;
   width: 6px;

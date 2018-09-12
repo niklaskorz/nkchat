@@ -1,8 +1,8 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled from 'styled-components';
 import * as colors from 'colors';
 
-const Section = styled('section')`
+const Section = styled.section`
   background: ${colors.darkPrimary};
   color: #fff;
 
@@ -13,14 +13,14 @@ const Section = styled('section')`
   flex-direction: column;
 `;
 
-const Header = styled('header')`
+const Header = styled.header`
   padding: 15px;
   flex-shrink: 0;
   border-top: 2px solid transparent;
   border-bottom: 2px solid ${colors.darkSecondary};
 `;
 
-const HeaderTitle = styled('h2')`
+const HeaderTitle = styled.h2`
   font-size: 1em;
   margin: 0;
   font-weight: normal;
