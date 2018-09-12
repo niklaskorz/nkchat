@@ -1,6 +1,14 @@
 import { PubSubEngine } from 'graphql-subscriptions';
 import { connect, Client, ClientOpts } from 'nats';
 import PubSubAsyncIterator from './PubSubAsyncIterator';
+import { ObjectID } from 'mongodb';
+
+const reviver = (key: string, value: any) => {
+  if (ObjectID.isValid(value)) {
+    return ObjectID.createFromHexString(value);
+  }
+  return value;
+};
 
 export default class NatsPubSub implements PubSubEngine {
   protected client: Client;
@@ -19,7 +27,7 @@ export default class NatsPubSub implements PubSubEngine {
     onMessage: (payload: any) => void,
   ): Promise<number> {
     const id = this.client.subscribe(triggerName, (msg: string) =>
-      onMessage(JSON.parse(msg)),
+      onMessage(JSON.parse(msg, reviver)),
     );
     return Promise.resolve(id);
   }
