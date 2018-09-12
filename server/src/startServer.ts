@@ -19,10 +19,10 @@ const startServer = async () => {
         sessionId = request.headers.authorization;
       } else if (
         connection &&
-        connection.variables &&
-        connection.variables.session
+        connection.context &&
+        connection.context.session
       ) {
-        sessionId = connection.variables.session;
+        sessionId = connection.context.session;
       }
 
       if (sessionId) {
@@ -38,33 +38,7 @@ const startServer = async () => {
       return ctx;
     },
   });
-  return await server.start({
-    /*subscriptions: {
-      async onConnect(connectionParams: {
-        session?: string;
-      }): Promise<Context> {
-        if (!connectionParams.session) {
-          throw new Error('Authentication required');
-        }
-
-        const session = await getMongoRepository(Session).findOne(
-          connectionParams.session,
-        );
-        if (!session) {
-          throw new Error('Invalid session');
-        }
-
-        return {
-          state: {
-            session,
-            viewer: await getMongoRepository(User).findOneOrFail(
-              session.userId,
-            ),
-          },
-        };
-      },
-    },*/
-  });
+  return await server.start();
 };
 
 export default startServer;
