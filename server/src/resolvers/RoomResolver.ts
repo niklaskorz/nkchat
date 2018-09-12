@@ -133,9 +133,6 @@ export class RoomResolver {
     room.ownerId = viewer.id;
     room.memberIds = [viewer.id];
 
-    console.log(viewer);
-    console.log(room);
-
     return await this.roomRepository.save(room);
   }
 
