@@ -35,7 +35,7 @@ const Action = styled('button')`
   }
 `;
 Action.defaultProps = {
-  type: 'button'
+  type: 'button',
 };
 
 const List = styled('ul')`
@@ -112,7 +112,7 @@ class RoomList extends React.Component<Props> {
       input: 'text',
       text: 'Room name',
       showCancelButton: true,
-      confirmButtonText: 'Create'
+      confirmButtonText: 'Create',
     });
     if (!result.dismiss && result.value) {
       this.props.onCreate(result.value);
@@ -125,7 +125,7 @@ class RoomList extends React.Component<Props> {
       input: 'text',
       text: 'Room id',
       showCancelButton: true,
-      confirmButtonText: 'Join'
+      confirmButtonText: 'Join',
     });
     if (!result.dismiss && result.value) {
       this.props.onJoin(result.value);

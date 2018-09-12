@@ -18,8 +18,8 @@ const wsBase = wsProtocol + '//' + host;
 const httpLink = new HttpLink({
   uri: base + '/graphql',
   headers: session && {
-    Authentication: 'Bearer ' + session
-  }
+    Authentication: 'Bearer ' + session,
+  },
 });
 
 const wsLink = new WebSocketLink({
@@ -27,9 +27,9 @@ const wsLink = new WebSocketLink({
   options: {
     reconnect: true,
     connectionParams: {
-      session
-    }
-  }
+      session,
+    },
+  },
 });
 
 const isSubscription = ({ query }: Operation) => {
@@ -44,7 +44,7 @@ const cache = new InMemoryCache();
 
 const client = new ApolloClient({
   link,
-  cache
+  cache,
 });
 
 export default client;

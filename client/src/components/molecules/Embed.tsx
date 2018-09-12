@@ -31,7 +31,7 @@ const Image = styled('img')`
 enum EmbedType {
   Youtube = 'YOUTUBE',
   Alugha = 'ALUGHA',
-  Image = 'IMAGE'
+  Image = 'IMAGE',
 }
 
 export interface Props {

@@ -20,7 +20,7 @@ import {
   NewMessageContainer,
   MessageInputContainer,
   MessageInput,
-  MessageSendButton
+  MessageSendButton,
 } from './styled';
 
 interface User {
@@ -137,7 +137,7 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
   unsubscribeUsers?: () => void;
 
   state: State = {
-    inputText: ''
+    inputText: '',
   };
 
   componentDidMount() {
@@ -213,7 +213,7 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
       variables: { roomId },
       updateQuery: (
         prev: Response,
-        { subscriptionData }: { subscriptionData: ChatSubscriptionData }
+        { subscriptionData }: { subscriptionData: ChatSubscriptionData },
       ) => {
         if (!subscriptionData.data) {
           return prev;
@@ -233,10 +233,10 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
           ...prev,
           room: {
             ...prev.room,
-            messages
-          }
+            messages,
+          },
         };
-      }
+      },
     });
   }
 
@@ -251,7 +251,7 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
       variables: { roomId },
       updateQuery: (
         prev: Response,
-        { subscriptionData }: { subscriptionData: UserSubscriptionData }
+        { subscriptionData }: { subscriptionData: UserSubscriptionData },
       ) => {
         if (!subscriptionData.data) {
           return prev;
@@ -263,10 +263,10 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
           ...prev,
           room: {
             ...prev.room,
-            members: [...prev.room.members, newUser]
-          }
+            members: [...prev.room.members, newUser],
+          },
         };
-      }
+      },
     });
   }
 
@@ -401,8 +401,8 @@ const withData = graphql<Response>(ChatQuery, {
     // Use cache-and-network policy to ensure we get the most recent messages
     // but also start seeing the already cached messages while the new ones are
     // loading
-    fetchPolicy: 'cache-and-network'
-  })
+    fetchPolicy: 'cache-and-network',
+  }),
 });
 
 const withSendMessageMutation = graphql(
@@ -413,7 +413,10 @@ const withSendMessageMutation = graphql(
       }
     }
   `,
-  { name: 'sendMessage' }
+  { name: 'sendMessage' },
 );
 
-export default compose(withData, withSendMessageMutation)(Chat);
+export default compose(
+  withData,
+  withSendMessageMutation,
+)(Chat);

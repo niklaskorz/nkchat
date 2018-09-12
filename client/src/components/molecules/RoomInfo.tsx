@@ -80,7 +80,9 @@ export default class RoomInfo extends React.Component<Props> {
         />
         <SubTitle>Members ({room.members.length})</SubTitle>
         <List>
-          {room.members.map(user => <Item key={user.id}>{user.name}</Item>)}
+          {room.members.map(user => (
+            <Item key={user.id}>{user.name}</Item>
+          ))}
         </List>
       </SideBar>
     );

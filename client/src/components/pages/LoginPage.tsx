@@ -97,7 +97,7 @@ interface State {
 class LoginPage extends React.Component<ChildProps<Props, Response>, State> {
   state: State = {
     name: '',
-    password: ''
+    password: '',
   };
 
   componentDidUpdate(prevProps: Props) {
@@ -118,18 +118,20 @@ class LoginPage extends React.Component<ChildProps<Props, Response>, State> {
     e.preventDefault();
 
     const { name, password } = this.state;
-    const { location: { pathname } } = this.props;
+    const {
+      location: { pathname },
+    } = this.props;
 
     try {
       let session: Session;
       if (pathname === '/register') {
         const result = await this.props.register({
-          variables: { name, password }
+          variables: { name, password },
         });
         session = result.data.register;
       } else {
         const result = await this.props.login({
-          variables: { name, password }
+          variables: { name, password },
         });
         session = result.data.login;
       }
@@ -151,7 +153,9 @@ class LoginPage extends React.Component<ChildProps<Props, Response>, State> {
 
   render() {
     const { name, password, errorMessage } = this.state;
-    const { location: { pathname } } = this.props;
+    const {
+      location: { pathname },
+    } = this.props;
     const isRegistration = pathname === '/register';
     const label = isRegistration ? 'Register' : 'Login';
 
@@ -212,7 +216,7 @@ const RegisterMutation = gql`
 
 const withMutations = compose(
   graphql(LoginMutation, { name: 'login' }),
-  graphql(RegisterMutation, { name: 'register' })
+  graphql(RegisterMutation, { name: 'register' }),
 );
 
 export default withMutations(LoginPage);

@@ -62,7 +62,7 @@ class ChatPage extends React.Component<ChildProps<Props, Response>> {
           data.viewer.rooms.push(result.data.createRoom);
           store.writeQuery({ query: ChatPageQuery, data });
         }
-      }
+      },
     });
     // Open the created room
     const roomId = res.data.createRoom.id;
@@ -78,7 +78,7 @@ class ChatPage extends React.Component<ChildProps<Props, Response>> {
           data.viewer.rooms.push(result.data.joinRoom);
           store.writeQuery({ query: ChatPageQuery, data });
         }
-      }
+      },
     });
     // Open the joined room
     this.props.history.push(`/rooms/${roomId}`);
@@ -109,8 +109,8 @@ class ChatPage extends React.Component<ChildProps<Props, Response>> {
           to={{
             pathname: '/login',
             state: {
-              from: this.props.location
-            }
+              from: this.props.location,
+            },
           }}
         />
       );
@@ -145,7 +145,7 @@ const withCreateRoomMutation = graphql(
       }
     }
   `,
-  { name: 'createRoom' }
+  { name: 'createRoom' },
 );
 
 const withJoinRoomMutation = graphql(
@@ -157,9 +157,11 @@ const withJoinRoomMutation = graphql(
       }
     }
   `,
-  { name: 'joinRoom' }
+  { name: 'joinRoom' },
 );
 
-export default compose(withData, withCreateRoomMutation, withJoinRoomMutation)(
-  ChatPage
-);
+export default compose(
+  withData,
+  withCreateRoomMutation,
+  withJoinRoomMutation,
+)(ChatPage);
