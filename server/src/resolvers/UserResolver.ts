@@ -12,7 +12,8 @@ import {
 import * as bcrypt from 'bcrypt';
 import Context from '../Context';
 import { User, Session, Room, Message } from '../models';
-import { ObjectID, MongoRepository } from 'typeorm';
+import { MongoRepository } from 'typeorm';
+import { ObjectID } from 'mongodb';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 
 @InputType()
@@ -88,14 +89,17 @@ export class UserResolver {
     @Arg('input') input: RegisterInput,
     @Ctx() ctx: Context,
   ): Promise<Session> {
-    const user = await this.userRepository.create({
-      name: input.name,
-      password: await bcrypt.hash(input.password, 10),
-    });
+    const user = new User();
+    user.name = input.name;
+    user.password = await bcrypt.hash(input.password, 10);
 
-    const session = await this.sessionRepository.create({
-      userId: user.id,
-    });
+    await this.userRepository.save(user);
+
+    const session = new Session();
+    session.userId = user.id;
+
+    await this.sessionRepository.save(session);
+
     ctx.state.session = session;
     ctx.state.viewer = user;
 
@@ -122,9 +126,11 @@ export class UserResolver {
       throw new Error('Password is incorrect');
     }
 
-    const session = await this.sessionRepository.create({
-      userId: user.id,
-    });
+    const session = new Session();
+    session.userId = user.id;
+
+    await this.sessionRepository.save(session);
+
     ctx.state.session = session;
     ctx.state.viewer = user;
 
@@ -145,6 +151,7 @@ export class UserResolver {
     }
 
     await this.sessionRepository.remove(session);
+
     ctx.state.session = undefined;
     ctx.state.viewer = undefined;
 

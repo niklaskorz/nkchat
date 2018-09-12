@@ -1,5 +1,5 @@
 import { GraphQLScalarType, Kind, ValueNode } from 'graphql';
-import { ObjectID } from 'typeorm';
+import { ObjectID } from 'mongodb';
 
 export const ObjectIDScalar = new GraphQLScalarType({
   name: 'ObjectID',

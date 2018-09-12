@@ -15,7 +15,6 @@
     "@types/bcrypt": "^2.0.0",
     "@types/graphql": "^0.13.4",
     "@types/lodash": "^4.14.116",
-    "@types/mongodb": "^3.1.4",
     "@types/node": "^10.9.4",
     "@types/winston": "^2.4.4",
     "@types/ws": "^6.0.0",

@@ -11,7 +11,8 @@ import {
   Publisher,
   Field,
 } from 'type-graphql';
-import { MongoRepository, ObjectID } from 'typeorm';
+import { MongoRepository } from 'typeorm';
+import { ObjectID } from 'mongodb';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 import getUrls from 'get-urls';
 import { URL } from 'url';
@@ -170,12 +171,13 @@ export class MessageResolver {
       throw new Error('Only members of a room can send messages to the room');
     }
 
-    const message = await this.messageRepository.create({
-      content: input.content,
-      authorId: viewer.id,
-      roomId: input.roomId,
-      embeds: getEmbeds(input.content),
-    });
+    const message = new Message();
+    message.content = input.content;
+    message.authorId = viewer.id;
+    message.roomId = input.roomId;
+    message.embeds = getEmbeds(input.content);
+
+    await this.messageRepository.save(message);
 
     publish({
       roomId: input.roomId,

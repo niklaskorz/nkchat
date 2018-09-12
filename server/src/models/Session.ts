@@ -1,5 +1,6 @@
 import { ObjectType, Field } from 'type-graphql';
-import { Entity, ObjectID, ObjectIdColumn, Column } from 'typeorm';
+import { Entity, ObjectIdColumn, Column } from 'typeorm';
+import { ObjectID } from 'mongodb';
 
 @ObjectType({
   description: 'A login session for authenticating user requests',

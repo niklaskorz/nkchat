@@ -1,5 +1,5 @@
 import { buildSchema } from 'type-graphql';
-import { ObjectID } from 'typeorm';
+import { ObjectID } from 'mongodb';
 import {
   MessageResolver,
   RoomResolver,

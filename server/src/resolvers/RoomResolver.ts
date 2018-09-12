@@ -13,7 +13,8 @@ import {
   Field,
 } from 'type-graphql';
 import { Room, User, userIsMemberOfRoom, Message } from '../models';
-import { ObjectID, MongoRepository } from 'typeorm';
+import { MongoRepository } from 'typeorm';
+import { ObjectID } from 'mongodb';
 import Context from '../Context';
 import { SubscriptionType } from '../subscriptions';
 import { InjectRepository } from 'typeorm-typedi-extensions';
@@ -127,11 +128,12 @@ export class RoomResolver {
       throw new Error('Authentication required');
     }
 
-    return await this.roomRepository.create({
-      name: input.name,
-      ownerId: viewer.id,
-      memberIds: [viewer.id],
-    });
+    const room = new Room();
+    room.name = input.name;
+    room.ownerId = viewer.id;
+    room.memberIds = [viewer.id];
+
+    return await this.roomRepository.save(room);
   }
 
   @Mutation(returns => Room, {

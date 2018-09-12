@@ -1,5 +1,6 @@
 import { ObjectType, Field, registerEnumType } from 'type-graphql';
-import { Entity, ObjectID, ObjectIdColumn, Column, Index } from 'typeorm';
+import { Entity, ObjectIdColumn, Column } from 'typeorm';
+import { ObjectID } from 'mongodb';
 
 export enum EmbedType {
   Youtube = 'YOUTUBE',
@@ -38,7 +39,6 @@ export class Message {
   authorId: ObjectID;
 
   @Field(type => ObjectID)
-  @Index()
   @Column(type => ObjectID)
   roomId: ObjectID;
 
