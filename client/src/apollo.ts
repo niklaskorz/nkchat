@@ -18,7 +18,7 @@ const wsBase = wsProtocol + '//' + host;
 const httpLink = new HttpLink({
   uri: base + '/graphql',
   headers: session && {
-    Authentication: 'Bearer ' + session,
+    Authentication: session,
   },
 });
 

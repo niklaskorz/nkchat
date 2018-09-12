@@ -395,7 +395,11 @@ class Chat extends React.Component<ChildProps<Props, Response>, State> {
   }
 }
 
-const withData = graphql<Response>(ChatQuery, {
+interface QueryVariables {
+  roomId: string;
+}
+
+const withData = graphql<QueryVariables, Response, QueryVariables>(ChatQuery, {
   options: ({ roomId }) => ({
     variables: { roomId },
     // Use cache-and-network policy to ensure we get the most recent messages
