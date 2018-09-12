@@ -2,7 +2,10 @@
   "name": "server",
   "version": "1.0.0",
   "main": "build/index.js",
-  "repository": "git@gitlab.com:webengineering2/server.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/niklaskorz/nkchat.git"
+  },
   "author": "Niklas Korz <korz.niklask@gmail.com>",
   "private": true,
   "scripts": {
