@@ -15,8 +15,8 @@ const startServer = async () => {
       const ctx: Context = { state: {} };
 
       let sessionId: string | null = null;
-      if (request && request.cookies && request.cookies.session) {
-        sessionId = request.cookies.session;
+      if (request && request.headers.authorization) {
+        sessionId = request.headers.authorization;
       } else if (
         connection &&
         connection.variables &&

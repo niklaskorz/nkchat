@@ -8,10 +8,10 @@ export const ObjectIDScalar = new GraphQLScalarType({
     return ObjectID.createFromHexString(value);
   },
   parseLiteral(node: ValueNode) {
-    if (node.kind === Kind.STRING) {
-      return ObjectID.createFromHexString(node.value);
+    if (node.kind !== Kind.STRING) {
+      throw new Error('Cannot parse non-string to as ObjectID');
     }
-    return null;
+    return ObjectID.createFromHexString(node.value);
   },
   serialize(value: ObjectID) {
     return value.toHexString();
