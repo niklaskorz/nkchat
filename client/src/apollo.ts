@@ -18,7 +18,7 @@ const wsBase = wsProtocol + '//' + host;
 const httpLink = new HttpLink({
   uri: base,
   headers: session && {
-    Authentication: session,
+    Authorization: session,
   },
 });
 

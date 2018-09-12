@@ -150,7 +150,7 @@ const withCreateRoomMutation = graphql(
 
 const withJoinRoomMutation = graphql(
   gql`
-    mutation JoinRoom($roomId: ID!) {
+    mutation JoinRoom($roomId: ObjectID!) {
       joinRoom(input: { roomId: $roomId }) {
         id
         name

@@ -87,7 +87,7 @@ const ChatMessageFragment = gql`
 const ChatQuery = gql`
   ${ChatMessageFragment}
 
-  query ChatQuery($roomId: ID!) {
+  query ChatQuery($roomId: ObjectID!) {
     room(id: $roomId) {
       id
       name
@@ -110,7 +110,7 @@ interface ChatSubscriptionData {
 const ChatSubscription = gql`
   ${ChatMessageFragment}
 
-  subscription ChatSubscription($roomId: ID!) {
+  subscription ChatSubscription($roomId: ObjectID!) {
     messageWasSent(roomId: $roomId) {
       ...ChatMessage
     }
@@ -122,7 +122,7 @@ interface UserSubscriptionData {
 }
 
 const UserSubscription = gql`
-  subscription UserSubscription($roomId: ID!) {
+  subscription UserSubscription($roomId: ObjectID!) {
     userJoinedRoom(roomId: $roomId) {
       id
       name
@@ -411,7 +411,7 @@ const withData = graphql<QueryVariables, Response, QueryVariables>(ChatQuery, {
 
 const withSendMessageMutation = graphql(
   gql`
-    mutation SendMessage($roomId: ID!, $content: String!) {
+    mutation SendMessage($roomId: ObjectID!, $content: String!) {
       sendMessage(input: { roomId: $roomId, content: $content }) {
         id
       }
