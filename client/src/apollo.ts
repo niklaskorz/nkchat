@@ -9,21 +9,21 @@ const session = localStorage.session;
 
 const protocol = location.protocol;
 const hostname = location.hostname;
-const port = location.port && location.port !== '9000' ? '3000' : location.port;
+const port = location.port && location.port !== '9000' ? '4000' : location.port;
 const host = hostname + (port ? ':' + port : '');
 const base = protocol + '//' + host;
 const wsProtocol = protocol === 'https:' ? 'wss:' : 'ws:';
 const wsBase = wsProtocol + '//' + host;
 
 const httpLink = new HttpLink({
-  uri: base + '/graphql',
+  uri: base,
   headers: session && {
     Authentication: session,
   },
 });
 
 const wsLink = new WebSocketLink({
-  uri: wsBase + '/subscriptions',
+  uri: wsBase,
   options: {
     reconnect: true,
     connectionParams: {
