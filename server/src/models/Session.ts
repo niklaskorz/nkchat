@@ -12,7 +12,7 @@ export class Session {
   readonly id: ObjectID;
 
   @Field(type => ObjectID)
-  @Column(type => ObjectID)
+  @Column()
   userId: ObjectID;
 
   @Field()

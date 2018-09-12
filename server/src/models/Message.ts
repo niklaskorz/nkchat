@@ -35,11 +35,11 @@ export class Message {
   content: string;
 
   @Field(type => ObjectID)
-  @Column(type => ObjectID)
+  @Column()
   authorId: ObjectID;
 
   @Field(type => ObjectID)
-  @Column(type => ObjectID)
+  @Column()
   roomId: ObjectID;
 
   @Field(type => [Embed])

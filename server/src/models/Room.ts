@@ -19,11 +19,11 @@ export class Room {
   name: string;
 
   @Field(type => ObjectID)
-  @Column(type => ObjectID)
+  @Column()
   ownerId: ObjectID;
 
   @Field(type => [ObjectID])
-  @Column(type => ObjectID)
+  @Column()
   memberIds: ObjectID[];
 
   @Field()
