@@ -6,11 +6,11 @@ Build the client:
   image: niklaskorz/makisu-alpine
   script:
     - echo "{\"$CI_REGISTRY\":{\".*\":{\"basic\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}}" > /registry-config.yaml
-    - makisu build --push=$CI_REGISTRY --modifyfs=true -t $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG --registry-config=/registry-config.yaml $CI_PROJECT_DIR/client
+    - makisu build --push=$CI_REGISTRY --modifyfs=true -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA --registry-config=/registry-config.yaml $CI_PROJECT_DIR/client
 
 Build the server:
   stage: build
   image: niklaskorz/makisu-alpine
   script:
     - echo "{\"$CI_REGISTRY\":{\".*\":{\"basic\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}}" > /registry-config.yaml
-    - makisu build --push=$CI_REGISTRY --modifyfs=true -t $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG --registry-config=/registry-config.yaml $CI_PROJECT_DIR/server
+    - makisu build --push=$CI_REGISTRY --modifyfs=true -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA --registry-config=/registry-config.yaml $CI_PROJECT_DIR/server
