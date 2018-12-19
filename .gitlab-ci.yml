@@ -3,10 +3,12 @@ stages:
 
 Build the client:
   stage: build
-  image: niklaskorz/makisu-alpine
+  image:
+    name: gcr.io/makisu-project/makisu-alpine:v0.1.6-7-ga033909
+    entrypoint: [""]
   script:
     - echo "{\"$CI_REGISTRY\":{\".*\":{\"security\":{\"basic\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}}}" > /registry-config.yaml
-    - makisu build -log-fmt=console -push=$CI_REGISTRY -modifyfs=true -t=$CI_REGISTRY_IMAGE/client:$CI_COMMIT_SHA --registry-config=/registry-config.yaml $CI_PROJECT_DIR/client
+    - makisu -log-fmt=console build -push=$CI_REGISTRY -modifyfs=true -t=$CI_REGISTRY_IMAGE/client:$CI_COMMIT_SHA --registry-config=/registry-config.yaml $CI_PROJECT_DIR/client
 
 Build the server:
   stage: build
