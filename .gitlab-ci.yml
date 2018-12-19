@@ -8,11 +8,11 @@ Build the client:
     entrypoint: [""]
   script:
     - echo "{\"$CI_REGISTRY\":{\".*\":{\"security\":{\"basic\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}}}" > /registry-config.yaml
-    - makisu -log-fmt=console build -push=$CI_REGISTRY -modifyfs=true -t=$CI_REGISTRY_IMAGE/client:$CI_COMMIT_SHA --registry-config=/registry-config.yaml $CI_PROJECT_DIR/client
+    - /makisu-internal/makisu -log-fmt=console build -push=$CI_REGISTRY -modifyfs=true -t=$CI_REGISTRY_IMAGE/client:$CI_COMMIT_SHA --registry-config=/registry-config.yaml $CI_PROJECT_DIR/client
 
 Build the server:
   stage: build
   image: niklaskorz/makisu-alpine
   script:
     - echo "{\"$CI_REGISTRY\":{\".*\":{\"security\":{\"basic\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}}}" > /registry-config.yaml
-    - makisu build -log-fmt=console -push=$CI_REGISTRY -modifyfs=true -t=$CI_REGISTRY_IMAGE/server:$CI_COMMIT_SHA --registry-config=/registry-config.yaml $CI_PROJECT_DIR/server
+    - /makisu-internal/makisu -log-fmt=console build -push=$CI_REGISTRY -modifyfs=true -t=$CI_REGISTRY_IMAGE/server:$CI_COMMIT_SHA --registry-config=/registry-config.yaml $CI_PROJECT_DIR/server
