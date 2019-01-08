@@ -17,19 +17,17 @@ export default class NatsPubSub implements PubSubEngine {
     this.client = connect(opts);
   }
 
-  public publish(triggerName: string, payload: any): boolean {
+  public async publish(triggerName: string, payload: any): Promise<void> {
     this.client.publish(triggerName, JSON.stringify(payload));
-    return true;
   }
 
-  public subscribe(
+  public async subscribe(
     triggerName: string,
     onMessage: (payload: any) => void,
   ): Promise<number> {
-    const id = this.client.subscribe(triggerName, (msg: string) =>
+    return this.client.subscribe(triggerName, (msg: string) =>
       onMessage(JSON.parse(msg, reviver)),
     );
-    return Promise.resolve(id);
   }
 
   public unsubscribe(subId: number) {
