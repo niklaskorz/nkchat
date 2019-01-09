@@ -2902,7 +2902,7 @@ strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
-subscriptions-transport-ws@^0.9.11, subscriptions-transport-ws@^0.9.15:
+subscriptions-transport-ws@^0.9.11:
   version "0.9.15"
   resolved "https://registry.yarnpkg.com/subscriptions-transport-ws/-/subscriptions-transport-ws-0.9.15.tgz#68a8b7ba0037d8c489fb2f5a102d1494db297d0d"
   integrity sha512-f9eBfWdHsePQV67QIX+VRhf++dn1adyC/PZHP6XI5AfKnZ4n0FW+v5omxwdHVpd4xq2ZijaHEcmlQrhBY79ZWQ==
@@ -3097,9 +3097,10 @@ type-is@^1.6.16, type-is@~1.6.6:
     media-typer "0.3.0"
     mime-types "~2.1.18"
 
-typedi@^0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/typedi/-/typedi-0.8.0.tgz#d8e203bd1d41a96e2b0a5c6295147d74b2b2d03e"
+typedi@^0.7.1:
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/typedi/-/typedi-0.7.3.tgz#872fb8d608ed6076e95c1f8cbd2bb33b7d089f0f"
+  integrity sha512-i8fZGW1IPK+59YTZCC/zIMkOb1BMavOratipbLKIHRYGjJFyC+WDdaiiJq0dMWjXRZ7Jwo/YDHsQKFnY4TkVvw==
 
 typeorm-typedi-extensions@^0.2.1:
   version "0.2.1"

@@ -19,6 +19,7 @@
     "@types/bcrypt": "^3.0.0",
     "@types/cookies": "^0.7.1",
     "@types/graphql": "^14.0.4",
+    "@types/koa": "^2.0.48",
     "@types/lodash": "^4.14.119",
     "@types/node": "^10.12.18",
     "@types/winston": "^2.4.4",
@@ -33,7 +34,6 @@
     "typescript": "^3.2.2"
   },
   "dependencies": {
-    "@types/koa": "^2.0.48",
     "apollo-server-koa": "^2.3.1",
     "bcrypt": "^3.0.3",
     "cookies": "^0.7.3",
@@ -46,9 +46,8 @@
     "mongodb": "^3.1.10",
     "nats": "^1.2.2",
     "reflect-metadata": "^0.1.12",
-    "subscriptions-transport-ws": "^0.9.15",
     "type-graphql": "^0.16.0",
-    "typedi": "^0.8.0",
+    "typedi": "^0.7.1",
     "typeorm": "^0.2.11",
     "typeorm-typedi-extensions": "^0.2.1",
     "winston": "^3.1.0"
