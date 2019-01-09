@@ -53,7 +53,7 @@ export class UserResolver {
   // @ManyToMany(type => Room)
   // @JoinTable()
   async rooms(@Root() user: User): Promise<Room[]> {
-    return await this.roomRepository.find({ memberIds: [user.id] });
+    return await this.roomRepository.find({ where: { memberIds: user.id } });
   }
 
   @FieldResolver(type => [Message])
