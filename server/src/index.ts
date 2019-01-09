@@ -25,8 +25,8 @@ const createDatabaseConnection = () =>
   });
 
 createDatabaseConnection()
-  .then(() => startServer())
+  .then(() => startServer(config.port))
   .then(() => {
-    winston.info(`GraphQL API at http://localhost:4000/graphql`);
+    winston.info(`GraphQL API at http://localhost:${config.port}/graphql`);
   })
   .catch(err => winston.error(err.stack));

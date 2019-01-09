@@ -1,0 +1,5 @@
+:2015
+proxy / localhost:3000
+proxy /graphql localhost:4000 {
+  websocket
+}

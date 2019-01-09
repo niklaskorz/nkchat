@@ -4,7 +4,7 @@ import { User, Session } from './models';
 import getSchema from './schema';
 import Context from './Context';
 import Cookies from 'cookies';
-import { ServerResponse } from 'http';
+import { createServer, ServerResponse } from 'http';
 import Koa from 'koa';
 
 const loadState = async (sessionId?: string | null) => {
@@ -27,7 +27,7 @@ type ContextParameters =
   | { ctx: Context; connection: undefined }
   | { ctx: undefined; connection: { context: Context } };
 
-const startServer = async () => {
+const startServer = async (port: number) => {
   const app = new Koa();
 
   app.proxy = true;
@@ -38,7 +38,7 @@ const startServer = async () => {
     await next();
   });
 
-  const server = new ApolloServer({
+  const apolloServer = new ApolloServer({
     schema: await getSchema(),
     context: async (params: ContextParameters): Promise<Context> => {
       return params.ctx || params.connection.context;
@@ -61,12 +61,15 @@ const startServer = async () => {
     },
   });
 
-  server.applyMiddleware({
+  apolloServer.applyMiddleware({
     app,
     cors: false,
   });
 
-  return await new Promise(resolve => app.listen(4000, resolve));
+  const server = createServer(app.callback());
+  apolloServer.installSubscriptionHandlers(server);
+
+  return await new Promise(resolve => server.listen(port, resolve));
 };
 
 export default startServer;

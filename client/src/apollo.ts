@@ -5,13 +5,9 @@ import { getMainDefinition } from 'apollo-utilities';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
 
-const protocol = location.protocol;
-const hostname = location.hostname;
-const port = location.port && location.port !== '9000' ? '4000' : location.port;
-const host = hostname + (port ? ':' + port : '');
-const base = protocol + '//' + host;
-const wsProtocol = protocol.replace('http', 'ws');
-const wsBase = wsProtocol + '//' + host;
+const base = '/graphql';
+const wsProtocol = location.protocol.replace('http', 'ws');
+const wsBase = wsProtocol + '//' + location.host + base;
 
 const httpLink = new HttpLink({
   uri: base,
