@@ -156,14 +156,13 @@ export class UserResolver {
     description:
       'Invalidates the active user session and returns the session id',
   })
-  async logout(
-    @Arg('input') input: LoginInput,
-    @Ctx() ctx: Context,
-  ): Promise<ObjectID> {
+  async logout(@Ctx() ctx: Context): Promise<ObjectID> {
     const session = ctx.state.session;
     if (!session) {
       throw new Error('Authentication required');
     }
+
+    const sessionId = session.id;
 
     await this.sessionRepository.remove(session);
 
@@ -173,6 +172,6 @@ export class UserResolver {
       ctx.cookies.set('sessionId', undefined, { overwrite: true }); // Clear session
     }
 
-    return session.id;
+    return sessionId;
   }
 }

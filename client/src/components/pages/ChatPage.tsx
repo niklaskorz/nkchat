@@ -9,6 +9,7 @@ import Chat from '../organisms/Chat';
 import RoomList, { Room } from '../molecules/RoomList';
 import Loading from '../molecules/Loading';
 import NothingHere from '../molecules/NothingHere';
+import client from '../../apollo';
 
 const Container = styled.div`
   display: flex;
@@ -37,6 +38,7 @@ interface Props {
   };
   createRoom: MutationFunc<{ createRoom: Room }, { name: string }>;
   joinRoom: MutationFunc<{ joinRoom: Room }, { roomId: string }>;
+  logout: MutationFunc<{ logout: string }, {}>;
 }
 
 const ChatPageQuery = gql`
@@ -84,12 +86,9 @@ class ChatPage extends React.Component<ChildProps<Props, Response>> {
     this.props.history.push(`/rooms/${roomId}`);
   };
 
-  logout = () => {
-    // Remove session id from localStorage so Apollo doesn't use it after the
-    // reload
-    delete localStorage.session;
-    // Reload and redirect to the login page
-    location.pathname = '/login';
+  logout = async () => {
+    await this.props.logout();
+    await client.resetStore();
   };
 
   render() {
@@ -160,8 +159,18 @@ const withJoinRoomMutation = graphql(
   { name: 'joinRoom' },
 );
 
+const withLogoutMutation = graphql(
+  gql`
+    mutation LogoutMutation {
+      logout
+    }
+  `,
+  { name: 'logout' },
+);
+
 export default compose(
   withData,
   withCreateRoomMutation,
   withJoinRoomMutation,
+  withLogoutMutation,
 )(ChatPage);

@@ -1,12 +1,13 @@
 import React from 'react';
 import gql from 'graphql-tag';
 import { ChildProps, compose, graphql, MutationFunc } from 'react-apollo';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet';
 import * as colors from 'colors';
 import formatError from 'formatError';
 import ErrorMessage from '../atoms/ErrorMessage';
+import client from '../../apollo';
 
 const Container = styled.div`
   background: ${colors.darkPrimary};
@@ -92,6 +93,7 @@ interface State {
   name: string;
   password: string;
   errorMessage?: string;
+  redirect?: string;
 }
 
 class LoginPage extends React.Component<ChildProps<Props, Response>, State> {
@@ -133,14 +135,17 @@ class LoginPage extends React.Component<ChildProps<Props, Response>, State> {
         });
       }
 
+      // Reset store so Apollo re-fetches the viewer
+      await client.resetStore();
+
       if (this.props.location.state) {
         // Reloads and redirects to the chat room visited before
         // the user was redirected to the login page
-        location.pathname = this.props.location.state.from.pathname;
+        this.setState({ redirect: this.props.location.state.from.pathname });
       } else {
         // Redirects the user to the room list if no room was open before
         // the user was redirected to the login page
-        location.pathname = '/';
+        this.setState({ redirect: '/' });
       }
     } catch (ex) {
       this.setState({ errorMessage: formatError(ex.message) });
@@ -148,12 +153,16 @@ class LoginPage extends React.Component<ChildProps<Props, Response>, State> {
   };
 
   render() {
-    const { name, password, errorMessage } = this.state;
+    const { name, password, errorMessage, redirect } = this.state;
     const {
       location: { pathname },
     } = this.props;
     const isRegistration = pathname === '/register';
     const label = isRegistration ? 'Register' : 'Login';
+
+    if (redirect) {
+      return <Redirect to={redirect} />;
+    }
 
     return (
       <Container>
