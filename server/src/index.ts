@@ -21,11 +21,12 @@ const createDatabaseConnection = () =>
     url: `mongodb://${config.mongodbHost}/nkchat`,
     entities: [Message, Room, Session, User],
     synchronize: true,
+    useNewUrlParser: true,
   });
 
 createDatabaseConnection()
   .then(() => startServer())
-  .then(server => {
-    winston.info(`GraphQL API at ${server.address()}`);
+  .then(() => {
+    winston.info(`GraphQL API at http://localhost:4000/graphql`);
   })
   .catch(err => winston.error(err.stack));

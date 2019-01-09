@@ -123,19 +123,15 @@ class LoginPage extends React.Component<ChildProps<Props, Response>, State> {
     } = this.props;
 
     try {
-      let session: Session;
       if (pathname === '/register') {
-        const result = await this.props.register({
+        await this.props.register({
           variables: { name, password },
         });
-        session = result.data.register;
       } else {
-        const result = await this.props.login({
+        await this.props.login({
           variables: { name, password },
         });
-        session = result.data.login;
       }
-      localStorage.session = session.id;
 
       if (this.props.location.state) {
         // Reloads and redirects to the chat room visited before

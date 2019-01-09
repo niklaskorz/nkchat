@@ -15,6 +15,7 @@ import { User, Session, Room, Message } from '../models';
 import { MongoRepository } from 'typeorm';
 import { ObjectID } from 'mongodb';
 import { InjectRepository } from 'typeorm-typedi-extensions';
+import winston from 'winston';
 
 @InputType()
 class RegisterInput {
@@ -102,6 +103,12 @@ export class UserResolver {
 
     ctx.state.session = session;
     ctx.state.viewer = user;
+    if (ctx.cookies) {
+      ctx.cookies.set('sessionId', session.id.toHexString(), {
+        overwrite: true,
+        maxAge: 1209600000, // 2 weeks
+      });
+    }
 
     return session;
   }
@@ -133,6 +140,14 @@ export class UserResolver {
 
     ctx.state.session = session;
     ctx.state.viewer = user;
+    if (ctx.cookies) {
+      winston.info('Setting cookie to ' + session.id.toHexString());
+      ctx.cookies.set('sessionId', session.id.toHexString(), {
+        overwrite: true,
+        maxAge: 1209600000, // 2 weeks
+      });
+      winston.info('Cookie set');
+    }
 
     return session;
   }
@@ -154,6 +169,9 @@ export class UserResolver {
 
     ctx.state.session = undefined;
     ctx.state.viewer = undefined;
+    if (ctx.cookies) {
+      ctx.cookies.set('sessionId', undefined, { overwrite: true }); // Clear session
+    }
 
     return session.id;
   }
