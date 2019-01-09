@@ -1,6 +1,6 @@
+import * as colors from 'colors';
 import React from 'react';
 import styled from 'styled-components';
-import * as colors from 'colors';
 
 const Section = styled.section`
   background: ${colors.darkPrimary};

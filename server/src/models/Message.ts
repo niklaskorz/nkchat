@@ -1,6 +1,6 @@
-import { ObjectType, Field, registerEnumType } from 'type-graphql';
-import { Entity, ObjectIdColumn, Column } from 'typeorm';
 import { ObjectID } from 'mongodb';
+import { Field, ObjectType, registerEnumType } from 'type-graphql';
+import { Column, Entity, ObjectIdColumn } from 'typeorm';
 
 export enum EmbedType {
   Youtube = 'YOUTUBE',

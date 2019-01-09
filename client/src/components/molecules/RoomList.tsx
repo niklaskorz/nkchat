@@ -1,8 +1,8 @@
+import * as colors from 'colors';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import swal from 'sweetalert2';
-import { Link } from 'react-router-dom';
-import * as colors from 'colors';
 import SideBar from './SideBar';
 
 const ActionBar = styled.div`

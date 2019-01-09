@@ -1,26 +1,26 @@
-import React from 'react';
 import gql from 'graphql-tag';
-import { graphql, compose, ChildProps, MutationFunc } from 'react-apollo';
 import Linkify from 'linkifyjs/react';
+import React from 'react';
+import { ChildProps, compose, graphql, MutationFunc } from 'react-apollo';
 import { Helmet } from 'react-helmet';
-import Loading from '../../molecules/Loading';
 import ChatError from '../../molecules/ChatError';
-import RoomInfo from '../../molecules/RoomInfo';
 import Embed, { Props as EmbedProps } from '../../molecules/Embed';
+import Loading from '../../molecules/Loading';
+import RoomInfo from '../../molecules/RoomInfo';
 import {
-  Section,
   Header,
-  Messages,
-  MessageHeader,
+  Message,
   MessageAuthor,
   MessageDate,
+  MessageHeader,
+  MessageInput,
+  MessageInputContainer,
+  Messages,
+  MessageSendButton,
   MessageText,
-  Message,
   MessageWrapper,
   NewMessageContainer,
-  MessageInputContainer,
-  MessageInput,
-  MessageSendButton,
+  Section,
 } from './styled';
 
 interface User {

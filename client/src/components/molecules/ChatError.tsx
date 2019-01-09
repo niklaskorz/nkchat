@@ -1,5 +1,5 @@
-import React from 'react';
 import formatError from 'formatError';
+import React from 'react';
 import CenteredContainer from '../atoms/CenteredContainer';
 import ErrorMessage from '../atoms/ErrorMessage';
 

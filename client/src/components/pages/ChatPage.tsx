@@ -1,15 +1,15 @@
-import React from 'react';
-import gql from 'graphql-tag';
 import { ApolloQueryResult } from 'apollo-client';
-import { graphql, ChildProps, compose, MutationFunc } from 'react-apollo';
-import styled from 'styled-components';
-import { Redirect } from 'react-router-dom';
+import gql from 'graphql-tag';
 import { History, Location } from 'history';
-import Chat from '../organisms/Chat';
-import RoomList, { Room } from '../molecules/RoomList';
+import React from 'react';
+import { ChildProps, compose, graphql, MutationFunc } from 'react-apollo';
+import { Redirect } from 'react-router-dom';
+import styled from 'styled-components';
+import client from '../../apollo';
 import Loading from '../molecules/Loading';
 import NothingHere from '../molecules/NothingHere';
-import client from '../../apollo';
+import RoomList, { Room } from '../molecules/RoomList';
+import Chat from '../organisms/Chat';
 
 const Container = styled.div`
   display: flex;

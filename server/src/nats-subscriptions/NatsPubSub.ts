@@ -1,7 +1,7 @@
 import { PubSubEngine } from 'graphql-subscriptions';
-import { connect, Client, ClientOpts } from 'nats';
-import PubSubAsyncIterator from './PubSubAsyncIterator';
 import { ObjectID } from 'mongodb';
+import { Client, ClientOpts, connect } from 'nats';
+import PubSubAsyncIterator from './PubSubAsyncIterator';
 
 const reviver = (key: string, value: any) => {
   if (ObjectID.isValid(value)) {

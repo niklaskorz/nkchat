@@ -1,8 +1,8 @@
-import { Resolver, Query, Ctx, FieldResolver, Root } from 'type-graphql';
+import { Ctx, FieldResolver, Query, Resolver, Root } from 'type-graphql';
 import { MongoRepository } from 'typeorm';
-import { Session, User } from '../models';
-import Context from '../Context';
 import { InjectRepository } from 'typeorm-typedi-extensions';
+import Context from '../Context';
+import { Session, User } from '../models';
 
 @Resolver(of => Session)
 export class SessionResolver {

@@ -86,6 +86,7 @@
       "check-separator",
       "check-type",
       "check-typecast"
-    ]
+    ],
+    "ordered-imports": true
   }
 }

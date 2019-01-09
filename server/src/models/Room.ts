@@ -1,6 +1,6 @@
-import { ObjectType, Field } from 'type-graphql';
-import { Entity, ObjectIdColumn, Column } from 'typeorm';
 import { ObjectID } from 'mongodb';
+import { Field, ObjectType } from 'type-graphql';
+import { Column, Entity, ObjectIdColumn } from 'typeorm';
 import { User } from './User';
 
 @ObjectType({

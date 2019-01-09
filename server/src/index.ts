@@ -1,11 +1,11 @@
 import 'reflect-metadata';
-import winston from 'winston';
-import * as typeorm from 'typeorm';
 import * as typegraphql from 'type-graphql';
 import { Container } from 'typedi';
+import * as typeorm from 'typeorm';
+import winston from 'winston';
 import * as config from './config';
-import startServer from './startServer';
 import { Message, Room, Session, User } from './models';
+import startServer from './startServer';
 
 typeorm.useContainer(Container);
 typegraphql.useContainer(Container);

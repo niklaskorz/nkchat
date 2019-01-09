@@ -12,7 +12,8 @@
     "start": "cross-env NODE_PATH=src nodemon --watch src ./src/index.ts",
     "clean": "rimraf build",
     "copy:graphql": "copyfiles -u 1 src/**/*.graphql build",
-    "build": "yarn clean && tsc && yarn copy:graphql"
+    "build": "yarn clean && tsc && yarn copy:graphql",
+    "lint:ts": "tslint -p tsconfig.json -c tslint.json src/**/*.ts src/**/*.tsx"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",

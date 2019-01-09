@@ -1,30 +1,30 @@
+import getUrls from 'get-urls';
+import { ObjectID } from 'mongodb';
 import {
-  Resolver,
-  FieldResolver,
+  Arg,
   Ctx,
-  Root,
+  Field,
+  FieldResolver,
   InputType,
   Mutation,
-  Arg,
-  Subscription,
-  PubSub,
   Publisher,
-  Field,
+  PubSub,
+  Resolver,
+  Root,
+  Subscription,
 } from 'type-graphql';
 import { MongoRepository } from 'typeorm';
-import { ObjectID } from 'mongodb';
 import { InjectRepository } from 'typeorm-typedi-extensions';
-import getUrls from 'get-urls';
 import { URL } from 'url';
+import Context from '../Context';
 import {
+  Embed,
+  EmbedType,
   Message,
   Room,
   User,
-  Embed,
-  EmbedType,
   userIsMemberOfRoom,
 } from '../models';
-import Context from '../Context';
 import { SubscriptionType } from '../subscriptions';
 
 type EmbedParser = (url: URL) => Embed | null;

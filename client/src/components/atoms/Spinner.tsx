@@ -1,6 +1,6 @@
+import * as colors from 'colors';
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import * as colors from 'colors';
 
 // CSS code taken from http://tobiasahlin.com/spinkit/
 // Copyright (c) 2015 Tobias Ahlin

@@ -1,21 +1,20 @@
-import {
-  Resolver,
-  Query,
-  Ctx,
-  Mutation,
-  InputType,
-  Arg,
-  FieldResolver,
-  Root,
-  Field,
-} from 'type-graphql';
 import * as bcrypt from 'bcrypt';
-import Context from '../Context';
-import { User, Session, Room, Message } from '../models';
-import { MongoRepository } from 'typeorm';
 import { ObjectID } from 'mongodb';
+import {
+  Arg,
+  Ctx,
+  Field,
+  FieldResolver,
+  InputType,
+  Mutation,
+  Query,
+  Resolver,
+  Root,
+} from 'type-graphql';
+import { MongoRepository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
-import winston from 'winston';
+import Context from '../Context';
+import { Message, Room, Session, User } from '../models';
 
 @InputType()
 class RegisterInput {
@@ -141,12 +140,10 @@ export class UserResolver {
     ctx.state.session = session;
     ctx.state.viewer = user;
     if (ctx.cookies) {
-      winston.info('Setting cookie to ' + session.id.toHexString());
       ctx.cookies.set('sessionId', session.id.toHexString(), {
         overwrite: true,
         maxAge: 1209600000, // 2 weeks
       });
-      winston.info('Cookie set');
     }
 
     return session;

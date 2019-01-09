@@ -1,13 +1,13 @@
-import React from 'react';
-import gql from 'graphql-tag';
-import { ChildProps, compose, graphql, MutationFunc } from 'react-apollo';
-import { Link, Redirect } from 'react-router-dom';
-import styled from 'styled-components';
-import { Helmet } from 'react-helmet';
 import * as colors from 'colors';
 import formatError from 'formatError';
-import ErrorMessage from '../atoms/ErrorMessage';
+import gql from 'graphql-tag';
+import React from 'react';
+import { ChildProps, compose, graphql, MutationFunc } from 'react-apollo';
+import { Helmet } from 'react-helmet';
+import { Link, Redirect } from 'react-router-dom';
+import styled from 'styled-components';
 import client from '../../apollo';
+import ErrorMessage from '../atoms/ErrorMessage';
 
 const Container = styled.div`
   background: ${colors.darkPrimary};

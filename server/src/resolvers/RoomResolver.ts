@@ -1,23 +1,23 @@
-import {
-  Resolver,
-  Query,
-  Arg,
-  Mutation,
-  Ctx,
-  FieldResolver,
-  Root,
-  InputType,
-  Subscription,
-  PubSub,
-  Publisher,
-  Field,
-} from 'type-graphql';
-import { Room, User, userIsMemberOfRoom, Message } from '../models';
-import { MongoRepository } from 'typeorm';
 import { ObjectID } from 'mongodb';
-import Context from '../Context';
-import { SubscriptionType } from '../subscriptions';
+import {
+  Arg,
+  Ctx,
+  Field,
+  FieldResolver,
+  InputType,
+  Mutation,
+  Publisher,
+  PubSub,
+  Query,
+  Resolver,
+  Root,
+  Subscription,
+} from 'type-graphql';
+import { MongoRepository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
+import Context from '../Context';
+import { Message, Room, User, userIsMemberOfRoom } from '../models';
+import { SubscriptionType } from '../subscriptions';
 
 @InputType()
 class CreateRoomInput {

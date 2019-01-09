@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-import TextArea from 'react-textarea-autosize';
 import * as colors from 'colors';
+import TextArea from 'react-textarea-autosize';
+import styled from 'styled-components';
 
 export const Section = styled.section`
   display: flex;

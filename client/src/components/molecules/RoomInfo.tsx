@@ -1,6 +1,6 @@
+import * as colors from 'colors';
 import React from 'react';
 import styled from 'styled-components';
-import * as colors from 'colors';
 import SideBar from './SideBar';
 
 const SubTitle = styled.h3`

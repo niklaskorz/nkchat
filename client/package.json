@@ -11,7 +11,8 @@
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
-    "serve": "serve build --single"
+    "serve": "serve build --single",
+    "lint:ts": "tslint -p tsconfig.json -c tslint.json src/**/*.ts src/**/*.tsx"
   },
   "dependencies": {
     "apollo-cache": "^1.1.16",
