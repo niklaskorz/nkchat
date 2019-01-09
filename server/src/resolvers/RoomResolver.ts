@@ -181,19 +181,13 @@ export class RoomResolver {
       throw new Error('Authentication required');
     }
 
-    const result = await this.roomRepository.findOneAndUpdate(input.roomId, {
-      $addToSet: {
-        members: viewer.id,
-      },
-    });
-    if (result.ok !== 1) {
-      throw new Error('Room could not be updated');
-    }
-
-    const room = result.value as Room;
+    const room = await this.roomRepository.findOne(input.roomId);
     if (!room) {
       throw new Error('Room could not be found');
     }
+
+    room.memberIds.push(viewer.id);
+    await this.roomRepository.save(room);
 
     publish({
       roomId: room.id,
