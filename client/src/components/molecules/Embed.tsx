@@ -29,9 +29,9 @@ const Image = styled.img`
 `;
 
 enum EmbedType {
-  Youtube = 'YOUTUBE',
-  Alugha = 'ALUGHA',
-  Image = 'IMAGE',
+  Youtube = 'Youtube',
+  Alugha = 'Alugha',
+  Image = 'Image',
 }
 
 export interface Props {
