@@ -44,6 +44,7 @@ services:
     depends_on:
       - mongodb
       - nats
+      - redis
   client:
     build: client
     labels:
