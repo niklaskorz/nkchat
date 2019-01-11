@@ -1,10 +1,11 @@
 import 'reflect-metadata';
+
 import * as typegraphql from 'type-graphql';
 import { Container } from 'typedi';
 import * as typeorm from 'typeorm';
 import winston from 'winston';
 import * as config from './config';
-import { Message, Room, Session, User } from './models';
+import { Message, Room, User } from './models';
 import startServer from './startServer';
 
 typeorm.useContainer(Container);
@@ -19,7 +20,7 @@ const createDatabaseConnection = () =>
   typeorm.createConnection({
     type: 'mongodb',
     url: `mongodb://${config.mongodbHost}/nkchat`,
-    entities: [Message, Room, Session, User],
+    entities: [Message, Room, User],
     synchronize: true,
     useNewUrlParser: true,
   });

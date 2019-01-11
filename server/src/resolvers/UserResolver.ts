@@ -13,8 +13,10 @@ import {
 } from 'type-graphql';
 import { MongoRepository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
+import { SESSION_EXPIRY_MILLISECONDS } from '../constants';
 import Context from '../Context';
-import { Message, Room, Session, User } from '../models';
+import { Message, Room, User } from '../models';
+import { createSession, removeSession } from '../sessions';
 
 @InputType()
 class RegisterInput {
@@ -37,10 +39,10 @@ export class UserResolver {
   constructor(
     @InjectRepository(Message)
     private messageRepository: MongoRepository<Message>,
-    @InjectRepository(Room) private roomRepository: MongoRepository<Room>,
-    @InjectRepository(Session)
-    private sessionRepository: MongoRepository<Session>,
-    @InjectRepository(User) private userRepository: MongoRepository<User>,
+    @InjectRepository(Room)
+    private roomRepository: MongoRepository<Room>,
+    @InjectRepository(User)
+    private userRepository: MongoRepository<User>,
   ) {}
 
   @FieldResolver(type => [Room])
@@ -81,44 +83,41 @@ export class UserResolver {
     return ctx.state.viewer || null;
   }
 
-  @Mutation(returns => Session, {
+  @Mutation(returns => User, {
     description:
       'Creates a new user and returns a login session for the created user',
   })
   async register(
     @Arg('input') input: RegisterInput,
     @Ctx() ctx: Context,
-  ): Promise<Session> {
+  ): Promise<User> {
     const user = new User();
     user.name = input.name;
     user.password = await bcrypt.hash(input.password, 10);
 
     await this.userRepository.save(user);
 
-    const session = new Session();
-    session.userId = user.id;
+    const sessionId = await createSession(user.id);
 
-    await this.sessionRepository.save(session);
-
-    ctx.state.session = session;
+    ctx.state.sessionId = sessionId;
     ctx.state.viewer = user;
     if (ctx.cookies) {
-      ctx.cookies.set('sessionId', session.id.toHexString(), {
+      ctx.cookies.set('session', sessionId, {
         overwrite: true,
-        maxAge: 1209600000, // 2 weeks
+        maxAge: SESSION_EXPIRY_MILLISECONDS,
       });
     }
 
-    return session;
+    return user;
   }
 
-  @Mutation(returns => Session, {
+  @Mutation(returns => User, {
     description: 'Creates and returns a login session for the specified user',
   })
   async login(
     @Arg('input') input: LoginInput,
     @Ctx() ctx: Context,
-  ): Promise<Session> {
+  ): Promise<User> {
     const user = await this.userRepository.findOne({ name: input.name });
     if (!user) {
       throw new Error('User not found');
@@ -132,41 +131,36 @@ export class UserResolver {
       throw new Error('Password is incorrect');
     }
 
-    const session = new Session();
-    session.userId = user.id;
+    const sessionId = await createSession(user.id);
 
-    await this.sessionRepository.save(session);
-
-    ctx.state.session = session;
+    ctx.state.sessionId = sessionId;
     ctx.state.viewer = user;
     if (ctx.cookies) {
-      ctx.cookies.set('sessionId', session.id.toHexString(), {
+      ctx.cookies.set('session', sessionId, {
         overwrite: true,
-        maxAge: 1209600000, // 2 weeks
+        maxAge: SESSION_EXPIRY_MILLISECONDS,
       });
     }
 
-    return session;
+    return user;
   }
 
   @Mutation(returns => ObjectID, {
     description:
       'Invalidates the active user session and returns the session id',
   })
-  async logout(@Ctx() ctx: Context): Promise<ObjectID> {
-    const session = ctx.state.session;
-    if (!session) {
+  async logout(@Ctx() ctx: Context): Promise<string> {
+    const sessionId = ctx.state.sessionId;
+    if (!sessionId) {
       throw new Error('Authentication required');
     }
 
-    const sessionId = session.id;
+    await removeSession(sessionId);
 
-    await this.sessionRepository.remove(session);
-
-    ctx.state.session = undefined;
+    ctx.state.sessionId = undefined;
     ctx.state.viewer = undefined;
     if (ctx.cookies) {
-      ctx.cookies.set('sessionId', undefined, { overwrite: true }); // Clear session
+      ctx.cookies.set('session', undefined, { overwrite: true }); // Clear session
     }
 
     return sessionId;

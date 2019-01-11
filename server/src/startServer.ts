@@ -2,25 +2,22 @@ import { ApolloServer } from 'apollo-server-koa';
 import Cookies from 'cookies';
 import { createServer, ServerResponse } from 'http';
 import Koa from 'koa';
-import { getMongoRepository } from 'typeorm';
-import Context from './Context';
-import { Session, User } from './models';
+import { SESSION_EXPIRY_MILLISECONDS } from './constants';
+import Context, { State } from './Context';
 import getSchema from './schema';
+import { loadSession } from './sessions';
 
-const loadState = async (sessionId?: string | null) => {
+const loadState = async (sessionId?: string | null): Promise<State> => {
   if (!sessionId) {
     return {};
   }
 
-  const session = await getMongoRepository(Session).findOne(sessionId);
-  if (!session) {
+  const viewer = await loadSession(sessionId);
+  if (!viewer) {
     return {};
   }
 
-  return {
-    session,
-    viewer: await getMongoRepository(User).findOneOrFail(session.userId),
-  };
+  return { sessionId, viewer };
 };
 
 type ContextParameters =
@@ -33,8 +30,16 @@ const startServer = async (port: number) => {
   app.proxy = true;
 
   app.use(async (ctx, next) => {
-    const sessionId = ctx.cookies.get('sessionId');
-    ctx.state = await loadState(sessionId);
+    const sessionId = ctx.cookies.get('session');
+    const state = await loadState(sessionId);
+    if (state.viewer) {
+      // Refresh cookie
+      ctx.cookies.set('session', sessionId, {
+        overwrite: true,
+        maxAge: SESSION_EXPIRY_MILLISECONDS,
+      });
+    }
+    ctx.state = state;
     await next();
   });
 

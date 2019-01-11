@@ -1,8 +1,8 @@
 import Cookies from 'cookies';
-import { Session, User } from './models';
+import { User } from './models';
 
 export interface State {
-  session?: Session;
+  sessionId?: string;
   viewer?: User;
 }
 

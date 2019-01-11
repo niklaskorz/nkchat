@@ -1,17 +1,12 @@
 import { ObjectID } from 'mongodb';
 import { buildSchema } from 'type-graphql';
-import {
-  MessageResolver,
-  RoomResolver,
-  SessionResolver,
-  UserResolver,
-} from './resolvers';
+import { MessageResolver, RoomResolver, UserResolver } from './resolvers';
 import { ObjectIDScalar } from './scalars';
 import { pubSub } from './subscriptions';
 
 const getSchema = () =>
   buildSchema({
-    resolvers: [MessageResolver, RoomResolver, SessionResolver, UserResolver],
+    resolvers: [MessageResolver, RoomResolver, UserResolver],
     scalarsMap: [{ type: ObjectID, scalar: ObjectIDScalar }],
     pubSub,
   });
