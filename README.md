@@ -1,6 +1,6 @@
 # nkchat
 
-[https://gitlab.com/niklaskorz/nkchat/pipelines](![Build status](https://img.shields.io/gitlab/pipeline/niklaskorz/nkchat.svg))
+[![Build status](https://img.shields.io/gitlab/pipeline/niklaskorz/nkchat.svg)](https://gitlab.com/niklaskorz/nkchat/pipelines)
 
 `nkchat` is a web-based chat application using modern technologies such as
 React, GraphQL and [styled-components](https://www.styled-components.com/).
