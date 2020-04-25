@@ -1,4 +1,6 @@
 {
   "tslint.autoFixOnSave": true,
-  "files.eol": "\n"
+  "files.eol": "\n",
+  "prettier.prettierPath": ".vscode/pnpify/prettier/index.js",
+  "typescript.tsdk": ".vscode/pnpify/typescript/lib"
 }

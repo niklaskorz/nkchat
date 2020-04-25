@@ -1,20 +1,6 @@
 stages:
 - build
 
-Build the client:
-  stage: build
-  image:
-    name: gcr.io/makisu-project/makisu-alpine:v0.1.8
-    entrypoint: [""]
-  script:
-    - echo "{\"$CI_REGISTRY\":{\".*\":{\"security\":{\"basic\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}}}" > /registry-config.yaml
-    - /makisu-internal/makisu --log-fmt=console build --push=$CI_REGISTRY --modifyfs -t=$CI_REGISTRY_IMAGE/client:$CI_COMMIT_SHA --registry-config=/registry-config.yaml $CI_PROJECT_DIR/client
-
-Build the server:
-  stage: build
-  image:
-    name: gcr.io/makisu-project/makisu-alpine:v0.1.8
-    entrypoint: [""]
-  script:
-    - echo "{\"$CI_REGISTRY\":{\".*\":{\"security\":{\"basic\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}}}" > /registry-config.yaml
-    - /makisu-internal/makisu --log-fmt=console build --push=$CI_REGISTRY --modifyfs -t=$CI_REGISTRY_IMAGE/server:$CI_COMMIT_SHA --registry-config=/registry-config.yaml $CI_PROJECT_DIR/server
+include:
+  - local: 'packages/client/.gitlab-yi.yml'
+  - local: 'packages/server/.gitlab-yi.yml'
