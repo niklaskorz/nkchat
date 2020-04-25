@@ -1,7 +1,7 @@
 Build the client:
   stage: build
   image:
-    name: gcr.io/makisu-project/makisu-alpine:v0.1.8
+    name: gcr.io/uber-container-tools/makisu-alpine:v0.1.17
     entrypoint: [""]
   script:
     - echo "{\"$CI_REGISTRY\":{\".*\":{\"security\":{\"basic\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}}}" > /registry-config.yaml
