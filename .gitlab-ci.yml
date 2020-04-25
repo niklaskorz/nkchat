@@ -2,5 +2,5 @@ stages:
 - build
 
 include:
-  - local: 'packages/client/.gitlab-yi.yml'
-  - local: 'packages/server/.gitlab-yi.yml'
+  - local: 'packages/client/.gitlab-ci.yml'
+  - local: 'packages/server/.gitlab-ci.yml'
