@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "apollo-server-koa": "^2.3.1",
-    "bcrypt": "^3.0.3",
+    "bcrypt": "^5.0.0",
     "cookies": "^0.7.3",
     "cross-env": "^5.2.0",
     "get-urls": "^8.0.0",
